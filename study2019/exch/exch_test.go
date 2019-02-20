@@ -1,15 +1,11 @@
-package main
+package exch_test
 
 import (
-	"fmt"
+	"testing"
 
 	"github.com/vincentgong3mm/golang/study2019/exch"
 )
 
-func main() {
-	fmt.Println("hi..")
-
-	testFunction()
-
+func TestLoadLib(t *testing.T) {
 	exch.TestChannel()
 }
