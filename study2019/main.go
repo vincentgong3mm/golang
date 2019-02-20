@@ -4,12 +4,13 @@ import (
 	"fmt"
 
 	"github.com/vincentgong3mm/golang/study2019/exch"
+	"github.com/vincentgong3mm/golang/study2019/exregexp"
 )
 
 func main() {
 	fmt.Println("hi..")
 
-	testFunction()
-
 	exch.TestChannel()
+
+	exregexp.TestRegexp()
 }
