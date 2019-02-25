@@ -14,3 +14,8 @@ func main() {
 
 	exregexp.TestRegexp()
 }
+
+/home/vincentgong3mm/go/src/
+github.com/vincentgong3mm/golang/study2019/exslice
+github.com/vincentgong3mm/golang/study2019/exslice
+
