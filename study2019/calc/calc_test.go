@@ -1,8 +1,8 @@
 package calc_test
 
 import (
-	"calc"
 	"fmt"
+	"github.com/vincentgong3mm/golang/study2019/calc"
 	"testing"
 )
 
