@@ -12,6 +12,7 @@ func AddOne(nums []int) {
 	}
 }
 
+// ReadFrom is test read function
 func ReadFrom(r io.Reader, f func(line string)) error {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
@@ -60,4 +61,10 @@ func NewVertexIDGenerator() func() VertexID {
 	return func() VertexID {
 		return VertexID(gen())
 	}
+}
+
+type Inferface interface {
+	Len() int
+	Less(i, j int) bool
+	Swap(i, j int)
 }
