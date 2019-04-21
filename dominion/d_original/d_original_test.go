@@ -1,10 +1,11 @@
-package main
+package d_original_test
 
 import (
 	"bufio"
 	"fmt"
 	dom "github.com/vincentgong3mm/golang/dominion/d_original"
 	"os"
+	"testing"
 )
 
 func waitExit() {
@@ -12,7 +13,8 @@ func waitExit() {
 	r.ReadString('\n')
 }
 
-func main() {
+func TestMain(t *testing.T) {
+	return
 	fmt.Println("Let's start Dominion!")
 
 	np := dom.CreateNewPlayer("jong")
@@ -22,4 +24,14 @@ func main() {
 	fmt.Println(np2)
 
 	waitExit()
+}
+
+func TestGameBox(t *testing.T) {
+	gb := dom.CreateNewGameBox()
+
+	nc := dom.CreateNewCard("Village")
+	gb.CreateCard(*nc)
+
+	fmt.Println(gb)
+
 }
