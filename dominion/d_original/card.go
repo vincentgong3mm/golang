@@ -12,11 +12,25 @@ const (
 	CardTypeVictory
 )
 
+var CardTypeString = [...]string{
+	"Action",
+	"Treasure",
+	"Victory",
+}
+
+func (r CardType) String() string {
+	return CardTypeString[r%3]
+}
+
 type Card struct {
 	name       string
 	cardUnique CardUnique
 	cardType   []CardType
 	cost       int
+}
+
+func (r Card) String() string {
+	return fmt.Sprintf("%s %d %s %d", r.name, r.cardUnique, r.cardType, r.cost)
 }
 
 func init() {
