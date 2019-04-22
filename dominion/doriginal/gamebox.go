@@ -1,4 +1,4 @@
-package d_original
+package doriginal
 
 import "fmt"
 

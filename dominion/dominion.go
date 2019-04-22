@@ -3,8 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
-	dom "github.com/vincentgong3mm/golang/dominion/d_original"
 	"os"
+
+	dom "github.com/vincentgong3mm/golang/dominion/doriginal"
 )
 
 func waitExit() {

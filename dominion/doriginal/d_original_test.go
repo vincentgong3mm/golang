@@ -1,11 +1,12 @@
-package d_original_test
+package doriginal_test
 
 import (
 	"bufio"
 	"fmt"
-	dom "github.com/vincentgong3mm/golang/dominion/d_original"
 	"os"
 	"testing"
+
+	dom "github.com/vincentgong3mm/golang/dominion/doriginal"
 )
 
 func waitExit() {

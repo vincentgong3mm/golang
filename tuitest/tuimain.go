@@ -2,10 +2,12 @@ package main
 
 import tl "github.com/JoelOtter/termloop"
 
+// Player is
 type Player struct {
 	*tl.Entity
 }
 
+// Tick is
 func (player *Player) Tick(event tl.Event) {
 	if event.Type == tl.EventKey { // Is it a keyboard event?
 		x, y := player.Position()
