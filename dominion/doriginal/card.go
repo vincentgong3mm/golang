@@ -48,7 +48,14 @@ func (r Card) TermString() string {
 	ln = append(ln, '|')
 
 	space := make([]byte, lenspace)
-	space2 := make([]byte, lenspace-1)
+	for i := range space {
+		space[i] = ' '
+	}
+
+	space2 := make([]byte, lenspace+1, lenspace+1)
+	for i := range space2 {
+		space2[i] = ' '
+	}
 	ln = append(ln, space...)
 
 	tmpName := []byte(r.name)
