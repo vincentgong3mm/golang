@@ -1,6 +1,8 @@
 package doriginal
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type CardId int
 
@@ -14,6 +16,10 @@ const (
 
 const (
 	InvaildCardId = -1
+)
+
+const (
+	CardWidth = 20
 )
 
 var CardTypeString = [...]string{
@@ -39,37 +45,11 @@ func (r Card) String() string {
 
 func (r Card) TermString() string {
 
-	ln := make([]byte, 0, 40)
+	ct := fmt.Sprintf("%s", r.cardType)
+	//ct = strings.TrimLeft(ct, "[")
+	//ct = strings.TrimRight(ct, "]")
 
-	width := 20
-	lenstr := len(r.name)
-	lenspace := (width - lenstr) / 2
-
-	ln = append(ln, '|')
-
-	space := make([]byte, lenspace)
-	for i := range space {
-		space[i] = ' '
-	}
-
-	space2 := make([]byte, lenspace+1, lenspace+1)
-	for i := range space2 {
-		space2[i] = ' '
-	}
-	ln = append(ln, space...)
-
-	tmpName := []byte(r.name)
-	ln = append(ln, tmpName...)
-
-	if lenstr%2 == 0 {
-		ln = append(ln, space...)
-	} else {
-		ln = append(ln, space2...)
-	}
-
-	ln = append(ln, '|')
-
-	return string(ln)
+	return ConvertTermString(CardWidth, r.name) + "\n" + ConvertTermString(CardWidth, ct) + "\n"
 
 }
 
