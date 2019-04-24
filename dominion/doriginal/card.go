@@ -41,10 +41,11 @@ type Card struct {
 	CardID   CardID
 	cardType []CardType
 	cost     int
+	Ability  []Ability
 }
 
 func (r Card) String() string {
-	return fmt.Sprintf("%s(ID:%d)\n\tcost(%d)\n\tType%s\t\n", r.name, r.CardID, r.cost, r.cardType)
+	return fmt.Sprintf("%s(ID:%d)\n\tcost(%d)\n\tType%s\n\tAbility%s\n", r.name, r.CardID, r.cost, r.cardType, r.Ability)
 }
 
 func (r Card) TermString() string {
@@ -101,36 +102,17 @@ type Ability struct {
 }
 
 func (r Ability) String() string {
-	return fmt.Sprintf("+%d %s", r.count, r.abilityType)
+	return fmt.Sprintf("\n\t\t+%d %s", r.count, r.abilityType)
 }
 
-type Smithy struct {
-	Card    Card
-	Ability []Ability
-}
+func (r Card) Play() error {
+	fmt.Println(fmt.Sprintf("Play:%s", r))
 
-func (r Smithy) String() string {
-	return fmt.Sprintf("%s, %s", r.Card, r.Ability)
-}
-
-func (r Smithy) Play() error {
-	fmt.Println(fmt.Sprintf("Action:%s", r.Card))
-
-	for i, v := range r.Ability {
-		fmt.Println(i, v)
+	for _, v := range r.Ability {
+		fmt.Println("\tAbility->", v)
 	}
 
 	return nil
-}
-
-func NewSmithy() *Smithy {
-	n := Smithy{
-		Card:    Card{name: "Smithy", cardType: []CardType{CardTypeAction, CardTypeTreasure}, cost: 3},
-		Ability: []Ability{{AbilityAddAction, 1}, {AbilityAddCoin, 2}},
-	}
-
-	return &n
-
 }
 
 func CallPlayCard(p PlayCardAbilityer) {

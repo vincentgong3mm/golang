@@ -39,48 +39,42 @@ func TestCardType(t *testing.T) {
 func TestCreateCard(t *testing.T) {
 
 	gb := dom.CreateNewGameBox()
-
-	gb.CreateCard("Village",
-		[]dom.CardType{dom.CardTypeAction},
-		3)
-	gb.CreateCard("Smithy",
-		[]dom.CardType{dom.CardTypeAction},
-		3)
-	gb.CreateCard("Mill",
-		[]dom.CardType{dom.CardTypeAction, dom.CardTypeVictory},
-		3)
-	gb.CreateCard("Gold",
-		[]dom.CardType{dom.CardTypeTreasure},
-		6)
-	gb.CreateCard("Silver",
-		[]dom.CardType{dom.CardTypeTreasure},
-		3)
-	gb.CreateCard("Copper",
-		[]dom.CardType{dom.CardTypeTreasure},
-		0)
-	gb.CreateCard("Curse",
-		[]dom.CardType{dom.CardTypeCurse},
-		0)
-	gb.CreateCard("Market",
-		[]dom.CardType{dom.CardTypeAction},
-		5)
+	/*
+		gb.CreateCard("Village",
+			[]dom.CardType{dom.CardTypeAction},
+			3)
+		gb.CreateCard("Smithy",
+			[]dom.CardType{dom.CardTypeAction},
+			3)
+		gb.CreateCard("Mill",
+			[]dom.CardType{dom.CardTypeAction, dom.CardTypeVictory},
+			3)
+		gb.CreateCard("Gold",
+			[]dom.CardType{dom.CardTypeTreasure},
+			6)
+		gb.CreateCard("Silver",
+			[]dom.CardType{dom.CardTypeTreasure},
+			3)
+		gb.CreateCard("Copper",
+			[]dom.CardType{dom.CardTypeTreasure},
+			0)
+		gb.CreateCard("Curse",
+			[]dom.CardType{dom.CardTypeCurse},
+			0)
+		gb.CreateCard("Market",
+			[]dom.CardType{dom.CardTypeAction},
+			5)
+	*/
 
 	fmt.Println(gb)
 }
 
 func TestPlayCard(t *testing.T) {
-	//smithy := dom.Smithy{ability: dom.Ability{1, 10}}
-	//smithy := dom.Smithy
-	//var smithy dom.Smithy
+	gb := dom.CreateNewGameBox()
 
-	//smithy := dom.Smithy{
-	//	Card: {"Smithy",
-	//		[]dom.CardType{dom.CardTypeAction},
-	//		3},
-	//	Ability: {}}
+	gb.CreateAllCard()
 
-	//smithy.Ability = []dom.Ability{{dom.AbilityAddCard, 1}, {dom.AbilityAddCoin, 2}}
-	smithy := dom.NewSmithy()
+	fmt.Println(gb)
 
-	dom.CallPlayCard(smithy)
+	//gb.GMPlayAllCard()
 }
