@@ -51,7 +51,7 @@ func (r *Player) MakeNewDeck() {
 func (r *Player) TrashCard() {
 }
 
-func (r *Player) Action(card *Card) error {
+func (r *Player) PlayCard(card *Card) error {
 	//card.Action()
 	return nil
 }

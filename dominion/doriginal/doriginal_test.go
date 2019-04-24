@@ -67,3 +67,20 @@ func TestCreateCard(t *testing.T) {
 
 	fmt.Println(gb)
 }
+
+func TestPlayCard(t *testing.T) {
+	//smithy := dom.Smithy{ability: dom.Ability{1, 10}}
+	//smithy := dom.Smithy
+	//var smithy dom.Smithy
+
+	//smithy := dom.Smithy{
+	//	Card: {"Smithy",
+	//		[]dom.CardType{dom.CardTypeAction},
+	//		3},
+	//	Ability: {}}
+
+	//smithy.Ability = []dom.Ability{{dom.AbilityAddCard, 1}, {dom.AbilityAddCoin, 2}}
+	smithy := dom.NewSmithy()
+
+	dom.CallPlayCard(smithy)
+}

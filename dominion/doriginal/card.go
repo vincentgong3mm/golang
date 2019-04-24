@@ -69,14 +69,70 @@ func NewCardIDGenerator() func() CardID {
 	}
 }
 
-type PlayCardAblityer interface {
-	Action() error
+type PlayCardAbilityer interface {
+	Play() error
+}
+
+type AbilityType int
+
+const (
+	AbilityAddAction = 0 + iota
+	AbilityAddCard
+	AbilityAddBuy
+	AbilityAddCoin
+	AbilitySpecial
+)
+
+var AbilityTypeString = [...]string{
+	"Action",
+	"Card",
+	"Buy",
+	"Coin",
+	"Special",
+}
+
+func (r AbilityType) String() string {
+	return AbilityTypeString[r]
+}
+
+type Ability struct {
+	abilityType AbilityType
+	count       int
+}
+
+func (r Ability) String() string {
+	return fmt.Sprintf("+%d %s", r.count, r.abilityType)
 }
 
 type Smithy struct {
-	card Card
+	Card    Card
+	Ability []Ability
 }
 
-func (r *Smithy) Action() error {
+func (r Smithy) String() string {
+	return fmt.Sprintf("%s, %s", r.Card, r.Ability)
+}
+
+func (r Smithy) Play() error {
+	fmt.Println(fmt.Sprintf("Action:%s", r.Card))
+
+	for i, v := range r.Ability {
+		fmt.Println(i, v)
+	}
+
 	return nil
+}
+
+func NewSmithy() *Smithy {
+	n := Smithy{
+		Card:    Card{name: "Smithy", cardType: []CardType{CardTypeAction, CardTypeTreasure}, cost: 3},
+		Ability: []Ability{{AbilityAddAction, 1}, {AbilityAddCoin, 2}},
+	}
+
+	return &n
+
+}
+
+func CallPlayCard(p PlayCardAbilityer) {
+	p.Play()
 }
