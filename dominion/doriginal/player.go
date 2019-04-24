@@ -27,14 +27,14 @@ func (r *Player) JoinGame() {
 
 }
 
-// draw cards from deck to hand
+// DrawCard is draw cards from deck to hand
 func (r *Player) DrawCard(cnt int) {
 }
 
-// make new deck
+// MakeNewDesk is make new deck
 func (r *Player) MakeNewDeck() {
 }
 
-// trash card to trash
+// TranshCard is trash card to trash
 func (r *Player) TrashCard() {
 }

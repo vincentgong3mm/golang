@@ -40,11 +40,33 @@ func TestCreateCard(t *testing.T) {
 
 	gb := dom.CreateNewGameBox()
 
-	vCard := gb.CreateCard("Village", []dom.CardType{dom.CardTypeAction}, 3)
-	sCard := gb.CreateCard("Smithy", []dom.CardType{dom.CardTypeAction, dom.CardTypeVictory}, 3)
+	gb.CreateCard("Village",
+		[]dom.CardType{dom.CardTypeAction},
+		3)
+	gb.CreateCard("Smithy",
+		[]dom.CardType{dom.CardTypeAction},
+		3)
+	gb.CreateCard("Mill",
+		[]dom.CardType{dom.CardTypeAction, dom.CardTypeVictory},
+		3)
+	gb.CreateCard("Gold",
+		[]dom.CardType{dom.CardTypeTreasure},
+		6)
+	gb.CreateCard("Silver",
+		[]dom.CardType{dom.CardTypeTreasure},
+		3)
+	gb.CreateCard("Copper",
+		[]dom.CardType{dom.CardTypeTreasure},
+		0)
+	gb.CreateCard("Curse",
+		[]dom.CardType{dom.CardTypeCurse},
+		0)
+	gb.CreateCard("Market",
+		[]dom.CardType{dom.CardTypeAction},
+		5)
 
 	fmt.Println(gb)
 
-	fmt.Println(vCard.TermString())
-	fmt.Println(sCard.TermString())
+	//fmt.Println(vCard.TermString())
+	//fmt.Println(sCard.TermString())
 }

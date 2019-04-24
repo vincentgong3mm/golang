@@ -4,18 +4,21 @@ import (
 	"fmt"
 )
 
-type CardId int
+// CardID is
+type CardID int
 
+// CardType is	Action, Treasure, Victory
 type CardType int
 
 const (
 	CardTypeAction = 0 + iota
 	CardTypeTreasure
 	CardTypeVictory
+	CardTypeCurse
 )
 
 const (
-	InvaildCardId = -1
+	InvaildCardID = -1
 )
 
 const (
@@ -26,6 +29,7 @@ var CardTypeString = [...]string{
 	"Action",
 	"Treasure",
 	"Victory",
+	"Curse",
 }
 
 func (r CardType) String() string {
@@ -34,13 +38,13 @@ func (r CardType) String() string {
 
 type Card struct {
 	name     string
-	cardId   CardId
+	CardID   CardID
 	cardType []CardType
 	cost     int
 }
 
 func (r Card) String() string {
-	return fmt.Sprintf("%s %d %s %d", r.name, r.cardId, r.cardType, r.cost)
+	return fmt.Sprintf("%s(ID:%d)\n\tcost(%d)\n\tType%s\t\n", r.name, r.CardID, r.cost, r.cardType)
 }
 
 func (r Card) TermString() string {
@@ -65,16 +69,16 @@ func CreateNewCard(name string) *Card {
 }
 */
 
-func NewCardIdGenerator() func() CardId {
+func NewCardIDGenerator() func() CardID {
 	var next int
-	return func() CardId {
+	return func() CardID {
 		next++
-		return CardId(next)
+		return CardID(next)
 	}
 }
 
 // CreateNewCarad is
 //func CreateNewCard(name string, cardType []CardType, cost int) *Card {
-//	n := Card{name: name, cardId: InvaildCardId, cardType: cardType, cost: cost}
+//	n := Card{name: name, CardID: InvaildCardID, cardType: cardType, cost: cost}
 //	return &n
 //}

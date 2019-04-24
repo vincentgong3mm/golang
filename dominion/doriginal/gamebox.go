@@ -3,8 +3,8 @@ package doriginal
 import "fmt"
 
 type GameBox struct {
-	cards     map[CardId]Card
-	genCardId func() CardId
+	cards     map[CardID]Card
+	genCardID func() CardID
 }
 
 func init() {
@@ -13,21 +13,22 @@ func init() {
 
 func CreateNewGameBox() *GameBox {
 	n := GameBox{}
-	n.cards = make(map[CardId]Card)
-	n.genCardId = NewCardIdGenerator()
+	n.cards = make(map[CardID]Card)
+	n.genCardID = NewCardIDGenerator()
 
 	return &n
 }
 
 func (r *GameBox) CreateCard(name string, cardType []CardType, cost int) Card {
-	cardId := r.genCardId()
-	r.cards[cardId] = Card{name: name, cardId: cardId, cardType: cardType, cost: cost}
+	CardID := r.genCardID()
+	r.cards[CardID] = Card{name: name, CardID: CardID, cardType: cardType, cost: cost}
 
-	return r.cards[cardId]
+	return r.cards[CardID]
 }
 
 func (r *GameBox) String() string {
-	s := "Card\n"
+	s := "GameBox Info\n"
+	s += "Card List\n"
 	for _, v := range r.cards {
 		s += v.String()
 	}
