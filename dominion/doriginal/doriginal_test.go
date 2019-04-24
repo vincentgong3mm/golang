@@ -76,5 +76,9 @@ func TestPlayCard(t *testing.T) {
 
 	fmt.Println(gb)
 
-	//gb.GMPlayAllCard()
+	p1 := dom.CreateNewPlayer("jong")
+
+	gb.GMPlayAllCard(p1)
+
+	fmt.Println(p1)
 }

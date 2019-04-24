@@ -81,6 +81,7 @@ const (
 	AbilityAddCard
 	AbilityAddBuy
 	AbilityAddCoin
+	AbilityAddVictory
 	AbilitySpecial
 )
 
@@ -89,6 +90,7 @@ var AbilityTypeString = [...]string{
 	"Card",
 	"Buy",
 	"Coin",
+	"Victory",
 	"Special",
 }
 
@@ -105,11 +107,18 @@ func (r Ability) String() string {
 	return fmt.Sprintf("\n\t\t+%d %s", r.count, r.abilityType)
 }
 
-func (r Card) Play() error {
+func (r Card) Play(palyer *Player) error {
 	fmt.Println(fmt.Sprintf("Play:%s", r))
 
 	for _, v := range r.Ability {
 		fmt.Println("\tAbility->", v)
+		/*
+			switch v.abilityType
+			{
+			case :
+			case :
+			}
+		*/
 	}
 
 	return nil

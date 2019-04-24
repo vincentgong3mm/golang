@@ -52,12 +52,18 @@ func (r *GameBox) CreateAllCard() error {
 		[]Ability{{AbilityAddCoin, 2}})
 	r.createCard("Copper", []CardType{CardTypeTreasure}, 0,
 		[]Ability{{AbilityAddCoin, 1}})
+	r.createCard("Province", []CardType{CardTypeVictory}, 8,
+		[]Ability{{AbilityAddVictory, 6}})
+	r.createCard("Duchy", []CardType{CardTypeVictory}, 5,
+		[]Ability{{AbilityAddVictory, 3}})
+	r.createCard("Estate", []CardType{CardTypeVictory}, 2,
+		[]Ability{{AbilityAddVictory, 1}})
 
 	return nil
 }
 
-func (r *GameBox) GMPlayAllCard() {
+func (r *GameBox) GMPlayAllCard(player *Player) {
 	for _, v := range r.cards {
-		v.Play()
+		v.Play(player)
 	}
 }
