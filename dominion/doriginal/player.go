@@ -2,15 +2,27 @@ package doriginal
 
 import "fmt"
 
+// 이렇게 까지는 필요하지 않음.
+// player의 turn에 해야할 순서
+// type Actioner interface {
+// 	action() error
+// 	buy() error
+// 	clean() error
+// 	draw() error
+// }
+
 // add counter -> Player.index
 type Player struct {
-	name      string
-	index     int
-	handCards []Card
-	deckCards []Card
+	name            string
+	index           int
+	deck            []Card
+	handCards       []Card
+	cardPlayingArea []Card
+	discardPile     []Card
 
 	actions int
 	buys    int
+	coins   int
 }
 
 func init() {
@@ -37,4 +49,9 @@ func (r *Player) MakeNewDeck() {
 
 // TranshCard is trash card to trash
 func (r *Player) TrashCard() {
+}
+
+func (r *Player) Action(card *Card) error {
+	//card.Action()
+	return nil
 }

@@ -66,7 +66,4 @@ func TestCreateCard(t *testing.T) {
 		5)
 
 	fmt.Println(gb)
-
-	//fmt.Println(vCard.TermString())
-	//fmt.Println(sCard.TermString())
 }

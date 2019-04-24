@@ -61,14 +61,6 @@ func init() {
 	fmt.Println("import d_original/card")
 }
 
-/*
-func CreateNewCard(name string) *Card {
-	nc := Card{name: name}
-
-	return &nc
-}
-*/
-
 func NewCardIDGenerator() func() CardID {
 	var next int
 	return func() CardID {
@@ -77,8 +69,14 @@ func NewCardIDGenerator() func() CardID {
 	}
 }
 
-// CreateNewCarad is
-//func CreateNewCard(name string, cardType []CardType, cost int) *Card {
-//	n := Card{name: name, CardID: InvaildCardID, cardType: cardType, cost: cost}
-//	return &n
-//}
+type PlayCardAblityer interface {
+	Action() error
+}
+
+type Smithy struct {
+	card Card
+}
+
+func (r *Smithy) Action() error {
+	return nil
+}
