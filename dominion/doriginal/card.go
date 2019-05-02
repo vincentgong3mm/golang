@@ -36,6 +36,20 @@ func (r CardType) String() string {
 	return CardTypeString[r%3]
 }
 
+type CardIdentity int
+
+const (
+	Copper CardIdentity = 0 + iota
+	Silver
+	Gold
+	Estate
+	Duchy
+	Province
+	Villige
+	Festival
+	Smithy
+)
+
 type Card struct {
 	name     string
 	CardID   CardID
