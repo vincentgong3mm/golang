@@ -51,12 +51,35 @@ func (r *Player) JoinGame() {
 
 }
 
+// Gain a card to
+type GainedCard int
+
+const (
+	ToDiscardPile GainedCard = 0 + iota
+	ToDeck
+	ToHand
+)
+
+// GainCard is gain a card from Supply
+func (r *Player) GainCard(id CardID, to GainedCard) {
+	/*
+		switch to {
+		case ToDiscardPile:
+			r.discardPile = append(r.discardPile, id)
+		case ToDeck:
+			r.deck = append(r.deck, id)
+		case ToHand:
+			r.handCards = append(r.handCards, id)
+		}
+	*/
+}
+
 // DrawCard is draw cards from deck to hand
 func (r *Player) DrawCard(cnt int) {
 }
 
-// MakeNewDesk is make new deck
-func (r *Player) MakeNewDeck() {
+// Shuffle is make new deck
+func (r *Player) ShuffleDeck() {
 }
 
 // TranshCard is trash card to trash

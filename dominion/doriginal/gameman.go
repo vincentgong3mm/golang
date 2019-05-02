@@ -40,6 +40,21 @@ func (r *GameBox) CreateNewPlayer(name string) Player {
 	return r.players[playerID]
 }
 
+func (r *GameBox) GetCard(name string) *Card {
+	for _, v := range r.cards {
+		if v.name == name {
+			return &v
+		}
+	}
+
+	return nil
+}
+
+// ReadyPlayer is gain 3 copper and 7 estate.
+func (r *GameBox) ReadyPlayer(player *Player) {
+
+}
+
 func (r *GameBox) String() string {
 	s := "GameBox Info\n"
 	s += "Card List\n"

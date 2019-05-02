@@ -73,7 +73,12 @@ func TestPlayCard(t *testing.T) {
 	//p1 := dom.CreateNewPlayer("jong")
 	p1 := gman.CreateNewPlayer("jong")
 
+	p1.GainCard(dom.CardID(1), dom.ToHand)
+
 	//gman.GMPlayAllCard(p1)
 
 	fmt.Println(p1)
+
+	fmt.Println(gman.GetCard("Copper"), gman.GetCard("Estate"))
+
 }
