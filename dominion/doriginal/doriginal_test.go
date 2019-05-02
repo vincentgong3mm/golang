@@ -70,18 +70,12 @@ func TestPlayCard(t *testing.T) {
 
 	fmt.Println(gman)
 
-	//p1 := dom.CreateNewPlayer("jong")
 	p1 := gman.CreateNewPlayer("jong")
 
-	for i := 0; i < 7; i++ {
-		p1.GainCard(dom.Copper, dom.ToHand)
-	}
-
-	for i := 0; i < 3; i++ {
-		p1.GainCard(dom.Estate, dom.ToHand)
-	}
-
 	fmt.Println(p1)
+	p1.AddDiscardPileToDeck()
+	fmt.Println(p1)
+
 	//p1.GainCard(dom.CardID(1), dom.ToHand)
 
 	//gman.GMPlayAllCard(p1)

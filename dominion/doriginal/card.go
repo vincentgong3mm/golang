@@ -2,6 +2,7 @@ package doriginal
 
 import (
 	"fmt"
+	"strings"
 )
 
 // CardType is	Action, Treasure, Victory
@@ -35,6 +36,8 @@ func (r CardType) String() string {
 
 type CardID int
 
+type CardIDs []CardID
+
 const (
 	Copper CardID = 0 + iota
 	Silver
@@ -64,6 +67,18 @@ var CardIDString = [...]string{
 
 func (r CardID) String() string {
 	return CardIDString[r%MaxCardID]
+}
+
+func (r CardIDs) String() string {
+	s := ""
+	s = fmt.Sprintf("Count(%d):[", len(r))
+	for _, v := range r {
+		s += fmt.Sprintf("%s(%d)-", v, v)
+	}
+	s = strings.TrimRight(s, "-")
+	s += "]\n"
+
+	return s
 }
 
 type Card struct {

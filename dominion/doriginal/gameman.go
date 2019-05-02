@@ -5,7 +5,7 @@ import "fmt"
 type GameBox struct {
 	cards map[CardID]Card
 
-	players     map[PlayerID]Player
+	players     map[PlayerID]*Player
 	genPlayerID func() PlayerID
 }
 
@@ -16,7 +16,7 @@ func init() {
 func CreateNewGameBox() *GameBox {
 	n := GameBox{}
 	n.cards = make(map[CardID]Card)
-	n.players = make(map[PlayerID]Player)
+	n.players = make(map[PlayerID]*Player)
 	n.genPlayerID = NewPlayerIDGenerator()
 
 	return &n
@@ -30,11 +30,38 @@ func (r *GameBox) createCard(cardID CardID, cardType []CardType, cost int, abili
 	return r.cards[cardID]
 }
 
-func (r *GameBox) CreateNewPlayer(name string) Player {
+func (r *GameBox) CreateNewPlayer(name string) *Player {
 	playerID := r.genPlayerID()
-	r.players[playerID] = Player{name: name}
+	player := Player{name: name}
+
+	// inser Pplayer Point to map
+	r.players[playerID] = &player
+
+	t, _ := r.players[playerID]
+
+	r.gainBeginHandCard(t)
 
 	return r.players[playerID]
+}
+
+func (r *GameBox) gainBeginHandCard(player *Player) {
+	for i := 0; i < 7; i++ {
+		player.GainCard(Copper, ToDeck)
+	}
+
+	for i := 0; i < 3; i++ {
+		player.GainCard(Estate, ToDeck)
+	}
+
+	// first shuffle deck
+	player.deck.Shuffle()
+
+	// test ..
+	player.GainCard(Village, ToDiscardPile)
+	player.GainCard(Festival, ToDiscardPile)
+	player.GainCard(Market, ToDiscardPile)
+	player.GainCard(Smithy, ToDiscardPile)
+	player.GainCard(Smithy, ToDiscardPile)
 }
 
 /*

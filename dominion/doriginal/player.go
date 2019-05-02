@@ -1,6 +1,9 @@
 package doriginal
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 // 이렇게 까지는 필요하지 않음.
 // player의 turn에 해야할 순서
@@ -15,10 +18,10 @@ import "fmt"
 type Player struct {
 	name            string
 	index           int
-	deck            []CardID
-	handCards       []CardID
-	cardPlayingArea []CardID
-	discardPile     []CardID
+	deck            CardIDs
+	handCards       CardIDs
+	cardPlayingArea CardIDs
+	discardPile     CardIDs
 
 	actions int
 	buys    int
@@ -39,11 +42,53 @@ func NewPlayerIDGenerator() func() PlayerID {
 	}
 }
 
-/*
-func (r *Player) String() string {
+func (r Player) String() string {
+	s := ""
+	s += fmt.Sprintf("Name:%s(ID:%d)\n", r.name, r.index)
 
+	s += fmt.Sprintf("+Deck:")
+	s += fmt.Sprintf("%s", r.deck)
+
+	s += fmt.Sprintf("+Hand:")
+	s += fmt.Sprintf("%s", r.handCards)
+
+	s += fmt.Sprintf("+CardPlayingArea:")
+	s += fmt.Sprintf("%s", r.cardPlayingArea)
+
+	s += fmt.Sprintf("+DiscardPile:")
+	s += fmt.Sprintf("%s", r.discardPile)
+
+	/*
+		for _, v := range r.handCards {
+			s += fmt.Sprintf("%s(%d)-", v, v)
+		}
+		s = strings.TrimRight(s, "-")
+		s += "]\n"
+	*/
+
+	return s
 }
-*/
+
+func (r *Player) AddDiscardPileToDeck() {
+	// shuffle discard pile
+	r.discardPile.Shuffle()
+
+	// add iscard pile to deck
+	r.addCardsToDeckBottom(&r.discardPile)
+	r.discardPile = r.discardPile[0:0]
+
+	//	r.deck.ShuffleCardIDs()
+}
+
+func (r *Player) addCardsToDeckBottom(cards *CardIDs) {
+	r.deck = append(r.deck, *cards...)
+}
+
+func (r CardIDs) Shuffle() {
+	rand.Shuffle(len(r), func(i, j int) {
+		r[i], r[j] = r[j], r[i]
+	})
+}
 
 func (r *Player) JoinGame() {
 
@@ -71,11 +116,19 @@ func (r *Player) GainCard(id CardID, to GainedCard) {
 }
 
 // DrawCard is draw cards from deck to hand
-func (r *Player) DrawCard(cnt int) {
-}
+func (r *Player) DrawCard(cnt int) error {
+	/*
+		//
+		if len(r.deck) < 0 {
+			// add to deck
+		}
 
-// Shuffle is make new deck
-func (r *Player) ShuffleDeck() {
+		for i := 0; i < cnt; i++ {
+			r.handCards = append(r.handCards, r.deck[0:cnt])
+		}
+	*/
+
+	return nil
 }
 
 // TranshCard is trash card to trash
