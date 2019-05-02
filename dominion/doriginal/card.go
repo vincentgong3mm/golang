@@ -4,9 +4,6 @@ import (
 	"fmt"
 )
 
-// CardID is
-type CardID int
-
 // CardType is	Action, Treasure, Victory
 type CardType int
 
@@ -36,19 +33,38 @@ func (r CardType) String() string {
 	return CardTypeString[r%3]
 }
 
-type CardIdentity int
+type CardID int
 
 const (
-	Copper CardIdentity = 0 + iota
+	Copper CardID = 0 + iota
 	Silver
 	Gold
 	Estate
 	Duchy
 	Province
-	Villige
+	Village
 	Festival
 	Smithy
+	Market
+	MaxCardID
 )
+
+var CardIDString = [...]string{
+	"Copper",
+	"Silver",
+	"Gold",
+	"Estate",
+	"Duchy",
+	"Province",
+	"Village",
+	"Festival",
+	"Smithy",
+	"Market",
+}
+
+func (r CardID) String() string {
+	return CardIDString[r%MaxCardID]
+}
 
 type Card struct {
 	name     string
@@ -59,7 +75,7 @@ type Card struct {
 }
 
 func (r Card) String() string {
-	return fmt.Sprintf("%s(ID:%d)\n\tcost(%d)\n\tType%s\n\tAbility%s\n", r.name, r.CardID, r.cost, r.cardType, r.Ability)
+	return fmt.Sprintf("%s%s(ID:%d)\n\tcost(%d)\n\tType%s\n\tAbility%s\n", r.name, r.CardID, r.CardID, r.cost, r.cardType, r.Ability)
 }
 
 func (r Card) TermString() string {
@@ -91,12 +107,13 @@ type PlayCardAbilityer interface {
 type AbilityType int
 
 const (
-	AbilityAddAction = 0 + iota
+	AbilityAddAction AbilityType = 0 + iota
 	AbilityAddCard
 	AbilityAddBuy
 	AbilityAddCoin
 	AbilityAddVictory
 	AbilitySpecial
+	MaxAbility
 )
 
 var AbilityTypeString = [...]string{
@@ -109,7 +126,7 @@ var AbilityTypeString = [...]string{
 }
 
 func (r AbilityType) String() string {
-	return AbilityTypeString[r]
+	return AbilityTypeString[r%MaxAbility]
 }
 
 type Ability struct {

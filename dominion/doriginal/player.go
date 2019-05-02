@@ -15,10 +15,10 @@ import "fmt"
 type Player struct {
 	name            string
 	index           int
-	deck            []Card
-	handCards       []Card
-	cardPlayingArea []Card
-	discardPile     []Card
+	deck            []CardID
+	handCards       []CardID
+	cardPlayingArea []CardID
+	discardPile     []CardID
 
 	actions int
 	buys    int
@@ -29,14 +29,6 @@ func init() {
 	fmt.Println("import d_original/player")
 }
 
-/*
-func CreateNewPlayer(name string) *Player {
-	np := Player{name: name}
-
-	return &np
-}
-*/
-
 type PlayerID int
 
 func NewPlayerIDGenerator() func() PlayerID {
@@ -46,6 +38,12 @@ func NewPlayerIDGenerator() func() PlayerID {
 		return PlayerID(next)
 	}
 }
+
+/*
+func (r *Player) String() string {
+
+}
+*/
 
 func (r *Player) JoinGame() {
 
@@ -62,16 +60,14 @@ const (
 
 // GainCard is gain a card from Supply
 func (r *Player) GainCard(id CardID, to GainedCard) {
-	/*
-		switch to {
-		case ToDiscardPile:
-			r.discardPile = append(r.discardPile, id)
-		case ToDeck:
-			r.deck = append(r.deck, id)
-		case ToHand:
-			r.handCards = append(r.handCards, id)
-		}
-	*/
+	switch to {
+	case ToDiscardPile:
+		r.discardPile = append(r.discardPile, id)
+	case ToDeck:
+		r.deck = append(r.deck, id)
+	case ToHand:
+		r.handCards = append(r.handCards, id)
+	}
 }
 
 // DrawCard is draw cards from deck to hand
