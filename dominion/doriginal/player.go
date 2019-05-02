@@ -29,10 +29,22 @@ func init() {
 	fmt.Println("import d_original/player")
 }
 
+/*
 func CreateNewPlayer(name string) *Player {
 	np := Player{name: name}
 
 	return &np
+}
+*/
+
+type PlayerID int
+
+func NewPlayerIDGenerator() func() PlayerID {
+	var next int
+	return func() PlayerID {
+		next++
+		return PlayerID(next)
+	}
 }
 
 func (r *Player) JoinGame() {

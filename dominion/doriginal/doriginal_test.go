@@ -18,12 +18,6 @@ func TestMain(t *testing.T) {
 	return
 	fmt.Println("Let's start Dominion!")
 
-	np := dom.CreateNewPlayer("jong")
-	fmt.Println(np)
-
-	np2 := dom.CreateNewPlayer("seong")
-	fmt.Println(np2)
-
 	waitExit()
 }
 
@@ -70,15 +64,16 @@ func TestCreateCard(t *testing.T) {
 }
 
 func TestPlayCard(t *testing.T) {
-	gb := dom.CreateNewGameBox()
+	gman := dom.CreateNewGameBox()
 
-	gb.CreateAllCard()
+	gman.CreateAllCard()
 
-	fmt.Println(gb)
+	//fmt.Println(gb)
 
-	p1 := dom.CreateNewPlayer("jong")
+	//p1 := dom.CreateNewPlayer("jong")
+	p1 := gman.CreateNewPlayer("jong")
 
-	gb.GMPlayAllCard(p1)
+	//gman.GMPlayAllCard(p1)
 
 	fmt.Println(p1)
 }

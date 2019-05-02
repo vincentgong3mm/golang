@@ -5,6 +5,9 @@ import "fmt"
 type GameBox struct {
 	cards     map[CardID]Card
 	genCardID func() CardID
+
+	players     map[PlayerID]Player
+	genPlayerID func() PlayerID
 }
 
 func init() {
@@ -16,6 +19,9 @@ func CreateNewGameBox() *GameBox {
 	n.cards = make(map[CardID]Card)
 	n.genCardID = NewCardIDGenerator()
 
+	n.players = make(map[PlayerID]Player)
+	n.genPlayerID = NewPlayerIDGenerator()
+
 	return &n
 }
 
@@ -25,6 +31,13 @@ func (r *GameBox) createCard(name string, cardType []CardType, cost int, ability
 		Ability: ability}
 
 	return r.cards[CardID]
+}
+
+func (r *GameBox) CreateNewPlayer(name string) Player {
+	playerID := r.genPlayerID()
+	r.players[playerID] = Player{name: name}
+
+	return r.players[playerID]
 }
 
 func (r *GameBox) String() string {
