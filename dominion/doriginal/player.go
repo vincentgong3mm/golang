@@ -45,7 +45,7 @@ func NewPlayerIDGenerator() func() PlayerID {
 
 func (r Player) String() string {
 	s := ""
-	s += fmt.Sprintf("Name:%s(ID:%d)\n", r.name, r.index)
+	s += fmt.Sprintf("@Player:%s(ID:%d)\n", r.name, r.index)
 
 	s += fmt.Sprintf("+Action:%d\n", r.actions)
 	s += fmt.Sprintf("+Buy:%d\n", r.buys)
@@ -61,14 +61,6 @@ func (r Player) String() string {
 
 	s += fmt.Sprintf("+DiscardPile:")
 	s += fmt.Sprintf("%s", r.discardPile)
-
-	/*
-		for _, v := range r.handCards {
-			s += fmt.Sprintf("%s(%d)-", v, v)
-		}
-		s = strings.TrimRight(s, "-")
-		s += "]\n"
-	*/
 
 	return s
 }

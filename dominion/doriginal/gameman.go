@@ -33,16 +33,39 @@ func (r *GameBox) createCard(cardID CardID, cardType []CardType, cost int, abili
 	return r.cards[cardID]
 }
 
-func (r *GameBox) RegistCardToSuppy(t SupplySet) {
+func (r *GameBox) RegistCardToSuppy(t SupplySet, players int) {
+	estate := 8
+	duchy := 8
+	province := 8
+
+	switch players {
+	case 2:
+		estate = 8 + players*3 // 3 coper per player
+		duchy = 8
+		province = 8
+	case 3:
+		estate = 10 + players*3 // 3 coper per player
+		duchy = 10
+		province = 10
+	default:
+		estate = 12 + players*3 // 3 coper per player
+		duchy = 12
+		province = 12
+	}
+
 	switch t {
 	case SetFirstGame:
 		r.supply.RegistCard(Copper, 50)
 		r.supply.RegistCard(Silver, 40)
 		r.supply.RegistCard(Gold, 30)
+		r.supply.RegistCard(Estate, estate)
+		r.supply.RegistCard(Duchy, duchy)
+		r.supply.RegistCard(Province, province)
 		r.supply.RegistCard(Market, 10)
 		r.supply.RegistCard(Festival, 10)
 		r.supply.RegistCard(Smithy, 10)
 	case SetBigMoney:
+		r.supply.RegistCard(Copper, 50)
 	}
 
 }
@@ -65,21 +88,27 @@ func (r *GameBox) CreateNewPlayer(name string) *Player {
 
 func (r *GameBox) gainBeginHandCard(player *Player) {
 	for i := 0; i < 7; i++ {
-		player.GainCard(Copper, ToDeck)
+		if r.supply.Pop(Copper) == true {
+			player.GainCard(Copper, ToDeck)
+		}
 	}
 
 	for i := 0; i < 3; i++ {
-		player.GainCard(Estate, ToDeck)
+		if r.supply.Pop(Estate) == true {
+			player.GainCard(Estate, ToDeck)
+		}
 	}
 
 	// first shuffle deck
 	player.deck.Shuffle()
 
 	// test ..
-	player.GainCard(Village, ToDiscardPile)
-	player.GainCard(Market, ToDiscardPile)
-	player.GainCard(Smithy, ToDiscardPile)
-	player.GainCard(Smithy, ToDiscardPile)
+	/*
+		player.GainCard(Village, ToDiscardPile)
+		player.GainCard(Market, ToDiscardPile)
+		player.GainCard(Smithy, ToDiscardPile)
+		player.GainCard(Smithy, ToDiscardPile)
+	*/
 }
 
 func (r *GameBox) GetCard(cardID CardID) *Card {
@@ -98,7 +127,14 @@ func (r *GameBox) String() string {
 		s += v.String()
 	}
 
+	s += "Supply List\n"
+	s += r.supply.String()
+
 	return s
+}
+
+func (r GameBox) StringSupply() string {
+	return r.supply.String()
 }
 
 func (r *GameBox) CreateAllCard() error {

@@ -120,3 +120,25 @@ func TestBuyCard(t *testing.T) {
 		fmt.Println(p1)
 	}
 }
+
+func CreateGameBox() *dom.GameBox {
+	gman := dom.CreateNewGameBox()
+	gman.CreateAllCard()
+
+	return gman
+}
+
+func TestSupply(t *testing.T) {
+	gman := CreateGameBox()
+
+	gman.RegistCardToSuppy(dom.SetFirstGame, 2)
+	fmt.Println(gman.StringSupply())
+
+	p1 := gman.CreateNewPlayer("jong")
+	fmt.Println(p1)
+
+	p2 := gman.CreateNewPlayer("seong")
+	fmt.Println(p2)
+
+	fmt.Println(gman.StringSupply())
+}
