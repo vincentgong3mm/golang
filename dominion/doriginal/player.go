@@ -1,6 +1,7 @@
 package doriginal
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 )
@@ -117,16 +118,18 @@ func (r *Player) GainCard(id CardID, to GainedCard) {
 
 // DrawCard is draw cards from deck to hand
 func (r *Player) DrawCard(cnt int) error {
-	/*
-		//
-		if len(r.deck) < 0 {
-			// add to deck
-		}
+	if len(r.deck) < cnt {
+		// add to deck
+		r.AddDiscardPileToDeck()
+	}
 
-		for i := 0; i < cnt; i++ {
-			r.handCards = append(r.handCards, r.deck[0:cnt])
-		}
-	*/
+	if len(r.deck) < cnt {
+		return errors.New(fmt.Sprintf("not enough deck. deck is %d < %d", len(r.deck), cnt))
+	}
+
+	tmpCards := r.deck[0:cnt]
+	r.deck = r.deck[cnt:len(r.deck)]
+	r.handCards = append(r.handCards, tmpCards...)
 
 	return nil
 }

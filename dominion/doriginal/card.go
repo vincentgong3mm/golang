@@ -73,9 +73,9 @@ func (r CardIDs) String() string {
 	s := ""
 	s = fmt.Sprintf("Count(%d):[", len(r))
 	for _, v := range r {
-		s += fmt.Sprintf("%s(%d)-", v, v)
+		s += fmt.Sprintf("%s(%d)|", v, v)
 	}
-	s = strings.TrimRight(s, "-")
+	s = strings.TrimRight(s, "|")
 	s += "]\n"
 
 	return s

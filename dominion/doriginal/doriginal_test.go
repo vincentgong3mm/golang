@@ -71,10 +71,22 @@ func TestPlayCard(t *testing.T) {
 	fmt.Println(gman)
 
 	p1 := gman.CreateNewPlayer("jong")
+	fmt.Println("begin player", p1)
 
-	fmt.Println(p1)
 	p1.AddDiscardPileToDeck()
+	fmt.Println("AddDiscardPileToDeck", p1)
 	fmt.Println(p1)
+
+	p1.DrawCard(5)
+	fmt.Println("DrawCard", p1)
+	p1.DrawCard(5)
+	fmt.Println("DrawCard", p1)
+	p1.DrawCard(5)
+	fmt.Println("DrawCard", p1)
+	err := p1.DrawCard(5)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	//p1.GainCard(dom.CardID(1), dom.ToHand)
 
