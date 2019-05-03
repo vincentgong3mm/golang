@@ -7,17 +7,25 @@ type Supply struct {
 	cards map[CardID]int
 }
 
+type SupplySet int
+
+const (
+	SetFirstGame SupplySet = 0 + iota
+	SetBigMoney
+	SetInteraction
+)
+
 func init() {
 	fmt.Println("import d_original/supply")
 }
 
-func CreateNewSupply(name string) *Supply {
+func CreateNewSupply() *Supply {
 	n := Supply{}
 	n.cards = make(map[CardID]int)
 
 	return &n
 }
 
-func (r *Supply) RegistCarad(c Card, cnt int) {
-	r.cards[c.CardID] = cnt
+func (r *Supply) RegistCard(c CardID, cnt int) {
+	r.cards[c] = cnt
 }

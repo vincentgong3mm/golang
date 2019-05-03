@@ -134,12 +134,15 @@ func (r *Player) DrawCard(cnt int) error {
 	r.deck = r.deck[cnt:len(r.deck)]
 	r.handCards = append(r.handCards, tmpCards...)
 
+	r.buys = 1
+	r.actions = 1
+	r.coins = 0
+
 	return nil
 }
 
 func (r *Player) CleanUp() {
 	// empty hand cards to discardpile
-
 	r.discardPile = append(r.discardPile, r.handCards...)
 
 	// emptly hand cards
@@ -147,6 +150,10 @@ func (r *Player) CleanUp() {
 }
 
 func (r *Player) BuyFromSupply(card CardID, to GainedCard) error {
+	if r.buys <= 0 {
+		return errors.New(fmt.Sprintf("can't buy. buy count is %d", r.buys))
+	}
+
 	// check Supply
 	// if len(xxxx)
 

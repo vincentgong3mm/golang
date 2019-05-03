@@ -5,6 +5,8 @@ import "fmt"
 type GameBox struct {
 	cards map[CardID]Card
 
+	supply *Supply
+
 	players     map[PlayerID]*Player
 	genPlayerID func() PlayerID
 }
@@ -16,6 +18,7 @@ func init() {
 func CreateNewGameBox() *GameBox {
 	n := GameBox{}
 	n.cards = make(map[CardID]Card)
+	n.supply = CreateNewSupply()
 	n.players = make(map[PlayerID]*Player)
 	n.genPlayerID = NewPlayerIDGenerator()
 
@@ -29,6 +32,22 @@ func (r *GameBox) createCard(cardID CardID, cardType []CardType, cost int, abili
 
 	return r.cards[cardID]
 }
+
+func (r *GameBox) RegistCardToSuppy(t SupplySet) {
+	switch t {
+	case SetFirstGame:
+		r.supply.RegistCard(Copper, 50)
+		r.supply.RegistCard(Silver, 40)
+		r.supply.RegistCard(Gold, 30)
+		r.supply.RegistCard(Market, 10)
+		r.supply.RegistCard(Festival, 10)
+		r.supply.RegistCard(Smithy, 10)
+	case SetBigMoney:
+	}
+
+}
+
+// gong/regist supply...
 
 func (r *GameBox) CreateNewPlayer(name string) *Player {
 	playerID := r.genPlayerID()
@@ -63,18 +82,6 @@ func (r *GameBox) gainBeginHandCard(player *Player) {
 	player.GainCard(Smithy, ToDiscardPile)
 }
 
-/*
-func (r *GameBox) GetCard(name string) *Card {
-	for _, v := range r.cards {
-		if v.name == name {
-			return &v
-		}
-	}
-
-	return nil
-}
-*/
-
 func (r *GameBox) GetCard(cardID CardID) *Card {
 	c, exist := r.cards[cardID]
 
@@ -82,11 +89,6 @@ func (r *GameBox) GetCard(cardID CardID) *Card {
 		return &c
 	}
 	return nil
-}
-
-// ReadyPlayer is gain 3 copper and 7 estate.
-func (r *GameBox) ReadyPlayer(player *Player) {
-
 }
 
 func (r *GameBox) String() string {
