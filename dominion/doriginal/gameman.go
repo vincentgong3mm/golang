@@ -58,7 +58,6 @@ func (r *GameBox) gainBeginHandCard(player *Player) {
 
 	// test ..
 	player.GainCard(Village, ToDiscardPile)
-	player.GainCard(Festival, ToDiscardPile)
 	player.GainCard(Market, ToDiscardPile)
 	player.GainCard(Smithy, ToDiscardPile)
 	player.GainCard(Smithy, ToDiscardPile)

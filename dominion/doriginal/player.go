@@ -47,6 +47,9 @@ func (r Player) String() string {
 	s := ""
 	s += fmt.Sprintf("Name:%s(ID:%d)\n", r.name, r.index)
 
+	s += fmt.Sprintf("+Action:%d\n", r.actions)
+	s += fmt.Sprintf("+Buy:%d\n", r.buys)
+	s += fmt.Sprintf("+Coin:%d\n", r.coins)
 	s += fmt.Sprintf("+Deck:")
 	s += fmt.Sprintf("%s", r.deck)
 
@@ -130,6 +133,28 @@ func (r *Player) DrawCard(cnt int) error {
 	tmpCards := r.deck[0:cnt]
 	r.deck = r.deck[cnt:len(r.deck)]
 	r.handCards = append(r.handCards, tmpCards...)
+
+	return nil
+}
+
+func (r *Player) CleanUp() {
+	// empty hand cards to discardpile
+
+	r.discardPile = append(r.discardPile, r.handCards...)
+
+	// emptly hand cards
+	r.handCards = r.handCards[:0]
+}
+
+func (r *Player) BuyFromSupply(card CardID, to GainedCard) error {
+	// check Supply
+	// if len(xxxx)
+
+	// check buy count
+	//  -- buy
+
+	r.buys--
+	r.GainCard(card, to)
 
 	return nil
 }

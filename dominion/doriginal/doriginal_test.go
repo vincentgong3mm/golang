@@ -87,13 +87,36 @@ func TestPlayCard(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
 
-	//p1.GainCard(dom.CardID(1), dom.ToHand)
+func TestCleanUp(t *testing.T) {
+	gman := dom.CreateNewGameBox()
+	gman.CreateAllCard()
 
-	//gman.GMPlayAllCard(p1)
+	//	fmt.Println(gman)
 
-	//fmt.Println(p1)
+	p1 := gman.CreateNewPlayer("jong")
+	fmt.Println(p1)
 
-	//fmt.Println(gman.GetCard(dom.Copper), gman.GetCard(dom.Estate))
+	for i := 0; i < 5; i++ {
+		fmt.Println("Draw and Cleanup", i)
+		p1.DrawCard(5)
+		fmt.Println(p1)
+		p1.CleanUp()
+		fmt.Println(p1)
+	}
 
+}
+
+func TestBuyCard(t *testing.T) {
+	gman := dom.CreateNewGameBox()
+	gman.CreateAllCard()
+
+	p1 := gman.CreateNewPlayer("jong")
+	fmt.Println(p1)
+
+	for i := 0; i < 3; i++ {
+		p1.BuyFromSupply(dom.Festival, dom.ToDiscardPile)
+		fmt.Println(p1)
+	}
 }
