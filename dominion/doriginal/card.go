@@ -2,7 +2,6 @@ package doriginal
 
 import (
 	"fmt"
-	"strings"
 )
 
 // CardType is	Action, Treasure, Victory
@@ -71,12 +70,12 @@ func (r CardID) String() string {
 
 func (r CardIDs) String() string {
 	s := ""
-	s = fmt.Sprintf("Count(%d):[", len(r))
+	s = fmt.Sprintf("#%d\n\t|", len(r))
 	for _, v := range r {
-		s += fmt.Sprintf("%s(%d)|", v, v)
+		s += fmt.Sprintf("%s|", v)
+		//s += fmt.Sprintf("%s(%d)|", v, v)
 	}
-	s = strings.TrimRight(s, "|")
-	s += "]\n"
+	s += "\n"
 
 	return s
 }

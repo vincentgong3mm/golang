@@ -116,7 +116,7 @@ func TestBuyCard(t *testing.T) {
 	fmt.Println(p1)
 
 	for i := 0; i < 3; i++ {
-		p1.BuyFromSupply(dom.Festival, dom.ToDiscardPile)
+		p1.BuyCard(dom.Festival)
 		fmt.Println(p1)
 	}
 }
@@ -128,17 +128,55 @@ func CreateGameBox() *dom.GameBox {
 	return gman
 }
 
+func CreateGameBoxAndSetSuppy() *dom.GameBox {
+	gman := dom.CreateNewGameBox()
+	gman.CreateAllCard()
+
+	gman.RegistCardToSuppy(dom.SetFirstGame, 2)
+
+	return gman
+}
+
 func TestSupply(t *testing.T) {
 	gman := CreateGameBox()
 
 	gman.RegistCardToSuppy(dom.SetFirstGame, 2)
 	fmt.Println(gman.StringSupply())
 
+	// create player1
 	p1 := gman.CreateNewPlayer("jong")
 	fmt.Println(p1)
 
+	// create player2
 	p2 := gman.CreateNewPlayer("seong")
 	fmt.Println(p2)
 
+	// print supply
 	fmt.Println(gman.StringSupply())
+}
+
+func CreateTwoPlayer(g *dom.GameBox) {
+	g.CreateNewPlayer("jong")
+	g.CreateNewPlayer("seong")
+}
+
+func TestDrawAndCleanUp(t *testing.T) {
+	// test create game
+	gman := CreateGameBoxAndSetSuppy()
+	CreateTwoPlayer(gman)
+	fmt.Println(gman)
+
+	// test get player
+	p1 := gman.GetPlayer(1)
+	p2 := gman.GetPlayer(2)
+	fmt.Println(p1, p2)
+
+	// test draw
+	p1.DrawCard(5)
+	p2.DrawCard(5)
+	fmt.Println(p1, p2)
+
+	p1.BuyCard(dom.Festival)
+	p2.BuyCard(dom.Market)
+	fmt.Println(p1, p2)
 }

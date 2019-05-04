@@ -13,12 +13,12 @@ type Supply struct {
 func (r Supply) String() string {
 	s := "|"
 	for cardID, cnt := range r.cards {
-		s += fmt.Sprintf("%s(n:%d)|", cardID.String(), cnt)
+		s += fmt.Sprintf("%s#%d|", cardID.String(), cnt)
 	}
 
 	sline := strings.Repeat("-", len(s))
 
-	return "#Supply\n" + sline + "\n" + s + "\n" + sline
+	return "#Supply\n" + sline + "\n" + s + "\n" + sline + "\n"
 }
 
 type SupplySet int

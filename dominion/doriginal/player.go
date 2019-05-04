@@ -18,7 +18,7 @@ import (
 // add counter -> Player.index
 type Player struct {
 	name            string
-	index           int
+	ID              PlayerID
 	deck            CardIDs
 	handCards       CardIDs
 	cardPlayingArea CardIDs
@@ -45,21 +45,21 @@ func NewPlayerIDGenerator() func() PlayerID {
 
 func (r Player) String() string {
 	s := ""
-	s += fmt.Sprintf("@Player:%s(ID:%d)\n", r.name, r.index)
+	s += fmt.Sprintf("@Player:%s(ID:%d)\n", r.name, r.ID)
 
-	s += fmt.Sprintf("+Action:%d\n", r.actions)
-	s += fmt.Sprintf("+Buy:%d\n", r.buys)
-	s += fmt.Sprintf("+Coin:%d\n", r.coins)
-	s += fmt.Sprintf("+Deck:")
+	s += fmt.Sprintf("+Action#%d\n", r.actions)
+	s += fmt.Sprintf("+Buy#%d\n", r.buys)
+	s += fmt.Sprintf("+Coin#%d\n", r.coins)
+	s += fmt.Sprintf("+Deck")
 	s += fmt.Sprintf("%s", r.deck)
 
-	s += fmt.Sprintf("+Hand:")
+	s += fmt.Sprintf("+Hand")
 	s += fmt.Sprintf("%s", r.handCards)
 
-	s += fmt.Sprintf("+CardPlayingArea:")
+	s += fmt.Sprintf("+CardPlayingArea")
 	s += fmt.Sprintf("%s", r.cardPlayingArea)
 
-	s += fmt.Sprintf("+DiscardPile:")
+	s += fmt.Sprintf("+DiscardPile")
 	s += fmt.Sprintf("%s", r.discardPile)
 
 	return s
@@ -71,9 +71,9 @@ func (r *Player) AddDiscardPileToDeck() {
 
 	// add iscard pile to deck
 	r.addCardsToDeckBottom(&r.discardPile)
-	r.discardPile = r.discardPile[0:0]
 
-	//	r.deck.ShuffleCardIDs()
+	// empty discard pile
+	r.discardPile = r.discardPile[0:0]
 }
 
 func (r *Player) addCardsToDeckBottom(cards *CardIDs) {
@@ -84,10 +84,6 @@ func (r CardIDs) Shuffle() {
 	rand.Shuffle(len(r), func(i, j int) {
 		r[i], r[j] = r[j], r[i]
 	})
-}
-
-func (r *Player) JoinGame() {
-
 }
 
 // Gain a card to
@@ -133,6 +129,12 @@ func (r *Player) DrawCard(cnt int) error {
 	return nil
 }
 
+func (r *Player) PlayActionCard(index int) {
+}
+
+func (r *Player) PlayTreasureCard(index int) {
+}
+
 func (r *Player) CleanUp() {
 	// empty hand cards to discardpile
 	r.discardPile = append(r.discardPile, r.handCards...)
@@ -141,7 +143,7 @@ func (r *Player) CleanUp() {
 	r.handCards = r.handCards[:0]
 }
 
-func (r *Player) BuyFromSupply(card CardID, to GainedCard) error {
+func (r *Player) BuyCard(card CardID) error {
 	if r.buys <= 0 {
 		return errors.New(fmt.Sprintf("can't buy. buy count is %d", r.buys))
 	}
@@ -149,11 +151,8 @@ func (r *Player) BuyFromSupply(card CardID, to GainedCard) error {
 	// check Supply
 	// if len(xxxx)
 
-	// check buy count
-	//  -- buy
-
 	r.buys--
-	r.GainCard(card, to)
+	r.GainCard(card, ToDiscardPile)
 
 	return nil
 }

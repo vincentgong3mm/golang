@@ -70,11 +70,9 @@ func (r *GameBox) RegistCardToSuppy(t SupplySet, players int) {
 
 }
 
-// gong/regist supply...
-
 func (r *GameBox) CreateNewPlayer(name string) *Player {
 	playerID := r.genPlayerID()
-	player := Player{name: name}
+	player := Player{name: name, ID: playerID}
 
 	// inser Pplayer Point to map
 	r.players[playerID] = &player
@@ -86,17 +84,34 @@ func (r *GameBox) CreateNewPlayer(name string) *Player {
 	return r.players[playerID]
 }
 
-func (r *GameBox) gainBeginHandCard(player *Player) {
-	for i := 0; i < 7; i++ {
-		if r.supply.Pop(Copper) == true {
-			player.GainCard(Copper, ToDeck)
-		}
+func (r *GameBox) GetPlayer(id PlayerID) *Player {
+	p, exist := r.players[id]
+
+	if exist == true {
+		return p
 	}
 
+	return nil
+}
+
+func (r *GameBox) gainPlayerFromSupply(id CardID, player *Player) bool {
+	if r.supply.Pop(id) == true {
+		player.GainCard(id, ToDeck)
+		return true
+	}
+
+	return false
+}
+
+func (r *GameBox) gainBeginHandCard(player *Player) {
+	// draw 7 copper`
+	for i := 0; i < 7; i++ {
+		r.gainPlayerFromSupply(Copper, player)
+	}
+
+	// draw 3 estate
 	for i := 0; i < 3; i++ {
-		if r.supply.Pop(Estate) == true {
-			player.GainCard(Estate, ToDeck)
-		}
+		r.gainPlayerFromSupply(Estate, player)
 	}
 
 	// first shuffle deck
@@ -129,6 +144,11 @@ func (r *GameBox) String() string {
 
 	s += "Supply List\n"
 	s += r.supply.String()
+
+	s += "Player List\n"
+	for _, v := range r.players {
+		s += v.String()
+	}
 
 	return s
 }
