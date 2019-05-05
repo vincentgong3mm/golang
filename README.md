@@ -1,6 +1,10 @@
 # golang
 vincent golang 
 
+"ToDo List
+-- Log Methdo
+-- Play Card Action  Methdo
+-- Action Interface  
 
 ## SmartyPants
 
