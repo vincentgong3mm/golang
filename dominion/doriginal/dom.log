@@ -1,0 +1,107 @@
+INFO : 2019/05/06 20:31:57 doriginal_test.go:186: -------------------
+INFO : 2019/05/06 20:31:57 doriginal_test.go:187: -------------------
+INFO : 2019/05/06 20:32:43 player.go:66: @Player:jong(ID:1)
++Action#0
++Buy#0
++Coin#0
++Deck#10
+	|Copper|Estate|Copper|Copper|Estate|Copper|Copper|Copper|Estate|Copper|
++Hand#0
+	|
++CardPlayingArea#0
+	|
++DiscardPile#0
+	|
+
+INFO : 2019/05/06 20:32:43 player.go:66: @Player:seong(ID:2)
++Action#0
++Buy#0
++Coin#0
++Deck#10
+	|Estate|Copper|Copper|Estate|Estate|Copper|Copper|Copper|Copper|Copper|
++Hand#0
+	|
++CardPlayingArea#0
+	|
++DiscardPile#0
+	|
+
+INFO : 2019/05/06 20:32:43 player.go:66: @Player:jong(ID:1)
++Action#0
++Buy#0
++Coin#0
++Deck#10
+	|Copper|Estate|Copper|Copper|Estate|Copper|Copper|Copper|Estate|Copper|
++Hand#0
+	|
++CardPlayingArea#0
+	|
++DiscardPile#0
+	|
+
+INFO : 2019/05/06 20:32:43 player.go:66: @Player:seong(ID:2)
++Action#0
++Buy#0
++Coin#0
++Deck#10
+	|Estate|Copper|Copper|Estate|Estate|Copper|Copper|Copper|Copper|Copper|
++Hand#0
+	|
++CardPlayingArea#0
+	|
++DiscardPile#0
+	|
+
+INFO : 2019/05/06 20:32:43 player.go:66: @Player:jong(ID:1)
++Action#1
++Buy#1
++Coin#0
++Deck#5
+	|Copper|Copper|Copper|Estate|Copper|
++Hand#5
+	|Copper|Estate|Copper|Copper|Estate|
++CardPlayingArea#0
+	|
++DiscardPile#0
+	|
+
+INFO : 2019/05/06 20:32:43 player.go:66: @Player:seong(ID:2)
++Action#1
++Buy#1
++Coin#0
++Deck#5
+	|Copper|Copper|Copper|Copper|Copper|
++Hand#5
+	|Estate|Copper|Copper|Estate|Estate|
++CardPlayingArea#0
+	|
++DiscardPile#0
+	|
+
+INFO : 2019/05/06 20:32:43 player.go:66: @Player:jong(ID:1)
++Action#1
++Buy#0
++Coin#0
++Deck#5
+	|Copper|Copper|Copper|Estate|Copper|
++Hand#5
+	|Copper|Estate|Copper|Copper|Estate|
++CardPlayingArea#0
+	|
++DiscardPile#1
+	|Festival|
+
+INFO : 2019/05/06 20:32:43 player.go:66: @Player:seong(ID:2)
++Action#1
++Buy#0
++Coin#0
++Deck#5
+	|Copper|Copper|Copper|Copper|Copper|
++Hand#5
+	|Estate|Copper|Copper|Estate|Estate|
++CardPlayingArea#0
+	|
++DiscardPile#1
+	|Market|
+
+INFO : 2019/05/06 20:32:43 doriginal_test.go:186: -------------------

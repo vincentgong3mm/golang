@@ -161,6 +161,9 @@ func CreateTwoPlayer(g *dom.GameBox) {
 }
 
 func TestDrawAndCleanUp(t *testing.T) {
+
+	logger := dom.GetLogInstance()
+
 	// test create game
 	gman := CreateGameBoxAndSetSuppy()
 	CreateTwoPlayer(gman)
@@ -179,4 +182,6 @@ func TestDrawAndCleanUp(t *testing.T) {
 	p1.BuyCard(dom.Festival)
 	p2.BuyCard(dom.Market)
 	fmt.Println(p1, p2)
+
+	logger.Println("-------------------")
 }

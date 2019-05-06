@@ -31,6 +31,7 @@ type Player struct {
 
 func init() {
 	fmt.Println("import d_original/player")
+
 }
 
 type PlayerID int
@@ -61,6 +62,8 @@ func (r Player) String() string {
 
 	s += fmt.Sprintf("+DiscardPile")
 	s += fmt.Sprintf("%s", r.discardPile)
+
+	// test call ... GetLogInstance().Println(s)
 
 	return s
 }
