@@ -15,6 +15,8 @@ type Logger struct {
 var logger *Logger
 var once sync.Once
 
+var SName = "abcd"
+
 func GetLogInstance() *Logger {
 	once.Do(func() {
 		logger = createLogger("dom.log")

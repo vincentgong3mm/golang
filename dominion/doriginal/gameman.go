@@ -12,6 +12,10 @@ type GameBox struct {
 }
 
 func init() {
+	// Create and Get Log Instance
+	GetLogInstance()
+
+	logger.Println("import d_original/gamebox")
 	fmt.Println("import d_original/gamebox")
 }
 
