@@ -2,3 +2,9 @@ INFO : 2019/05/06 21:51:17 doriginal_test.go:188: 9090909090
 INFO : 2019/05/06 21:53:32 gameman.go:20: aaaaaaaa00000000000
 INFO : 2019/05/06 21:53:32 doriginal_test.go:185: ffffffffff
 INFO : 2019/05/06 21:56:28 gameman.go:18: import d_original/gamebox
+INFO : 2019/05/07 09:18:45 gameman.go:18: import d_original/gamebox
+INFO : 2019/05/07 09:18:45 doriginal_test.go:185: ffffffffff
+INFO : 2019/05/07 09:18:54 gameman.go:18: import d_original/gamebox
+INFO : 2019/05/07 09:18:55 doriginal_test.go:185: ffffffffff
+INFO : 2019/05/07 09:20:19 gameman.go:18: import d_original/GameMan
+INFO : 2019/05/07 09:20:19 doriginal_test.go:185: ffffffffff

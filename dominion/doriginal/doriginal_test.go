@@ -32,7 +32,7 @@ func TestCardType(t *testing.T) {
 
 func TestCreateCard(t *testing.T) {
 
-	gb := dom.CreateNewGameBox()
+	gb := dom.CreateNewGameMan()
 	/*
 		gb.CreateCard("Village",
 			[]dom.CardType{dom.CardTypeAction},
@@ -64,7 +64,7 @@ func TestCreateCard(t *testing.T) {
 }
 
 func TestPlayCard(t *testing.T) {
-	gman := dom.CreateNewGameBox()
+	gman := dom.CreateNewGameMan()
 
 	gman.CreateAllCard()
 
@@ -90,7 +90,7 @@ func TestPlayCard(t *testing.T) {
 }
 
 func TestCleanUp(t *testing.T) {
-	gman := dom.CreateNewGameBox()
+	gman := dom.CreateNewGameMan()
 	gman.CreateAllCard()
 
 	//	fmt.Println(gman)
@@ -109,7 +109,7 @@ func TestCleanUp(t *testing.T) {
 }
 
 func TestBuyCard(t *testing.T) {
-	gman := dom.CreateNewGameBox()
+	gman := dom.CreateNewGameMan()
 	gman.CreateAllCard()
 
 	p1 := gman.CreateNewPlayer("jong")
@@ -121,15 +121,15 @@ func TestBuyCard(t *testing.T) {
 	}
 }
 
-func CreateGameBox() *dom.GameBox {
-	gman := dom.CreateNewGameBox()
+func CreateGameMan() *dom.GameMan {
+	gman := dom.CreateNewGameMan()
 	gman.CreateAllCard()
 
 	return gman
 }
 
-func CreateGameBoxAndSetSuppy() *dom.GameBox {
-	gman := dom.CreateNewGameBox()
+func CreateGameManAndSetSuppy() *dom.GameMan {
+	gman := dom.CreateNewGameMan()
 	gman.CreateAllCard()
 
 	gman.RegistCardToSuppy(dom.SetFirstGame, 2)
@@ -138,7 +138,7 @@ func CreateGameBoxAndSetSuppy() *dom.GameBox {
 }
 
 func TestSupply(t *testing.T) {
-	gman := CreateGameBox()
+	gman := CreateGameMan()
 
 	gman.RegistCardToSuppy(dom.SetFirstGame, 2)
 	fmt.Println(gman.StringSupply())
@@ -155,7 +155,7 @@ func TestSupply(t *testing.T) {
 	fmt.Println(gman.StringSupply())
 }
 
-func CreateTwoPlayer(g *dom.GameBox) {
+func CreateTwoPlayer(g *dom.GameMan) {
 	g.CreateNewPlayer("jong")
 	g.CreateNewPlayer("seong")
 }
@@ -164,7 +164,7 @@ func TestDrawAndCleanUp(t *testing.T) {
 	logger := dom.GetLogInstance()
 
 	// test create game
-	gman := CreateGameBoxAndSetSuppy()
+	gman := CreateGameManAndSetSuppy()
 	CreateTwoPlayer(gman)
 	fmt.Println(gman)
 

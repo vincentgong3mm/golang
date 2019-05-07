@@ -2,7 +2,7 @@ package doriginal
 
 import "fmt"
 
-type GameBox struct {
+type GameMan struct {
 	cards map[CardID]Card
 
 	supply *Supply
@@ -15,12 +15,12 @@ func init() {
 	// Create and Get Log Instance
 	GetLogInstance()
 
-	logger.Println("import d_original/gamebox")
-	fmt.Println("import d_original/gamebox")
+	logger.Println("import d_original/GameMan")
+	fmt.Println("import d_original/GameMan")
 }
 
-func CreateNewGameBox() *GameBox {
-	n := GameBox{}
+func CreateNewGameMan() *GameMan {
+	n := GameMan{}
 	n.cards = make(map[CardID]Card)
 	n.supply = CreateNewSupply()
 	n.players = make(map[PlayerID]*Player)
@@ -29,7 +29,7 @@ func CreateNewGameBox() *GameBox {
 	return &n
 }
 
-func (r *GameBox) createCard(cardID CardID, cardType []CardType, cost int, ability []Ability) Card {
+func (r *GameMan) createCard(cardID CardID, cardType []CardType, cost int, ability []Ability) Card {
 	//if r.cards[cardID]
 	r.cards[cardID] = Card{name: "", CardID: cardID, cardType: cardType, cost: cost,
 		Ability: ability}
@@ -37,7 +37,7 @@ func (r *GameBox) createCard(cardID CardID, cardType []CardType, cost int, abili
 	return r.cards[cardID]
 }
 
-func (r *GameBox) RegistCardToSuppy(t SupplySet, players int) {
+func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
 	estate := 8
 	duchy := 8
 	province := 8
@@ -74,7 +74,7 @@ func (r *GameBox) RegistCardToSuppy(t SupplySet, players int) {
 
 }
 
-func (r *GameBox) CreateNewPlayer(name string) *Player {
+func (r *GameMan) CreateNewPlayer(name string) *Player {
 	playerID := r.genPlayerID()
 	player := Player{name: name, ID: playerID}
 
@@ -88,7 +88,7 @@ func (r *GameBox) CreateNewPlayer(name string) *Player {
 	return r.players[playerID]
 }
 
-func (r *GameBox) GetPlayer(id PlayerID) *Player {
+func (r *GameMan) GetPlayer(id PlayerID) *Player {
 	p, exist := r.players[id]
 
 	if exist == true {
@@ -98,7 +98,7 @@ func (r *GameBox) GetPlayer(id PlayerID) *Player {
 	return nil
 }
 
-func (r *GameBox) gainPlayerFromSupply(id CardID, player *Player) bool {
+func (r *GameMan) gainPlayerFromSupply(id CardID, player *Player) bool {
 	if r.supply.Pop(id) == true {
 		player.GainCard(id, ToDeck)
 		return true
@@ -107,7 +107,7 @@ func (r *GameBox) gainPlayerFromSupply(id CardID, player *Player) bool {
 	return false
 }
 
-func (r *GameBox) gainBeginHandCard(player *Player) {
+func (r *GameMan) gainBeginHandCard(player *Player) {
 	// draw 7 copper`
 	for i := 0; i < 7; i++ {
 		r.gainPlayerFromSupply(Copper, player)
@@ -130,7 +130,7 @@ func (r *GameBox) gainBeginHandCard(player *Player) {
 	*/
 }
 
-func (r *GameBox) GetCard(cardID CardID) *Card {
+func (r *GameMan) GetCard(cardID CardID) *Card {
 	c, exist := r.cards[cardID]
 
 	if exist == true {
@@ -139,8 +139,8 @@ func (r *GameBox) GetCard(cardID CardID) *Card {
 	return nil
 }
 
-func (r *GameBox) String() string {
-	s := "GameBox Info\n"
+func (r *GameMan) String() string {
+	s := "GameMan Info\n"
 	s += "Card List\n"
 	for _, v := range r.cards {
 		s += v.String()
@@ -157,11 +157,11 @@ func (r *GameBox) String() string {
 	return s
 }
 
-func (r GameBox) StringSupply() string {
+func (r GameMan) StringSupply() string {
 	return r.supply.String()
 }
 
-func (r *GameBox) CreateAllCard() error {
+func (r *GameMan) CreateAllCard() error {
 	r.createCard(Festival, []CardType{CardTypeAction}, 5,
 		[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
 	r.createCard(Village, []CardType{CardTypeAction}, 3,
@@ -186,7 +186,7 @@ func (r *GameBox) CreateAllCard() error {
 	return nil
 }
 
-func (r *GameBox) GMPlayAllCard(player *Player) {
+func (r *GameMan) GMPlayAllCard(player *Player) {
 	for _, v := range r.cards {
 		v.Play(player)
 	}
