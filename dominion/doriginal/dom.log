@@ -8,3 +8,6 @@ INFO : 2019/05/07 09:18:54 gameman.go:18: import d_original/gamebox
 INFO : 2019/05/07 09:18:55 doriginal_test.go:185: ffffffffff
 INFO : 2019/05/07 09:20:19 gameman.go:18: import d_original/GameMan
 INFO : 2019/05/07 09:20:19 doriginal_test.go:185: ffffffffff
+INFO : 2019/05/08 21:34:45 gameman.go:18: import d_original/GameMan
+INFO : 2019/05/08 21:46:53 gameman.go:19: import d_original/GameMan
+INFO : 2019/05/08 21:49:39 gameman.go:17: import d_original/GameMan

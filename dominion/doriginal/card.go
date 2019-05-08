@@ -88,6 +88,17 @@ type Card struct {
 	Ability  []Ability
 }
 
+func (r *Card) Draw(p *Player) {
+}
+
+func (r *Card) AddBuy(p *Player) {
+	p.buys++
+}
+
+func (r *Card) AddAction(p *Player) {
+	p.actions++
+}
+
 func (r Card) String() string {
 	return fmt.Sprintf("%s%s(ID:%d)\n\tcost(%d)\n\tType%s\n\tAbility%s\n", r.name, r.CardID, r.CardID, r.cost, r.cardType, r.Ability)
 }

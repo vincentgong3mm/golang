@@ -3,8 +3,7 @@ package doriginal
 import "fmt"
 
 type GameMan struct {
-	cards map[CardID]Card
-
+	cards  map[CardID]Card
 	supply *Supply
 
 	players     map[PlayerID]*Player
@@ -30,7 +29,6 @@ func CreateNewGameMan() *GameMan {
 }
 
 func (r *GameMan) createCard(cardID CardID, cardType []CardType, cost int, ability []Ability) Card {
-	//if r.cards[cardID]
 	r.cards[cardID] = Card{name: "", CardID: cardID, cardType: cardType, cost: cost,
 		Ability: ability}
 
