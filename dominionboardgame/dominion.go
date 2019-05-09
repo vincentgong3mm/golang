@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	dom "github.com/vincentgong3mm/golang/dominion/doriginal"
+	dom "github.com/vincentgong3mm/golang/dominion/dominion"
 )
 
 func waitExit() {

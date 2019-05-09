@@ -1,4 +1,4 @@
-package doriginal
+package dominion
 
 type DrawObject interface {
 	DrawRect() error

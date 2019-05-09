@@ -1,8 +1,16 @@
-package doriginal
+package dominion
 
 import (
 	"fmt"
 )
+
+type Actioner interface {
+	Draw(p *Player)
+	AddBuy(p *Player)
+	AddAction(p *Player)
+	String() string
+	//DoSpecailACtion()
+}
 
 // CardType is	Action, Treasure, Victory
 type CardType int
@@ -48,22 +56,28 @@ const (
 	Festival
 	Smithy
 	Market
-	Thief
+	Bandit
+	Upgrade
 	MaxCardID
 )
 
 var CardIDString = [...]string{
+	// Original : Treasure Card
 	"Copper",
 	"Silver",
 	"Gold",
+	// Original : Victory Card
 	"Estate",
 	"Duchy",
 	"Province",
+	// Original : Action Card
 	"Village",
 	"Festival",
 	"Smithy",
 	"Market",
-	"Thief",
+	"Bandit",
+	// Intrigue : Action Card
+	"Upgrade",
 }
 
 func (r CardID) String() string {

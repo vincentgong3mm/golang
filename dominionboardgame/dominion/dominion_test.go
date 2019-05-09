@@ -1,4 +1,4 @@
-package doriginal_test
+package dominion_test
 
 import (
 	"bufio"
@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	dom "github.com/vincentgong3mm/golang/dominion/doriginal"
+	dom "github.com/vincentgong3mm/golang/dominionboardgame/dominion"
 )
 
 func waitExit() {
@@ -171,22 +171,27 @@ func TestDrawAndCleanUp(t *testing.T) {
 	// test get player
 	p1 := gman.GetPlayer(1)
 	p2 := gman.GetPlayer(2)
-	//fmt.Println(p1, p2)
+	fmt.Println(p1, p2)
 
 	// test draw
 	p1.DrawCard(5)
 	p2.DrawCard(5)
-	//fmt.Println(p1, p2)
+	fmt.Println(p1, p2)
 
 	p1.BuyCard(dom.Festival)
 	p2.BuyCard(dom.Market)
-	//fmt.Println(p1, p2)
+	fmt.Println(p1, p2)
 
-	logger.Println("")
-	fmt.Println("-----------------------------------")
-	fmt.Println(gman.Cards2String())
-	fmt.Println("-----------------------------------")
+	logger.Println("TestDrawAndCleanUp")
 }
 
-func TestAction(t *testing.T) {
+func TestShowAllCard(t *testing.T) {
+
+	logger := dom.GetLogInstance()
+
+	// test create game
+	gman := CreateGameManAndSetSuppy()
+	fmt.Println(gman)
+
+	logger.Println("TestShowAllCard")
 }

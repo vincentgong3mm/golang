@@ -1,4 +1,4 @@
-package doriginal
+package dominion
 
 // type Actioner interface {
 // 	addCard() error

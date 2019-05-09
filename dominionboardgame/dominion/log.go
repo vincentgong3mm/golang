@@ -1,4 +1,4 @@
-package doriginal
+package dominion
 
 import (
 	"fmt"
