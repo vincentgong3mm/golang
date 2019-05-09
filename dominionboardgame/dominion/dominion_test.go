@@ -195,3 +195,16 @@ func TestShowAllCard(t *testing.T) {
 
 	logger.Println("TestShowAllCard")
 }
+
+func TestDeck(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+
+	// test get player
+	p1 := gman.GetPlayer(1)
+
+	fmt.Println(p1)
+	revealCards, _ := p1.RevealTopCardFromDeck(3)
+	fmt.Println("revealCards:", revealCards)
+	fmt.Println(p1)
+}

@@ -19,3 +19,21 @@ func (r TrashPile) String() string {
 
 	return "#TrashPile\n" + sline + "\n" + s + "\n" + sline + "\n"
 }
+
+func (r *TrashPile) AddCard(id CardID) {
+	if _, exist := r.cards[id]; exist == true {
+		r.cards[id]++
+	} else {
+		r.cards[id] = 0
+	}
+}
+
+func (r *TrashPile) PopCard(id CardID) bool {
+	cnt, exist := r.cards[id]
+	if exist == true && cnt > 0 {
+		cnt--
+		r.cards[id] = cnt
+	}
+
+	return exist
+}

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 // 이렇게 까지는 필요하지 않음.
@@ -84,6 +85,7 @@ func (r *Player) addCardsToDeckBottom(cards *CardIDs) {
 }
 
 func (r CardIDs) Shuffle() {
+	rand.Seed(time.Now().UTC().UnixNano())
 	rand.Shuffle(len(r), func(i, j int) {
 		r[i], r[j] = r[j], r[i]
 	})
@@ -166,4 +168,19 @@ func (r *Player) TrashCardFromHand(index int) {
 func (r *Player) PlayCard(card *Card) error {
 	//card.Action()
 	return nil
+}
+
+func (r *Player) RevealTopCardFromDeck(cnt int) (CardIDs, error) {
+	if len(r.deck) < cnt {
+		// add to deck
+		r.AddDiscardPileToDeck()
+	}
+
+	if len(r.deck) < cnt {
+		return CardIDs{}, errors.New(fmt.Sprintf("not enough deck. deck is %d < %d", len(r.deck), cnt))
+	}
+
+	cards := r.deck[0:cnt]
+
+	return cards, nil
 }

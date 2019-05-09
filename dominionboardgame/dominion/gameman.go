@@ -251,6 +251,14 @@ func (r *GameMan) buyCard(p *Player, id CardID) error {
 	return errors.New(fmt.Sprintf("Not enough %s card in supply", id))
 }
 
+func (r *GameMan) TrashCardFromHand(p *Player, i int) {
+
+}
+
+func (r *GameMan) TrashCardFromDeck(p *Player, i int) {
+
+}
+
 func (r *GameMan) GMPlayAllCard(player *Player) {
 	/*
 		for _, v := range r.cards {
