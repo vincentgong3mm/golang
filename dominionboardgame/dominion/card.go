@@ -16,7 +16,7 @@ type Actioner interface {
 type CardType int
 
 const (
-	CardTypeAction = 0 + iota
+	CardTypeAction CardType = 0 + iota
 	CardTypeTreasure
 	CardTypeVictory
 	CardTypeCurse
