@@ -30,7 +30,7 @@ type Player struct {
 }
 
 func init() {
-	fmt.Println("import d_original/player")
+	fmt.Println("import dominon/player")
 
 }
 

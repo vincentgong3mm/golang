@@ -30,7 +30,7 @@ const (
 )
 
 func init() {
-	fmt.Println("import d_original/supply")
+	fmt.Println("import dominion/supply")
 }
 
 func CreateNewSupply() *Supply {

@@ -131,7 +131,7 @@ func (r Card) TermString() string {
 }
 
 func init() {
-	fmt.Println("import d_original/card")
+	fmt.Println("import dominon/card")
 }
 
 func NewCardIDGenerator() func() CardID {

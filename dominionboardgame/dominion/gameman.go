@@ -21,8 +21,8 @@ func init() {
 	// Create and Get Log Instance
 	GetLogInstance()
 
-	logger.Println("import d_original/GameMan")
-	fmt.Println("import d_original/GameMan")
+	logger.Println("import dominion/GameMan")
+	fmt.Println("import dominion/GameMan")
 }
 
 func CreateNewGameMan() *GameMan {

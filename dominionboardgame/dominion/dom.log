@@ -199,3 +199,7 @@ INFO : 2019/05/09 15:49:47 dominion_test.go:196: TestShowAllCard
 INFO : 2019/05/09 15:52:34 gameman.go:21: import d_original/GameMan
 INFO : 2019/05/09 15:55:38 gameman.go:21: import d_original/GameMan
 INFO : 2019/05/09 15:55:38 dominion_test.go:196: TestShowAllCard
+INFO : 2019/05/09 17:05:30 gameman.go:21: import d_original/GameMan
+INFO : 2019/05/09 17:05:30 dominion_test.go:196: TestShowAllCard
+INFO : 2019/05/09 17:13:15 gameman.go:24: import d_original/GameMan
+INFO : 2019/05/09 17:13:16 dominion_test.go:196: TestShowAllCard
