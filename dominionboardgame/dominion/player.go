@@ -151,9 +151,7 @@ func (r *Player) BuyCard(card CardID) error {
 		return errors.New(fmt.Sprintf("can't buy. buy count is %d", r.buys))
 	}
 
-	// check Supply
-	// if len(xxxx)
-
+	// 한번 샀으면 구매 횟수 차감
 	r.buys--
 	r.GainCard(card, ToDiscardPile)
 
@@ -161,7 +159,8 @@ func (r *Player) BuyCard(card CardID) error {
 }
 
 // TranshCard is trash card to trash
-func (r *Player) TrashCard() {
+func (r *Player) TrashCardFromHand(index int) {
+
 }
 
 func (r *Player) PlayCard(card *Card) error {

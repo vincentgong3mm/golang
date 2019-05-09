@@ -1,6 +1,9 @@
 package dominion
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type GameMan struct {
 	//cards map[CardID]Card
@@ -54,6 +57,12 @@ func (r *GameMan) createCard2(cardID CardID, cardType []CardType, cost int, abil
 	return r.cards2[cardID]
 }
 */
+
+func (r *GameMan) createCardByID(cardID CardID) Actioner {
+	// 카드의 상세 데이터 초기화는 각 카드의 struct의 Init을 호출해서 해야함.
+	// 각 카드의 데이터는 별도로 분리하기 위함. 여기 두면 코드가 너무 복잡해짐.
+	return r.createCard(cardID, []CardType{}, 0, []Ability{})
+}
 
 func (r *GameMan) createCard(cardID CardID, cardType []CardType, cost int, ability []Ability) Actioner {
 	// 이미 생성되어 있으면 에러 또는 등록처리 하지 않아야함.
@@ -203,25 +212,9 @@ func (r GameMan) StringSupply() string {
 }
 
 func (r *GameMan) CreateAllCard() error {
-	r.createCard(Bandit, []CardType{CardTypeAction}, 5,
-		[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
-
-	r.createCard(Smithy, []CardType{CardTypeAction}, 4,
-		[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
-
-	r.createCard(Upgrade, []CardType{CardTypeAction}, 5,
-		[]Ability{{AbilityAddAction, 1}, {AbilityAddCard, 1}})
-
-	// fmt.Println("create card2+++")
-	// fmt.Println(r.cards2)
-
-	// for _, v := range r.cards2 {
-	// 	v.Draw(nil)
-	// 	fmt.Println(v)
-	// }
-	// fmt.Println("create card2---")
-	// fmt.Println(r.cards2)
-	// fmt.Println("create card2---000000")
+	r.createCardByID(Bandit)
+	r.createCardByID(Smithy)
+	r.createCardByID(Upgrade)
 
 	r.createCard(Festival, []CardType{CardTypeAction}, 5,
 		[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
@@ -245,6 +238,17 @@ func (r *GameMan) CreateAllCard() error {
 		[]Ability{{AbilityAddVictory, 1}})
 
 	return nil
+}
+
+func (r *GameMan) buyCard(p *Player, id CardID) error {
+	// supply에서 하나 제거하고
+	if r.supply.Pop(id) == true {
+		// player의 discard pile에 하나 추가
+		p.BuyCard(id)
+		return nil
+	}
+
+	return errors.New(fmt.Sprintf("Not enough %s card in supply", id))
 }
 
 func (r *GameMan) GMPlayAllCard(player *Player) {
