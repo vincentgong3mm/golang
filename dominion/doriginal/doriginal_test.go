@@ -166,23 +166,26 @@ func TestDrawAndCleanUp(t *testing.T) {
 	// test create game
 	gman := CreateGameManAndSetSuppy()
 	CreateTwoPlayer(gman)
-	fmt.Println(gman)
+	//fmt.Println(gman)
 
 	// test get player
 	p1 := gman.GetPlayer(1)
 	p2 := gman.GetPlayer(2)
-	fmt.Println(p1, p2)
+	//fmt.Println(p1, p2)
 
 	// test draw
 	p1.DrawCard(5)
 	p2.DrawCard(5)
-	fmt.Println(p1, p2)
+	//fmt.Println(p1, p2)
 
 	p1.BuyCard(dom.Festival)
 	p2.BuyCard(dom.Market)
-	fmt.Println(p1, p2)
+	//fmt.Println(p1, p2)
 
-	logger.Println("ffffffffff")
+	logger.Println("")
+	fmt.Println("-----------------------------------")
+	fmt.Println(gman.Cards2String())
+	fmt.Println("-----------------------------------")
 }
 
 func TestAction(t *testing.T) {

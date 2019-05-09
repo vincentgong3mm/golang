@@ -48,6 +48,7 @@ const (
 	Festival
 	Smithy
 	Market
+	Thief
 	MaxCardID
 )
 
@@ -62,6 +63,7 @@ var CardIDString = [...]string{
 	"Festival",
 	"Smithy",
 	"Market",
+	"Thief",
 }
 
 func (r CardID) String() string {
@@ -88,14 +90,15 @@ type Card struct {
 	Ability  []Ability
 }
 
-func (r *Card) Draw(p *Player) {
+func (r Card) Draw(p *Player) {
+	fmt.Println("Card.name", r)
 }
 
-func (r *Card) AddBuy(p *Player) {
+func (r Card) AddBuy(p *Player) {
 	p.buys++
 }
 
-func (r *Card) AddAction(p *Player) {
+func (r Card) AddAction(p *Player) {
 	p.actions++
 }
 

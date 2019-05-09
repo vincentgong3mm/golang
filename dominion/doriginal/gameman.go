@@ -3,7 +3,10 @@ package doriginal
 import "fmt"
 
 type GameMan struct {
-	cards  map[CardID]Card
+	cards map[CardID]Card
+
+	cards2 map[CardID]Actioner
+
 	supply *Supply
 
 	players     map[PlayerID]*Player
@@ -21,6 +24,9 @@ func init() {
 func CreateNewGameMan() *GameMan {
 	n := GameMan{}
 	n.cards = make(map[CardID]Card)
+
+	n.cards2 = make(map[CardID]Actioner)
+
 	n.supply = CreateNewSupply()
 	n.players = make(map[PlayerID]*Player)
 	n.genPlayerID = NewPlayerIDGenerator()
@@ -33,6 +39,17 @@ func (r *GameMan) createCard(cardID CardID, cardType []CardType, cost int, abili
 		Ability: ability}
 
 	return r.cards[cardID]
+}
+
+func (r *GameMan) createCard2(cardID CardID, cardType []CardType, cost int, ability []Ability) Actioner {
+	switch cardID {
+	case Thief:
+		r.cards2[cardID] = &CardThief{comment: 10, Card: Card{name: "", CardID: cardID, cardType: cardType, cost: cost, Ability: ability}}
+	default:
+		r.cards2[cardID] = &Card{name: "", CardID: cardID, cardType: cardType, cost: cost, Ability: ability}
+	}
+
+	return r.cards2[cardID]
 }
 
 func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
@@ -128,6 +145,7 @@ func (r *GameMan) gainBeginHandCard(player *Player) {
 	*/
 }
 
+/*
 func (r *GameMan) GetCard(cardID CardID) *Card {
 	c, exist := r.cards[cardID]
 
@@ -136,6 +154,7 @@ func (r *GameMan) GetCard(cardID CardID) *Card {
 	}
 	return nil
 }
+*/
 
 func (r *GameMan) String() string {
 	s := "GameMan Info\n"
@@ -160,6 +179,23 @@ func (r GameMan) StringSupply() string {
 }
 
 func (r *GameMan) CreateAllCard() error {
+	r.createCard2(Thief, []CardType{CardTypeAction}, 5,
+		[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
+
+	r.createCard2(Smithy, []CardType{CardTypeAction}, 4,
+		[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
+
+	fmt.Println("create card2+++")
+	fmt.Println(r.cards2)
+
+	for _, v := range r.cards2 {
+		v.Draw(nil)
+		fmt.Println(v)
+	}
+	fmt.Println("create card2---")
+	fmt.Println(r.cards2)
+	fmt.Println("create card2---000000")
+
 	r.createCard(Festival, []CardType{CardTypeAction}, 5,
 		[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
 	r.createCard(Village, []CardType{CardTypeAction}, 3,
@@ -181,7 +217,13 @@ func (r *GameMan) CreateAllCard() error {
 	r.createCard(Estate, []CardType{CardTypeVictory}, 2,
 		[]Ability{{AbilityAddVictory, 1}})
 
+	fmt.Println(r.cards2)
 	return nil
+}
+
+func (r *GameMan) Cards2String() string {
+
+	return fmt.Sprintf("%s", r.cards2)
 }
 
 func (r *GameMan) GMPlayAllCard(player *Player) {
