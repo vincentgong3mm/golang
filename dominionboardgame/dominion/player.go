@@ -20,7 +20,7 @@ import (
 type Player struct {
 	name            string
 	ID              PlayerID
-	deck            CardIDs
+	deck            CardIDs // index 0 is the top card
 	handCards       CardIDs
 	cardPlayingArea CardIDs
 	discardPile     CardIDs
@@ -181,6 +181,22 @@ func (r *Player) RevealTopCardFromDeck(cnt int) (CardIDs, error) {
 	}
 
 	cards := r.deck[0:cnt]
+
+	return cards, nil
+}
+
+func (r *Player) PopTopCardFromDeck(cnt int) (CardIDs, error) {
+	if len(r.deck) < cnt {
+		// add to deck
+		r.AddDiscardPileToDeck()
+	}
+
+	if len(r.deck) < cnt {
+		return CardIDs{}, errors.New(fmt.Sprintf("not enough deck. deck is %d < %d", len(r.deck), cnt))
+	}
+
+	cards := r.deck[0:cnt]
+	r.deck = r.deck[cnt:len(r.deck)]
 
 	return cards, nil
 }

@@ -207,4 +207,9 @@ func TestDeck(t *testing.T) {
 	revealCards, _ := p1.RevealTopCardFromDeck(3)
 	fmt.Println("revealCards:", revealCards)
 	fmt.Println(p1)
+
+	popCards, _ := gman.TrashTopCardFromDeck(p1, 3)
+	fmt.Println("PopCards:", popCards)
+	fmt.Println(p1)
+	fmt.Println(gman)
 }

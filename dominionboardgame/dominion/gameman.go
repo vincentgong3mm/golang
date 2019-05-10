@@ -11,7 +11,8 @@ type GameMan struct {
 	//cards2 map[CardID]Actioner
 	cards map[CardID]Actioner
 
-	supply *Supply
+	supply    *Supply
+	trashPile *TrashPile
 
 	players     map[PlayerID]*Player
 	genPlayerID func() PlayerID
@@ -32,6 +33,7 @@ func CreateNewGameMan() *GameMan {
 	n.cards = make(map[CardID]Actioner)
 
 	n.supply = CreateNewSupply()
+	n.trashPile = CreateNewTrashPile()
 	n.players = make(map[PlayerID]*Player)
 	n.genPlayerID = NewPlayerIDGenerator()
 
@@ -190,15 +192,21 @@ func (r *GameMan) GetCard(cardID CardID) *Card {
 */
 
 func (r *GameMan) String() string {
-	s := "GameMan Info\n"
+	s := "=======================================\n"
+	s += "GameMan Info\n"
+	s += "________________________________________\n"
 	s += "Card List\n"
 	for _, v := range r.cards {
 		s += v.String()
 	}
 
-	s += "Supply List\n"
+	s += "________________________________________\n"
 	s += r.supply.String()
 
+	s += "________________________________________\n"
+	s += r.trashPile.String()
+
+	s += "________________________________________\n"
 	s += "Player List\n"
 	for _, v := range r.players {
 		s += v.String()
@@ -255,8 +263,24 @@ func (r *GameMan) TrashCardFromHand(p *Player, i int) {
 
 }
 
-func (r *GameMan) TrashCardFromDeck(p *Player, i int) {
+func (r *GameMan) TrashTopCardFromDeck(p *Player, cnt int) (CardIDs, error) {
+	/*
+		_, error := p.RevealTopCardFromDeck(cnt)
+		if error != nil {
+			return error
+		}
+	*/
 
+	cards, error := p.PopTopCardFromDeck(cnt)
+	if error != nil {
+		return CardIDs{}, error
+	}
+
+	for _, v := range cards {
+		r.trashPile.AddCard(v)
+	}
+
+	return cards, nil
 }
 
 func (r *GameMan) GMPlayAllCard(player *Player) {

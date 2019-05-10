@@ -9,6 +9,13 @@ type TrashPile struct {
 	cards map[CardID]int
 }
 
+func CreateNewTrashPile() *TrashPile {
+	n := TrashPile{}
+	n.cards = make(map[CardID]int)
+
+	return &n
+}
+
 func (r TrashPile) String() string {
 	s := "|"
 	for cardID, cnt := range r.cards {
@@ -24,7 +31,7 @@ func (r *TrashPile) AddCard(id CardID) {
 	if _, exist := r.cards[id]; exist == true {
 		r.cards[id]++
 	} else {
-		r.cards[id] = 0
+		r.cards[id] = 1
 	}
 }
 
