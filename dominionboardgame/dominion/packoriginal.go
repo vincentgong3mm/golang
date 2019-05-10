@@ -12,6 +12,9 @@ func (r *CardBandit) InitCard() {
 	r.Ability = []Ability{}
 }
 
+func (r *CardBandit) DoAbility(p *Player) {
+}
+
 func (r *CardBandit) Draw(p *Player) {
 }
 

@@ -212,4 +212,7 @@ func TestDeck(t *testing.T) {
 	fmt.Println("PopCards:", popCards)
 	fmt.Println(p1)
 	fmt.Println(gman)
+
+	p1.DrawCard(2)
+	p1.PlayCardFromHand(0, gman)
 }

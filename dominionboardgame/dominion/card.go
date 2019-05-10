@@ -5,9 +5,11 @@ import (
 )
 
 type Actioner interface {
-	Draw(p *Player)
-	AddBuy(p *Player)
-	AddAction(p *Player)
+	//Draw(p *Player)
+	//AddBuy(p *Player)
+	//AddAction(p *Player)
+	DoAbility(p *Player)
+	//DoSpecailAbility(p *Player)
 	String() string
 	//DoSpecailACtion()
 }
@@ -104,15 +106,31 @@ type Card struct {
 	Ability  []Ability
 }
 
-func (r Card) Draw(p *Player) {
+type Cards []*Card
+
+func (r *Card) GetAbilityCount(a AbilityType) (int, bool) {
+	for _, v := range r.Ability {
+		if v.abilityType == a {
+			return v.count, true
+		}
+	}
+
+	return 0, false
+}
+
+func (r *Card) DoAbility(p *Player) {
+	fmt.Sprintf("DoAbility -> %s", r.String())
+}
+
+func (r *Card) Draw(p *Player) {
 	fmt.Println("Card.name", r)
 }
 
-func (r Card) AddBuy(p *Player) {
+func (r *Card) AddBuy(p *Player) {
 	p.buys++
 }
 
-func (r Card) AddAction(p *Player) {
+func (r *Card) AddAction(p *Player) {
 	p.actions++
 }
 

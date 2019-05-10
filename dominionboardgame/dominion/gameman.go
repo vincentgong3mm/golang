@@ -118,6 +118,8 @@ func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
 		r.supply.RegistCard(Market, 10)
 		r.supply.RegistCard(Festival, 10)
 		r.supply.RegistCard(Smithy, 10)
+		r.supply.RegistCard(Upgrade, 10)
+		r.supply.RegistCard(Bandit, 10)
 	case SetBigMoney:
 		r.supply.RegistCard(Copper, 50)
 	}
@@ -158,26 +160,24 @@ func (r *GameMan) gainPlayerFromSupply(id CardID, player *Player) bool {
 }
 
 func (r *GameMan) gainBeginHandCard(player *Player) {
-	// draw 7 copper`
-	for i := 0; i < 7; i++ {
-		r.gainPlayerFromSupply(Copper, player)
+	for i := 0; i < 5; i++ {
+		r.gainPlayerFromSupply(Upgrade, player)
 	}
+	/*
+		// draw 7 copper`
+		for i := 0; i < 7; i++ {
+			r.gainPlayerFromSupply(Copper, player)
+		}
 
-	// draw 3 estate
-	for i := 0; i < 3; i++ {
-		r.gainPlayerFromSupply(Estate, player)
-	}
+		// draw 3 estate
+		for i := 0; i < 3; i++ {
+			r.gainPlayerFromSupply(Estate, player)
+		}
+	*/
 
 	// first shuffle deck
 	player.deck.Shuffle()
 
-	// test ..
-	/*
-		player.GainCard(Village, ToDiscardPile)
-		player.GainCard(Market, ToDiscardPile)
-		player.GainCard(Smithy, ToDiscardPile)
-		player.GainCard(Smithy, ToDiscardPile)
-	*/
 }
 
 /*
