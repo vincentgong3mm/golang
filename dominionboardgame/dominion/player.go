@@ -115,6 +115,7 @@ func (r *Player) GainCard(id CardID, to GainedCard) {
 
 // DrawCard is draw cards from deck to hand
 func (r *Player) DrawCard(cnt int) error {
+	fmt.Println("Draw Card", cnt)
 	if len(r.deck) < cnt {
 		// add to deck
 		r.AddDiscardPileToDeck()
@@ -167,31 +168,15 @@ func (r *Player) TrashCardFromHand(index int) {
 }
 
 func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
-	fmt.Println("play card", len(r.handCards))
 	if index >= len(r.handCards) {
 		return errors.New("Invaild Hand Cards Index")
 	}
 
 	cardID := r.handCards[index]
-
-	var actioner Actioner
-	actioner = gman.cards[cardID]
-
-	fmt.Println("play card", cardID, actioner.String())
-
-	actioner.DoAbility(r)
-
 	card := gman.cards[cardID]
-
-	DoActioner(card, r)
+	card.DoAbility(r)
 
 	return nil
-}
-
-func DoActioner(a Actioner, p *Player) {
-
-	fmt.Println("Do---Actioner", a.String())
-	a.DoAbility(p)
 }
 
 func (r *Player) RevealTopCardFromDeck(cnt int) (CardIDs, error) {

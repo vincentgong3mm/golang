@@ -208,11 +208,14 @@ func TestDeck(t *testing.T) {
 	fmt.Println("revealCards:", revealCards)
 	fmt.Println(p1)
 
-	popCards, _ := gman.TrashTopCardFromDeck(p1, 3)
+	popCards, _ := gman.TrashTopCardFromDeck(p1, 1)
 	fmt.Println("PopCards:", popCards)
 	fmt.Println(p1)
 	fmt.Println(gman)
 
 	p1.DrawCard(2)
+	fmt.Println(gman)
 	p1.PlayCardFromHand(0, gman)
+	fmt.Println(gman)
+
 }

@@ -1,15 +1,10 @@
 package dominion
 
-import (
-	"fmt"
-)
-
 type CardUpgrade struct {
 	Card
 }
 
 func (r *CardUpgrade) InitCard() {
-	r.name = ""
 	r.CardID = Upgrade
 	r.cardType = []CardType{CardTypeAction}
 	r.cost = 5
@@ -17,10 +12,14 @@ func (r *CardUpgrade) InitCard() {
 }
 
 func (r *CardUpgrade) DoAbility(p *Player) {
-	fmt.Sprintf("DoAbility -> %s", r.String())
+	r.Card.DoAbility(p)
 }
 
-func (r *CardUpgrade) Draw(p *Player) {
+/*
+func (r *CardUpgrade) AddCard(p *Player) {
+	cnt, _ := r.GetAbilityCount(AbilityAddCard)
+
+	p.DrawCard(cnt)
 }
 
 func (r *CardUpgrade) AddBuy(p *Player) {
@@ -32,8 +31,8 @@ func (r *CardUpgrade) AddAction(p *Player) {
 	cnt, _ := r.GetAbilityCount(AbilityAddAction)
 	p.actions += cnt
 }
+*/
 
 func (r *CardUpgrade) String() string {
-	//return r.Card.String()
-	return "0000000000000000"
+	return r.Card.String()
 }

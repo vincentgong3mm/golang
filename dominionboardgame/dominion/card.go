@@ -119,19 +119,25 @@ func (r *Card) GetAbilityCount(a AbilityType) (int, bool) {
 }
 
 func (r *Card) DoAbility(p *Player) {
-	fmt.Sprintf("DoAbility -> %s", r.String())
-}
-
-func (r *Card) Draw(p *Player) {
-	fmt.Println("Card.name", r)
+	r.AddBuy(p)
+	r.AddAction(p)
+	r.AddCard(p)
 }
 
 func (r *Card) AddBuy(p *Player) {
-	p.buys++
+	cnt, _ := r.GetAbilityCount(AbilityAddCard)
+	p.DrawCard(cnt)
 }
 
 func (r *Card) AddAction(p *Player) {
-	p.actions++
+	cnt, _ := r.GetAbilityCount(AbilityAddAction)
+	p.actions += cnt
+}
+
+func (r *Card) AddCard(p *Player) {
+	cnt, _ := r.GetAbilityCount(AbilityAddCard)
+
+	p.DrawCard(cnt)
 }
 
 func (r Card) String() string {

@@ -195,10 +195,12 @@ func (r *GameMan) String() string {
 	s := "=======================================\n"
 	s += "GameMan Info\n"
 	s += "________________________________________\n"
-	s += "Card List\n"
-	for _, v := range r.cards {
-		s += v.String()
-	}
+	/*
+		s += "Card List\n"
+		for _, v := range r.cards {
+			s += v.String()
+		}
+	*/
 
 	s += "________________________________________\n"
 	s += r.supply.String()
