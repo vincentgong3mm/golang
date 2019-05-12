@@ -240,6 +240,7 @@ func (r *GameMan) CreateAllCard() error {
 	r.createCardEx(&CardOriBase{Card{CardID: Estate}})
 	r.createCardEx(&CardOriBase{Card{CardID: Duchy}})
 	r.createCardEx(&CardOriBase{Card{CardID: Province}})
+	r.createCardEx(&CardOriBase{Card{CardID: Curse}})
 
 	r.createCardEx(&CardOriBase{Card{CardID: Village}})
 	r.createCardEx(&CardOriBase{Card{CardID: Market}})

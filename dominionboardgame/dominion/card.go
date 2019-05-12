@@ -56,6 +56,7 @@ const (
 	Estate
 	Duchy
 	Province
+	Curse
 	Village
 	Festival
 	Smithy
@@ -79,6 +80,7 @@ var CardIDString = [...]string{
 	"Estate",
 	"Duchy",
 	"Province",
+	"Curse",
 	// Original : Action Card
 	"Village",
 	"Festival",

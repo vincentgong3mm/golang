@@ -34,6 +34,10 @@ func (r *CardOriBase) InitCard() {
 		r.cardType = []CardType{CardTypeVictory}
 		r.cost = 8
 		r.Ability = []Ability{{AbilityAddVictory, 6}}
+	case Curse:
+		r.cardType = []CardType{CardTypeVictory}
+		r.cost = 0
+		r.Ability = []Ability{{AbilityAddVictory, -1}}
 	case Village:
 		r.cardType = []CardType{CardTypeAction}
 		r.cost = 4

@@ -230,3 +230,11 @@ func TestGameMan(t *testing.T) {
 
 	fmt.Println(p1)
 }
+
+func TestInput(t *testing.T) {
+	fmt.Println("Input Hand Card Index :")
+	in := bufio.NewReader(os.Stdin)
+	in.ReadString('\n')
+
+	//fmt.Println("Your Index :", in)
+}

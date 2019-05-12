@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	dom "github.com/vincentgong3mm/golang/dominion/dominion"
+	dom "github.com/vincentgong3mm/golang/dominionboardgame/dominion"
 )
 
 func waitExit() {
@@ -16,11 +16,7 @@ func waitExit() {
 func main() {
 	fmt.Println("Let's start Dominion!")
 
-	np := dom.CreateNewPlayer("jong")
-	fmt.Println(np)
-
-	np2 := dom.CreateNewPlayer("seong")
-	fmt.Println(np2)
-
+	gman := dom.CreateNewGameMan()
+	fmt.Println(gman)
 	waitExit()
 }
