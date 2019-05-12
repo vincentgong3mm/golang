@@ -21,9 +21,11 @@ func main() {
 
 	gman := dom.CreateNewGameMan()
 	fmt.Println(gman)
+	gman.SetInputFromBuffer()
+	gman.WriteInBuffer("asdfasfd99999")
 
 	fmt.Println("Input String :")
-	str, _ := gman.ReadInput(os.Stdin)
+	str, _ := gman.ReadInput()
 	fmt.Println("str=", str)
 
 	waitExit()

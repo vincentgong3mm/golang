@@ -195,6 +195,7 @@ func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 
 	card := gman.cards[cardID]
 	card.DoAbility(r)
+	card.DoSpecialAbility(gman)
 
 	r.actions--
 

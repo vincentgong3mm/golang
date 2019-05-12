@@ -247,6 +247,14 @@ func TestInput(t *testing.T) {
 	//fmt.Println("Your Index :", in)
 }
 
+func TestInput2(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	gman.SetInputFromBuffer()
+	gman.WriteInBuffer("abdfffff")
+	str, _ := gman.ReadInput(&in)
+	fmt.Println(str)
+}
+
 func TestPlayAction(t *testing.T) {
 	gman := CreateGameManAndSetSuppy()
 	CreateTwoPlayer(gman)
@@ -272,6 +280,7 @@ func TestPlayAction(t *testing.T) {
 		fmt.Println(err)
 	}
 	fmt.Println(p1)
+
 	/*
 		p1.PlayCardFromHand(0, gman)
 		fmt.Println(p1)

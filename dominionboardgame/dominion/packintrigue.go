@@ -15,12 +15,16 @@ func (r *CardUpgrade) InitCard() {
 
 func (r *CardUpgrade) DoAbility(p *Player) {
 	r.Card.DoAbility(p)
-	r.DoSpecialAbility()
+	//r.DoSpecialAbility()
 }
 
+/*
 func (r *CardUpgrade) DoSpecialAbility() {
 }
+*/
 
+/*
 func (r *CardUpgrade) String() string {
 	return r.Card.String()
 }
+*/

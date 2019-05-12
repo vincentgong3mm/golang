@@ -12,7 +12,7 @@ type Actioner interface {
 	InitCard()
 	GetCardID() CardID
 	DoAbility(p *Player)
-	//DoSpecailAbility(p *Player)
+	DoSpecialAbility(p *GameMan)
 	String() string
 	//DoSpecailACtion()
 }
@@ -123,9 +123,11 @@ type Card struct {
 
 type Cards []*Card
 
+/*
 func (r *Card) InitCard() {
 
 }
+*/
 
 func (r *Card) GetCardID() CardID {
 	return r.CardID
@@ -165,6 +167,9 @@ func (r *Card) DoAbility(p *Player) {
 	log += sline
 
 	fmt.Println(log)
+}
+
+func (r *Card) DoSpecialAbility(g *GameMan) {
 }
 
 func (r *Card) AddBuy(p *Player) string {

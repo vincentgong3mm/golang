@@ -85,6 +85,21 @@ func (r *CardOriBase) String() string {
 	return r.Card.String()
 }
 
+type CardArtisan struct {
+	Card
+}
+
+func (r *CardArtisan) InitCard() {
+	r.cardType = []CardType{CardTypeAction}
+	r.cost = 5
+	r.Ability = []Ability{}
+}
+
+func (r *CardArtisan) DoSpecialAbility(g *GameMan) {
+
+	//g.ReadInput(
+}
+
 /*
 type CardBandit struct {
 	Card

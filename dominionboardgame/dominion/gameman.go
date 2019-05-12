@@ -2,9 +2,11 @@ package dominion
 
 import (
 	"bufio"
+	"bytes"
 	"errors"
 	"fmt"
 	"io"
+	"os"
 )
 
 type GameMan struct {
@@ -18,6 +20,9 @@ type GameMan struct {
 
 	players     map[PlayerID]*Player
 	genPlayerID func() PlayerID
+
+	input io.Reader
+	inbuf bytes.Buffer
 }
 
 func init() {
@@ -39,7 +44,21 @@ func CreateNewGameMan() *GameMan {
 	n.players = make(map[PlayerID]*Player)
 	n.genPlayerID = NewPlayerIDGenerator()
 
+	n.input = bufio.NewReader(os.Stdin)
+
 	return &n
+}
+
+func (r *GameMan) SetInputFromBuffer() {
+	r.input = bufio.NewReader(&r.inbuf)
+}
+
+func (r *GameMan) SetInputFromStdin() {
+	r.input = os.Stdin
+}
+
+func (r *GameMan) WriteInBuffer(s string) {
+	r.inbuf.Write([]byte(s))
 }
 
 /*
@@ -250,6 +269,7 @@ func (r *GameMan) CreateAllCard() error {
 	r.createCardEx(&CardOriBase{Card{CardID: Festival}})
 	r.createCardEx(&CardOriBase{Card{CardID: Village}})
 	r.createCardEx(&CardOriBase{Card{CardID: Laboratory}})
+	r.createCardEx(&CardArtisan{})
 
 	// Intregue
 	r.createCardEx(&CardUpgrade{})
@@ -328,8 +348,8 @@ func (r *GameMan) GMPlayAllCard(player *Player) {
 	*/
 }
 
-func (r *GameMan) ReadInput(in io.Reader) (string, error) {
-	reader := bufio.NewReader(in)
+func (r *GameMan) ReadInput() (string, error) {
+	reader := bufio.NewReader(r.input)
 	str, err := reader.ReadString('\n')
 	return str, err
 }
