@@ -69,6 +69,7 @@ func (r *CardOriBase) InitCard() {
 }
 
 func (r *CardOriBase) DoAbility(p *Player) {
+	r.Card.DoAbility(p)
 }
 
 func (r *CardOriBase) Draw(p *Player) {

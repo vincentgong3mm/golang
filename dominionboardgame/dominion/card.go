@@ -2,6 +2,7 @@ package dominion
 
 import (
 	"fmt"
+	"strings"
 )
 
 type Actioner interface {
@@ -102,9 +103,9 @@ func (r CardID) String() string {
 
 func (r CardIDs) String() string {
 	s := ""
-	s = fmt.Sprintf("#%d\n\t|", len(r))
-	for _, v := range r {
-		s += fmt.Sprintf("%s|", v)
+	s = fmt.Sprintf(":%dn|", len(r))
+	for i, v := range r {
+		s += fmt.Sprintf("#%d:%s|", i, v)
 		//s += fmt.Sprintf("%s(%d)|", v, v)
 	}
 	s += "\n"
@@ -141,26 +142,76 @@ func (r *Card) GetAbilityCount(a AbilityType) (int, bool) {
 }
 
 func (r *Card) DoAbility(p *Player) {
-	fmt.Println("DoAbility Card")
-	r.AddBuy(p)
-	r.AddAction(p)
-	r.AddCard(p)
+	//sline + "\n" + s + "\n"
+
+	sbuy := r.AddBuy(p)
+	saction := r.AddAction(p)
+	scard := r.AddCard(p)
+	scoin := r.AddCoin(p)
+
+	s := fmt.Sprintf("<PlayCard> Player:%s(ID:%d) %s", p.name, p.ID, r.CardID)
+	sline := strings.Repeat("~", len(s))
+
+	log := sline
+	log += "\n"
+	log += s
+	log += "\n"
+	log += sline
+	log += "\n"
+	log += sbuy
+	log += saction
+	log += scard
+	log += scoin
+	log += sline
+
+	fmt.Println(log)
 }
 
-func (r *Card) AddBuy(p *Player) {
-	cnt, _ := r.GetAbilityCount(AbilityAddCard)
-	p.DrawCard(cnt)
+func (r *Card) AddBuy(p *Player) string {
+	cnt, _ := r.GetAbilityCount(AbilityAddBuy)
+	s := ""
+	if cnt > 0 {
+		s = fmt.Sprintf("\tAddBuy:buys=%d+%d\n", p.buys, cnt)
+	}
+	p.buys += cnt
+
+	return s
 }
 
-func (r *Card) AddAction(p *Player) {
+func (r *Card) AddAction(p *Player) string {
 	cnt, _ := r.GetAbilityCount(AbilityAddAction)
+
+	s := ""
+	if cnt > 0 {
+		s = fmt.Sprintf("\tAddAction:actions=%d+%d\n", p.actions, cnt)
+	}
 	p.actions += cnt
+
+	return s
 }
 
-func (r *Card) AddCard(p *Player) {
+func (r *Card) AddCard(p *Player) string {
 	cnt, _ := r.GetAbilityCount(AbilityAddCard)
 
-	p.DrawCard(cnt)
+	cardIDs, _ := p.DrawCard(cnt)
+
+	s := ""
+	if cnt > 0 {
+		s = fmt.Sprintf("\tAddCard%s", cardIDs)
+	}
+	return s
+}
+func (r *Card) AddCoin(p *Player) string {
+	cnt, _ := r.GetAbilityCount(AbilityAddCoin)
+
+	s := ""
+	if cnt > 0 {
+		s = fmt.Sprintf("\tAddCoin:coins=%d+%d\n", p.coins, cnt)
+	}
+
+	p.coins += cnt
+
+	return s
 }
 
 func (r Card) String() string {

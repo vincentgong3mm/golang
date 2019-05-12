@@ -10,7 +10,10 @@ import (
 
 func waitExit() {
 	r := bufio.NewReader(os.Stdin)
-	r.ReadString('\n')
+	in, _ := r.ReadString('\n')
+
+	fmt.Println(in)
+
 }
 
 func main() {
@@ -18,5 +21,10 @@ func main() {
 
 	gman := dom.CreateNewGameMan()
 	fmt.Println(gman)
+
+	fmt.Println("Input String :")
+	str, _ := gman.ReadInput(os.Stdin)
+	fmt.Println("str=", str)
+
 	waitExit()
 }

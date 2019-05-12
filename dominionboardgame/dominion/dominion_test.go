@@ -2,6 +2,7 @@ package dominion_test
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"testing"
@@ -83,7 +84,8 @@ func TestPlayCard(t *testing.T) {
 	fmt.Println("DrawCard", p1)
 	p1.DrawCard(5)
 	fmt.Println("DrawCard", p1)
-	err := p1.DrawCard(5)
+
+	_, err := p1.DrawCard(5)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -232,9 +234,51 @@ func TestGameMan(t *testing.T) {
 }
 
 func TestInput(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+
+	var in bytes.Buffer
+	in.Write([]byte("abcd\n"))
+
 	fmt.Println("Input Hand Card Index :")
-	in := bufio.NewReader(os.Stdin)
-	in.ReadString('\n')
+
+	str, _ := gman.ReadInput(&in)
+	fmt.Println(str)
 
 	//fmt.Println("Your Index :", in)
+}
+
+func TestPlayAction(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	p1 := gman.GetPlayer(1)
+	fmt.Println(p1)
+
+	p1.GainCardGM(dom.Market)
+	p1.GainCardGM(dom.Village)
+	p1.GainCardGM(dom.Smithy)
+	p1.GainCardGM(dom.Festival)
+	//p1.GainCardGM(dom.Copper)
+	//p1.GainCardGM(dom.Silver)
+	fmt.Println(p1)
+
+	p1.PlayCardFromHand(0, gman)
+	fmt.Println(p1)
+	p1.PlayCardFromHand(0, gman)
+	fmt.Println(p1)
+	p1.PlayCardFromHand(0, gman)
+	fmt.Println(p1)
+	err := p1.PlayCardFromHand(0, gman)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(p1)
+	/*
+		p1.PlayCardFromHand(0, gman)
+		fmt.Println(p1)
+		p1.PlayCardFromHand(0, gman)
+		fmt.Println(p1)
+		p1.PlayCardFromHand(0, gman)
+		fmt.Println(p1)
+	*/
+
 }

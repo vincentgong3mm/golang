@@ -50,9 +50,9 @@ func (r Player) String() string {
 	s := ""
 	s += fmt.Sprintf("@Player:%s(ID:%d)\n", r.name, r.ID)
 
-	s += fmt.Sprintf("+Action#%d\n", r.actions)
-	s += fmt.Sprintf("+Buy#%d\n", r.buys)
-	s += fmt.Sprintf("+Coin#%d\n", r.coins)
+	s += fmt.Sprintf("+Action:%dn\n", r.actions)
+	s += fmt.Sprintf("+Buy:%dn\n", r.buys)
+	s += fmt.Sprintf("+Coin:%dn\n", r.coins)
 	s += fmt.Sprintf("+Deck")
 	s += fmt.Sprintf("%s", r.deck)
 
@@ -122,28 +122,21 @@ func (r *Player) GainCard(id CardID, to GainedCard) {
 }
 
 // DrawCard is draw cards from deck to hand
-func (r *Player) DrawCard(cnt int) error {
-	fmt.Println("Draw Card", cnt)
+func (r *Player) DrawCard(cnt int) (CardIDs, error) {
 	if len(r.deck) < cnt {
 		// add to deck
 		r.AddDiscardPileToDeck()
 	}
 
 	if len(r.deck) < cnt {
-		return errors.New(fmt.Sprintf("not enough deck. deck is %d < %d", len(r.deck), cnt))
+		return CardIDs{}, errors.New(fmt.Sprintf("not enough deck. deck is %d < %d", len(r.deck), cnt))
 	}
 
 	tmpCards := r.deck[0:cnt]
 	r.deck = r.deck[cnt:len(r.deck)]
 	r.handCards = append(r.handCards, tmpCards...)
 
-	/*
-		r.buys = 1
-		r.actions = 1
-		r.coins = 0
-	*/
-
-	return nil
+	return tmpCards, nil
 }
 
 func (r *Player) PlayActionCard(index int) {
@@ -188,10 +181,22 @@ func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	if index >= len(r.handCards) {
 		return errors.New("Invaild Hand Cards Index")
 	}
+	if r.actions < 1 {
+		return errors.New("Player's actions is 0")
+	}
 
 	cardID := r.handCards[index]
+
+	front := r.handCards[0:index]
+	end := r.handCards[index+1 : len(r.handCards)]
+
+	r.handCards = front
+	r.handCards = append(r.handCards, end...)
+
 	card := gman.cards[cardID]
 	card.DoAbility(r)
+
+	r.actions--
 
 	return nil
 }

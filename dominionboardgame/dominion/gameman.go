@@ -1,8 +1,10 @@
 package dominion
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
+	"io"
 )
 
 type GameMan struct {
@@ -324,4 +326,10 @@ func (r *GameMan) GMPlayAllCard(player *Player) {
 			v.Play(player)
 		}
 	*/
+}
+
+func (r *GameMan) ReadInput(in io.Reader) (string, error) {
+	reader := bufio.NewReader(in)
+	str, err := reader.ReadString('\n')
+	return str, err
 }
