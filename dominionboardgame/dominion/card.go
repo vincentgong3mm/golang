@@ -12,7 +12,7 @@ type Actioner interface {
 	InitCard()
 	GetCardID() CardID
 	DoAbility(p *Player)
-	DoSpecialAbility(p *GameMan)
+	DoSpecialAbility(p *Player, g *GameMan)
 	String() string
 	//DoSpecailACtion()
 }
@@ -169,7 +169,7 @@ func (r *Card) DoAbility(p *Player) {
 	fmt.Println(log)
 }
 
-func (r *Card) DoSpecialAbility(g *GameMan) {
+func (r *Card) DoSpecialAbility(p *Player, g *GameMan) {
 }
 
 func (r *Card) AddBuy(p *Player) string {

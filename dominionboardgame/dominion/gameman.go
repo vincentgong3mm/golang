@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 )
 
 type GameMan struct {
@@ -178,7 +179,7 @@ func (r *GameMan) GetPlayer(id PlayerID) *Player {
 	return nil
 }
 
-func (r *GameMan) gainPlayerFromSupply(id CardID, player *Player) bool {
+func (r *GameMan) gainFromSupplyToDeck(id CardID, player *Player) bool {
 	if r.supply.Pop(id) == true {
 		player.GainCard(id, ToDeck)
 		return true
@@ -189,7 +190,7 @@ func (r *GameMan) gainPlayerFromSupply(id CardID, player *Player) bool {
 
 func (r *GameMan) gainBeginHandCard(player *Player) {
 	for i := 0; i < 5; i++ {
-		r.gainPlayerFromSupply(Upgrade, player)
+		r.gainFromSupplyToDeck(Upgrade, player)
 	}
 	/*
 		// draw 7 copper`
@@ -348,8 +349,10 @@ func (r *GameMan) GMPlayAllCard(player *Player) {
 	*/
 }
 
-func (r *GameMan) ReadInput() (string, error) {
+func (r *GameMan) ReadInput() (int, error) {
 	reader := bufio.NewReader(r.input)
 	str, err := reader.ReadString('\n')
-	return str, err
+
+	n, err := strconv.Atoi(str)
+	return n, err
 }

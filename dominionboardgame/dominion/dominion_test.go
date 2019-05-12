@@ -241,7 +241,7 @@ func TestInput(t *testing.T) {
 
 	fmt.Println("Input Hand Card Index :")
 
-	str, _ := gman.ReadInput(&in)
+	str, _ := gman.ReadInput()
 	fmt.Println(str)
 
 	//fmt.Println("Your Index :", in)
@@ -249,9 +249,11 @@ func TestInput(t *testing.T) {
 
 func TestInput2(t *testing.T) {
 	gman := CreateGameManAndSetSuppy()
+
 	gman.SetInputFromBuffer()
-	gman.WriteInBuffer("abdfffff")
-	str, _ := gman.ReadInput(&in)
+	gman.WriteInBuffer("100")
+
+	str, _ := gman.ReadInput()
 	fmt.Println(str)
 }
 
@@ -290,4 +292,23 @@ func TestPlayAction(t *testing.T) {
 		fmt.Println(p1)
 	*/
 
+}
+
+func TestArtisan(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	p1 := gman.GetPlayer(1)
+
+	p1.GainCardGM(dom.Market)
+	p1.GainCardGM(dom.Artisan)
+	fmt.Println(p1)
+
+	gman.SetInputFromBuffer()
+	p1.PlayCardFromHand(0, gman)
+	fmt.Println(p1)
+
+	// for Artisan add buffer 1
+	gman.WriteInBuffer("10")
+	p1.PlayCardFromHand(0, gman)
+	fmt.Println(p1)
 }

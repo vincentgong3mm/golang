@@ -1,5 +1,9 @@
 package dominion
 
+import (
+	"fmt"
+)
+
 type CardOriBase struct {
 	Card
 }
@@ -90,14 +94,20 @@ type CardArtisan struct {
 }
 
 func (r *CardArtisan) InitCard() {
+	r.CardID = Artisan
 	r.cardType = []CardType{CardTypeAction}
 	r.cost = 5
 	r.Ability = []Ability{}
 }
 
-func (r *CardArtisan) DoSpecialAbility(g *GameMan) {
+func (r *CardArtisan) DoSpecialAbility(p *Player, g *GameMan) {
+	cardNumber, _ := g.ReadInput()
+	fmt.Println(cardNumber)
+	g.gainCardFromSupply(CardID(cardNumber), p)
+}
 
-	//g.ReadInput(
+func (r *CardArtisan) String() string {
+	return r.Card.String()
 }
 
 /*
