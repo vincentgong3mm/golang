@@ -70,6 +70,14 @@ func (r Player) String() string {
 	return s
 }
 
+func (r *Player) InitForNextTurn() {
+	r.coins = 0
+	r.buys = 1
+	r.actions = 1
+
+	r.deck.Shuffle()
+}
+
 func (r *Player) AddDiscardPileToDeck() {
 	// shuffle discard pile
 	r.discardPile.Shuffle()
@@ -129,9 +137,11 @@ func (r *Player) DrawCard(cnt int) error {
 	r.deck = r.deck[cnt:len(r.deck)]
 	r.handCards = append(r.handCards, tmpCards...)
 
-	r.buys = 1
-	r.actions = 1
-	r.coins = 0
+	/*
+		r.buys = 1
+		r.actions = 1
+		r.coins = 0
+	*/
 
 	return nil
 }
@@ -160,6 +170,13 @@ func (r *Player) BuyCard(card CardID) error {
 	r.GainCard(card, ToDiscardPile)
 
 	return nil
+}
+
+func (r *Player) BuyCardGM(card CardID) {
+	r.GainCard(card, ToDiscardPile)
+}
+func (r *Player) GainCardGM(card CardID) {
+	r.GainCard(card, ToHand)
 }
 
 // TranshCard is trash card to trash

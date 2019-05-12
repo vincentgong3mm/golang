@@ -203,19 +203,30 @@ func TestDeck(t *testing.T) {
 	// test get player
 	p1 := gman.GetPlayer(1)
 
-	fmt.Println(p1)
-	revealCards, _ := p1.RevealTopCardFromDeck(3)
-	fmt.Println("revealCards:", revealCards)
-	fmt.Println(p1)
+	//	fmt.Println(p1)
+	p1.RevealTopCardFromDeck(3)
+	//fmt.Println("revealCards:", revealCards)
+	//fmt.Println(p1)
 
-	popCards, _ := gman.TrashTopCardFromDeck(p1, 1)
-	fmt.Println("PopCards:", popCards)
-	fmt.Println(p1)
-	fmt.Println(gman)
+	gman.TrashTopCardFromDeck(p1, 1)
+	//fmt.Println("PopCards:", popCards)
+	//fmt.Println(p1)
+	//fmt.Println(gman)
 
 	p1.DrawCard(2)
 	fmt.Println(gman)
 	p1.PlayCardFromHand(0, gman)
 	fmt.Println(gman)
 
+}
+
+func TestGameMan(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	// test get player
+	p1 := gman.GetPlayer(1)
+
+	fmt.Println(gman)
+
+	fmt.Println(p1)
 }

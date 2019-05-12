@@ -5,6 +5,8 @@ type CardUpgrade struct {
 }
 
 func (r *CardUpgrade) InitCard() {
+	logger.Println("InitCard CardUpgrade")
+
 	r.CardID = Upgrade
 	r.cardType = []CardType{CardTypeAction}
 	r.cost = 5
@@ -13,25 +15,11 @@ func (r *CardUpgrade) InitCard() {
 
 func (r *CardUpgrade) DoAbility(p *Player) {
 	r.Card.DoAbility(p)
+	r.DoSpecialAbility()
 }
 
-/*
-func (r *CardUpgrade) AddCard(p *Player) {
-	cnt, _ := r.GetAbilityCount(AbilityAddCard)
-
-	p.DrawCard(cnt)
+func (r *CardUpgrade) DoSpecialAbility() {
 }
-
-func (r *CardUpgrade) AddBuy(p *Player) {
-	cnt, _ := r.GetAbilityCount(AbilityAddBuy)
-	p.buys += cnt
-}
-
-func (r *CardUpgrade) AddAction(p *Player) {
-	cnt, _ := r.GetAbilityCount(AbilityAddAction)
-	p.actions += cnt
-}
-*/
 
 func (r *CardUpgrade) String() string {
 	return r.Card.String()

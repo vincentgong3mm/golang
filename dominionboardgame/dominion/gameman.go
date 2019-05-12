@@ -71,20 +71,23 @@ func (r *GameMan) createCard(cardID CardID, cardType []CardType, cost int, abili
 	//
 	// -----------------------------------------------
 
-	switch cardID {
-	case Bandit:
-		n := &CardBandit{}
-		n.InitCard()
-		r.cards[cardID] = n
-	case Upgrade:
-		n := &CardUpgrade{}
-		n.InitCard()
-		r.cards[cardID] = n
-	default:
-		r.cards[cardID] = &Card{name: "", CardID: cardID, cardType: cardType, cost: cost, Ability: ability}
-	}
+	/*
+		switch cardID {
+		case Bandit:
+			n := &CardBandit{}
+			n.InitCard()
+			r.cards[cardID] = n
+		case Upgrade:
+			n := &CardUpgrade{}
+			n.InitCard()
+			r.cards[cardID] = n
+		default:
+			r.cards[cardID] = &Card{name: "", CardID: cardID, cardType: cardType, cost: cost, Ability: ability}
+		}
 
-	return r.cards[cardID]
+		return r.cards[cardID]
+	*/
+	return nil
 }
 
 func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
@@ -119,7 +122,11 @@ func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
 		r.supply.RegistCard(Festival, 10)
 		r.supply.RegistCard(Smithy, 10)
 		r.supply.RegistCard(Upgrade, 10)
-		r.supply.RegistCard(Bandit, 10)
+		r.supply.RegistCard(Laboratory, 10)
+
+		//r.supply.RegistCard(Artisan, 10)
+		//r.supply.RegistCard(Cellar, 10)
+		//r.supply.RegistCard(Chapel, 10)
 	case SetBigMoney:
 		r.supply.RegistCard(Copper, 50)
 	}
@@ -175,8 +182,10 @@ func (r *GameMan) gainBeginHandCard(player *Player) {
 		}
 	*/
 
-	// first shuffle deck
-	player.deck.Shuffle()
+	// for next turn init data and shuffle deck
+	player.InitForNextTurn()
+
+	//player.deck.Shuffle()
 
 }
 
@@ -195,12 +204,10 @@ func (r *GameMan) String() string {
 	s := "=======================================\n"
 	s += "GameMan Info\n"
 	s += "________________________________________\n"
-	/*
-		s += "Card List\n"
-		for _, v := range r.cards {
-			s += v.String()
-		}
-	*/
+	s += "Card List\n"
+	for _, v := range r.cards {
+		s += v.String()
+	}
 
 	s += "________________________________________\n"
 	s += r.supply.String()
@@ -220,32 +227,57 @@ func (r *GameMan) String() string {
 func (r GameMan) StringSupply() string {
 	return r.supply.String()
 }
+func (r *GameMan) createCardEx(card Actioner) {
+	card.InitCard()
+	r.cards[card.GetCardID()] = card
+}
 
 func (r *GameMan) CreateAllCard() error {
-	r.createCardByID(Bandit)
-	r.createCardByID(Smithy)
-	r.createCardByID(Upgrade)
+	// Original Dominion
+	r.createCardEx(&CardOriBase{Card{CardID: Copper}})
+	r.createCardEx(&CardOriBase{Card{CardID: Silver}})
+	r.createCardEx(&CardOriBase{Card{CardID: Gold}})
+	r.createCardEx(&CardOriBase{Card{CardID: Estate}})
+	r.createCardEx(&CardOriBase{Card{CardID: Duchy}})
+	r.createCardEx(&CardOriBase{Card{CardID: Province}})
 
-	r.createCard(Festival, []CardType{CardTypeAction}, 5,
-		[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
-	r.createCard(Village, []CardType{CardTypeAction}, 3,
-		[]Ability{{AbilityAddAction, 2}, {AbilityAddCard, 1}})
-	r.createCard(Smithy, []CardType{CardTypeAction}, 4,
-		[]Ability{{AbilityAddCard, 3}})
-	r.createCard(Market, []CardType{CardTypeAction}, 5,
-		[]Ability{{AbilityAddAction, 1}, {AbilityAddBuy, 1}, {AbilityAddCard, 1}, {AbilityAddCoin, 1}})
-	r.createCard(Gold, []CardType{CardTypeTreasure}, 6,
-		[]Ability{{AbilityAddCoin, 3}})
-	r.createCard(Silver, []CardType{CardTypeTreasure}, 3,
-		[]Ability{{AbilityAddCoin, 2}})
-	r.createCard(Copper, []CardType{CardTypeTreasure}, 0,
-		[]Ability{{AbilityAddCoin, 1}})
-	r.createCard(Province, []CardType{CardTypeVictory}, 8,
-		[]Ability{{AbilityAddVictory, 6}})
-	r.createCard(Duchy, []CardType{CardTypeVictory}, 5,
-		[]Ability{{AbilityAddVictory, 3}})
-	r.createCard(Estate, []CardType{CardTypeVictory}, 2,
-		[]Ability{{AbilityAddVictory, 1}})
+	r.createCardEx(&CardOriBase{Card{CardID: Village}})
+	r.createCardEx(&CardOriBase{Card{CardID: Market}})
+	r.createCardEx(&CardOriBase{Card{CardID: Smithy}})
+	r.createCardEx(&CardOriBase{Card{CardID: Festival}})
+	r.createCardEx(&CardOriBase{Card{CardID: Village}})
+	r.createCardEx(&CardOriBase{Card{CardID: Laboratory}})
+
+	// Intregue
+	r.createCardEx(&CardUpgrade{})
+
+	//r.createCard(Festival, []CardType{CardTypeAction}, 5, []Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
+	/*
+		r.createCardByID(Bandit)
+		r.createCardByID(Smithy)
+		r.createCardByID(Upgrade)
+
+		r.createCard(Festival, []CardType{CardTypeAction}, 5,
+			[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
+		r.createCard(Village, []CardType{CardTypeAction}, 3,
+			[]Ability{{AbilityAddAction, 2}, {AbilityAddCard, 1}})
+		r.createCard(Smithy, []CardType{CardTypeAction}, 4,
+			[]Ability{{AbilityAddCard, 3}})
+		r.createCard(Market, []CardType{CardTypeAction}, 5,
+			[]Ability{{AbilityAddAction, 1}, {AbilityAddBuy, 1}, {AbilityAddCard, 1}, {AbilityAddCoin, 1}})
+		r.createCard(Gold, []CardType{CardTypeTreasure}, 6,
+			[]Ability{{AbilityAddCoin, 3}})
+		r.createCard(Silver, []CardType{CardTypeTreasure}, 3,
+			[]Ability{{AbilityAddCoin, 2}})
+		r.createCard(Copper, []CardType{CardTypeTreasure}, 0,
+			[]Ability{{AbilityAddCoin, 1}})
+		r.createCard(Province, []CardType{CardTypeVictory}, 8,
+			[]Ability{{AbilityAddVictory, 6}})
+		r.createCard(Duchy, []CardType{CardTypeVictory}, 5,
+			[]Ability{{AbilityAddVictory, 3}})
+		r.createCard(Estate, []CardType{CardTypeVictory}, 2,
+			[]Ability{{AbilityAddVictory, 1}})
+	*/
 
 	return nil
 }

@@ -8,6 +8,8 @@ type Actioner interface {
 	//Draw(p *Player)
 	//AddBuy(p *Player)
 	//AddAction(p *Player)
+	InitCard()
+	GetCardID() CardID
 	DoAbility(p *Player)
 	//DoSpecailAbility(p *Player)
 	String() string
@@ -58,7 +60,12 @@ const (
 	Festival
 	Smithy
 	Market
-	Bandit
+	//Bandit
+	Laboratory
+	Artisan
+	Cellar
+	Chapel
+
 	Upgrade
 	MaxCardID
 )
@@ -77,7 +84,12 @@ var CardIDString = [...]string{
 	"Festival",
 	"Smithy",
 	"Market",
-	"Bandit",
+	//"Bandit",
+	"Laboratory",
+	"Artisan",
+	"Cellar",
+	"Chapel",
+
 	// Intrigue : Action Card
 	"Upgrade",
 }
@@ -108,6 +120,14 @@ type Card struct {
 
 type Cards []*Card
 
+func (r *Card) InitCard() {
+
+}
+
+func (r *Card) GetCardID() CardID {
+	return r.CardID
+}
+
 func (r *Card) GetAbilityCount(a AbilityType) (int, bool) {
 	for _, v := range r.Ability {
 		if v.abilityType == a {
@@ -119,6 +139,7 @@ func (r *Card) GetAbilityCount(a AbilityType) (int, bool) {
 }
 
 func (r *Card) DoAbility(p *Player) {
+	fmt.Println("DoAbility Card")
 	r.AddBuy(p)
 	r.AddAction(p)
 	r.AddCard(p)
