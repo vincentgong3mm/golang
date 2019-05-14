@@ -297,6 +297,7 @@ func TestPlayAction(t *testing.T) {
 func TestArtisan(t *testing.T) {
 	gman := CreateGameManAndSetSuppy()
 	CreateTwoPlayer(gman)
+	fmt.Println(gman)
 	p1 := gman.GetPlayer(1)
 
 	p1.GainCardGM(dom.Market)
@@ -308,7 +309,8 @@ func TestArtisan(t *testing.T) {
 	fmt.Println(p1)
 
 	// for Artisan add buffer 1
-	gman.WriteInBuffer("10")
+	gman.WriteInBuffer("10") // gain card 10(Market)
+	//gman.WriteInBuffer("1")  // put Market onto player's deck
 	p1.PlayCardFromHand(0, gman)
 	fmt.Println(p1)
 }

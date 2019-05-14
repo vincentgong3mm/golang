@@ -188,6 +188,17 @@ func (r *GameMan) gainFromSupplyToDeck(id CardID, player *Player) bool {
 	return false
 }
 
+func (r *GameMan) GainCardFromSupplyToHand(id CardID, p *Player) bool {
+	if r.supply.Pop(id) == true {
+		p.GainCard(id, ToHand)
+		return true
+	}
+
+	return false
+}
+
+//func (r *GameMan)
+
 func (r *GameMan) gainBeginHandCard(player *Player) {
 	for i := 0; i < 5; i++ {
 		r.gainFromSupplyToDeck(Upgrade, player)

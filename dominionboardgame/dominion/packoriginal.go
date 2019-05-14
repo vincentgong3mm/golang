@@ -102,8 +102,22 @@ func (r *CardArtisan) InitCard() {
 
 func (r *CardArtisan) DoSpecialAbility(p *Player, g *GameMan) {
 	cardNumber, _ := g.ReadInput()
-	fmt.Println(cardNumber)
-	g.gainCardFromSupply(CardID(cardNumber), p)
+	cardID := CardID(cardNumber)
+
+	fmt.Println("<----CardArtisan", cardNumber, cardID)
+
+	g.GainCardFromSupplyToHand(cardID, p)
+
+	// read input
+	//
+
+	// test begin
+	g.WriteInBuffer("1") // put Market onto player's deck
+	cardIndexInHand, _ := g.ReadInput()
+	fmt.Println("<----CardArtisan", cardIndexInHand)
+	p.PutCardFromHandToTopDeck(cardIndexInHand)
+	// test end
+
 }
 
 func (r *CardArtisan) String() string {

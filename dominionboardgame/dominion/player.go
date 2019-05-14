@@ -121,6 +121,26 @@ func (r *Player) GainCard(id CardID, to GainedCard) {
 	}
 }
 
+func (r *Player) PutOnToTopDeck(id CardID) {
+	tmpdeck := r.deck
+	r.deck = r.deck[:0]
+
+	r.deck = append(r.deck, id)
+	r.deck = append(r.deck, tmpdeck...)
+}
+
+func (r *Player) PutCardFromHandToTopDeck(index int) {
+	cardID := r.handCards[index]
+
+	front := r.handCards[0:index]
+	end := r.handCards[index+1 : len(r.handCards)]
+
+	r.handCards = front
+	r.handCards = append(r.handCards, end...)
+
+	r.PutOnToTopDeck(cardID)
+}
+
 // DrawCard is draw cards from deck to hand
 func (r *Player) DrawCard(cnt int) (CardIDs, error) {
 	if len(r.deck) < cnt {
