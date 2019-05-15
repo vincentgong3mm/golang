@@ -167,6 +167,7 @@ func (r *Card) DoAbility(p *Player) {
 	log += sline
 
 	fmt.Println(log)
+
 }
 
 func (r *Card) DoSpecialAbility(p *Player, g *GameMan) {

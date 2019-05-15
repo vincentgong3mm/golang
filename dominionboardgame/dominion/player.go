@@ -70,6 +70,13 @@ func (r Player) String() string {
 	return s
 }
 
+func (r Player) StringHand() string {
+	s := fmt.Sprintf("+Hand")
+	s += fmt.Sprintf("%s", r.handCards)
+
+	return s
+}
+
 func (r *Player) InitForNextTurn() {
 	r.coins = 0
 	r.buys = 1
@@ -129,7 +136,11 @@ func (r *Player) PutOnToTopDeck(id CardID) {
 	r.deck = append(r.deck, tmpdeck...)
 }
 
-func (r *Player) PutCardFromHandToTopDeck(index int) {
+func (r *Player) PutCardFromHandToTopDeck(index int) bool {
+	if index >= len(r.handCards) {
+		return false
+	}
+
 	cardID := r.handCards[index]
 
 	front := r.handCards[0:index]
@@ -139,6 +150,8 @@ func (r *Player) PutCardFromHandToTopDeck(index int) {
 	r.handCards = append(r.handCards, end...)
 
 	r.PutOnToTopDeck(cardID)
+
+	return true
 }
 
 // DrawCard is draw cards from deck to hand
@@ -213,11 +226,10 @@ func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	r.handCards = front
 	r.handCards = append(r.handCards, end...)
 
+	r.actions--
 	card := gman.cards[cardID]
 	card.DoAbility(r)
 	card.DoSpecialAbility(r, gman)
-
-	r.actions--
 
 	return nil
 }

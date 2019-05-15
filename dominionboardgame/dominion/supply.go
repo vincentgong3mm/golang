@@ -16,20 +16,20 @@ func NewDumyIDGenerator() func() DumyIndex {
 }
 
 type CardDumy struct {
-	index DumyIndex
-	cnt   int
+	cardID CardID
+	cnt    int
 }
 
 // Card Dumy in supply
 type Supply struct {
-	cards        map[CardID]CardDumy
+	cards        []CardDumy
 	genDumyIndex func() DumyIndex
 }
 
 func (r Supply) String() string {
 	s := "|"
-	for cardID, dumy := range r.cards {
-		s += fmt.Sprintf("%d#%s(%d)|", dumy.index, cardID.String(), dumy.cnt)
+	for i, v := range r.cards {
+		s += fmt.Sprintf("%d#%s(%d)|", i, v.cardID, v.cnt)
 	}
 
 	sline := strings.Repeat("-", len(s))
@@ -51,23 +51,41 @@ func init() {
 
 func CreateNewSupply() *Supply {
 	n := Supply{}
-	n.cards = make(map[CardID]CardDumy)
+	n.cards = make([]CardDumy, 0, 10)
 
-	n.genDumyIndex = NewDumyIDGenerator()
+	//n.cards = make(map[CardID]CardDumy)
+	//n.genDumyIndex = NewDumyIDGenerator()
 
 	return &n
 }
 
 func (r *Supply) RegistCard(c CardID, cnt int) {
-	r.cards[c] = CardDumy{index: r.genDumyIndex(), cnt: cnt}
+	r.cards = append(r.cards, CardDumy{cardID: c, cnt: cnt})
+	//r.cards[c] = CardDumy{index: r.genDumyIndex(), cnt: cnt}
 }
 
 func (r *Supply) Pop(id CardID) bool {
-	dumy, exist := r.cards[id]
-	if exist == true && dumy.cnt > 0 {
-		dumy.cnt--
-		r.cards[id] = CardDumy{index: dumy.index, cnt: dumy.cnt}
+	return r.PopByCardID(id)
+}
+
+func (r *Supply) PopByCardID(id CardID) bool {
+	for i, v := range r.cards {
+		if v.cardID == id {
+			v.cnt--
+			r.cards[i] = v
+			return true
+		}
 	}
 
-	return exist
+	return false
+}
+
+func (r *Supply) PopByIndex(index int) (CardID, bool) {
+	if index >= len(r.cards) {
+		return 0, false
+	}
+
+	r.cards[index].cnt--
+
+	return r.cards[index].cardID, true
 }

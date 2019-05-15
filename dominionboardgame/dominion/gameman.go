@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type GameMan struct {
@@ -197,29 +198,31 @@ func (r *GameMan) GainCardFromSupplyToHand(id CardID, p *Player) bool {
 	return false
 }
 
+func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player) bool {
+	if cardID, exist := r.supply.PopByIndex(index); exist == true {
+		p.GainCard(cardID, ToHand)
+
+		return true
+	}
+
+	return false
+}
+
 //func (r *GameMan)
 
 func (r *GameMan) gainBeginHandCard(player *Player) {
-	for i := 0; i < 5; i++ {
-		r.gainFromSupplyToDeck(Upgrade, player)
+	// draw 7 copper`
+	for i := 0; i < 7; i++ {
+		r.gainFromSupplyToDeck(Copper, player)
 	}
-	/*
-		// draw 7 copper`
-		for i := 0; i < 7; i++ {
-			r.gainPlayerFromSupply(Copper, player)
-		}
 
-		// draw 3 estate
-		for i := 0; i < 3; i++ {
-			r.gainPlayerFromSupply(Estate, player)
-		}
-	*/
+	// draw 3 estate
+	for i := 0; i < 3; i++ {
+		r.gainFromSupplyToDeck(Estate, player)
+	}
 
 	// for next turn init data and shuffle deck
 	player.InitForNextTurn()
-
-	//player.deck.Shuffle()
-
 }
 
 /*
@@ -363,6 +366,7 @@ func (r *GameMan) GMPlayAllCard(player *Player) {
 func (r *GameMan) ReadInput() (int, error) {
 	reader := bufio.NewReader(r.input)
 	str, err := reader.ReadString('\n')
+	str = strings.TrimRight(str, "\n")
 
 	n, err := strconv.Atoi(str)
 	return n, err

@@ -309,7 +309,7 @@ func TestArtisan(t *testing.T) {
 	fmt.Println(p1)
 
 	// for Artisan add buffer 1
-	gman.WriteInBuffer("10") // gain card 10(Market)
+	gman.WriteInBuffer("7") // gain card 7(Festival), 7 is supply's index
 	//gman.WriteInBuffer("1")  // put Market onto player's deck
 	p1.PlayCardFromHand(0, gman)
 	fmt.Println(p1)

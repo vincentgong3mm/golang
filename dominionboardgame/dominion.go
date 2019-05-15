@@ -16,17 +16,53 @@ func waitExit() {
 
 }
 
-func main() {
-	fmt.Println("Let's start Dominion!")
-
+func CreateGameManAndSetSuppy() *dom.GameMan {
 	gman := dom.CreateNewGameMan()
-	fmt.Println(gman)
-	gman.SetInputFromBuffer()
-	gman.WriteInBuffer("asdfasfd99999")
+	gman.CreateAllCard()
 
-	fmt.Println("Input String :")
-	str, _ := gman.ReadInput()
-	fmt.Println("str=", str)
+	gman.RegistCardToSuppy(dom.SetFirstGame, 2)
+
+	return gman
+}
+
+func CreateTwoPlayer(g *dom.GameMan) {
+	g.CreateNewPlayer("jong")
+	g.CreateNewPlayer("seong")
+}
+
+func main() {
+	/*
+		fmt.Println("Let's start Dominion!")
+
+		gman := dom.CreateNewGameMan()
+		fmt.Println(gman)
+		gman.SetInputFromBuffer()
+		gman.WriteInBuffer("10\n11\n")
+
+		fmt.Println("Input String :")
+		str, _ := gman.ReadInput()
+		fmt.Println("str=", str)
+		str, _ = gman.ReadInput()
+		fmt.Println("str=", str)
+	*/
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	fmt.Println(gman)
+	p1 := gman.GetPlayer(1)
+
+	p1.GainCardGM(dom.Market)
+	p1.GainCardGM(dom.Artisan)
+	fmt.Println(p1)
+
+	//gman.SetInputFromBuffer()
+	p1.PlayCardFromHand(0, gman)
+	fmt.Println(p1)
+
+	// for Artisan add buffer 1
+	//gman.WriteInBuffer("7") // gain card 7(Festival), 7 is supply's index
+	//gman.WriteInBuffer("1")  // put Market onto player's deck
+	p1.PlayCardFromHand(0, gman)
+	fmt.Println(p1)
 
 	waitExit()
 }
