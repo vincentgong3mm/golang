@@ -101,23 +101,21 @@ func (r *CardArtisan) InitCard() {
 }
 
 func (r *CardArtisan) DoSpecialAbility(p *Player, g *GameMan) {
-	/*
-		cardNumber, _ := g.ReadInput()
-		cardID := CardID(cardNumber)
+	for {
+		fmt.Println(">>>>", p.StringHand())
+		fmt.Println(">>>>", g.StringSupply())
+		index, _ := g.ReadInput(r.CardID.String(), ": Gain a card to your hand consting up to 5, choose supply's index #")
+		if err := g.GainCardFromSupplyToHandByIndex(index, p, 5); err != nil {
+			fmt.Println(err)
+		} else {
+			break
+		}
+	}
 
-		fmt.Println("<----CardArtisan", cardNumber, cardID)
+	fmt.Println(">>>>", p.StringHand())
 
-		g.GainCardFromSupplyToHand(cardID, p)
-	*/
-
-	index, _ := g.ReadInput()
-	fmt.Println("<----CardArtisan", index)
-	g.GainCardFromSupplyToHandByIndex(index, p)
-
-	fmt.Println(p.StringHand())
-
-	cardIndexInHand, _ := g.ReadInput()
-	fmt.Println("<----CardArtisan", cardIndexInHand)
+	// if error ....
+	cardIndexInHand, _ := g.ReadInput(r.CardID.String(), ": Put a card from your hand onto your deck, choose hand's index #")
 	p.PutCardFromHandToTopDeck(cardIndexInHand)
 
 }

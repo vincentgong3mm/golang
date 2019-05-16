@@ -24,7 +24,7 @@ func (r TrashPile) String() string {
 
 	sline := strings.Repeat("-", len(s))
 
-	return "#TrashPile\n" + sline + "\n" + s + "\n" + sline + "\n"
+	return "+TrashPile\n" + sline + "\n" + s + "\n" + sline
 }
 
 func (r *TrashPile) AddCard(id CardID) {

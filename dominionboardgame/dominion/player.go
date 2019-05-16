@@ -50,20 +50,19 @@ func (r Player) String() string {
 	s := ""
 	s += fmt.Sprintf("@Player:%s(ID:%d)\n", r.name, r.ID)
 
-	s += fmt.Sprintf("+Action:%dn\n", r.actions)
-	s += fmt.Sprintf("+Buy:%dn\n", r.buys)
-	s += fmt.Sprintf("+Coin:%dn\n", r.coins)
+	s += fmt.Sprintf("+Action(%d)\n", r.actions)
+	s += fmt.Sprintf("+Buy(%d)\n", r.buys)
+	s += fmt.Sprintf("+Coin(%d)\n", r.coins)
 	s += fmt.Sprintf("+Deck")
-	s += fmt.Sprintf("%s", r.deck)
-
+	s += fmt.Sprintf("%s\n", r.deck)
 	s += fmt.Sprintf("+Hand")
-	s += fmt.Sprintf("%s", r.handCards)
+	s += fmt.Sprintf("%s\n", r.handCards)
 
 	s += fmt.Sprintf("+CardPlayingArea")
-	s += fmt.Sprintf("%s", r.cardPlayingArea)
+	s += fmt.Sprintf("%s\n", r.cardPlayingArea)
 
 	s += fmt.Sprintf("+DiscardPile")
-	s += fmt.Sprintf("%s", r.discardPile)
+	s += fmt.Sprintf("%s\n", r.discardPile)
 
 	// test call ... GetLogInstance().Println(s)
 

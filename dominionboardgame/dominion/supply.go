@@ -34,7 +34,7 @@ func (r Supply) String() string {
 
 	sline := strings.Repeat("-", len(s))
 
-	return "#Supply\n" + sline + "\n" + s + "\n" + sline + "\n"
+	return "+Supply\n" + sline + "\n" + s + "\n" + sline
 }
 
 type SupplySet int
@@ -86,6 +86,14 @@ func (r *Supply) PopByIndex(index int) (CardID, bool) {
 	}
 
 	r.cards[index].cnt--
+
+	return r.cards[index].cardID, true
+}
+
+func (r *Supply) GetCard(index int) (CardID, bool) {
+	if index >= len(r.cards) {
+		return -1, false
+	}
 
 	return r.cards[index].cardID, true
 }

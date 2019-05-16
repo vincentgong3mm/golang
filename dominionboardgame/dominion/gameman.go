@@ -198,14 +198,24 @@ func (r *GameMan) GainCardFromSupplyToHand(id CardID, p *Player) bool {
 	return false
 }
 
-func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player) bool {
+func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player, uptocost int) error {
+	// choose card's cost is up to uptocst.
+	if cardID, exist := r.supply.GetCard(index); exist == true {
+		card := r.cards[cardID]
+		if card.GetCost() > uptocost {
+			return errors.New(fmt.Sprintf("%s's cost is not up to %d.", cardID, uptocost))
+		}
+	} else {
+		return errors.New(fmt.Sprintf("Supply isn't %d index card.", index))
+	}
+
 	if cardID, exist := r.supply.PopByIndex(index); exist == true {
 		p.GainCard(cardID, ToHand)
 
-		return true
+		return nil
 	}
 
-	return false
+	return errors.New(fmt.Sprintf("Supply isn't %d index card.", index))
 }
 
 //func (r *GameMan)
@@ -247,9 +257,11 @@ func (r *GameMan) String() string {
 
 	s += "________________________________________\n"
 	s += r.supply.String()
+	s += "\n"
 
 	s += "________________________________________\n"
 	s += r.trashPile.String()
+	s += "\n"
 
 	s += "________________________________________\n"
 	s += "Player List\n"
@@ -363,7 +375,8 @@ func (r *GameMan) GMPlayAllCard(player *Player) {
 	*/
 }
 
-func (r *GameMan) ReadInput() (int, error) {
+func (r *GameMan) ReadInput(s ...string) (int, error) {
+	fmt.Print(s)
 	reader := bufio.NewReader(r.input)
 	str, err := reader.ReadString('\n')
 	str = strings.TrimRight(str, "\n")

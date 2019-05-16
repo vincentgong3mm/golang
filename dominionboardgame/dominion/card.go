@@ -11,6 +11,7 @@ type Actioner interface {
 	//AddAction(p *Player)
 	InitCard()
 	GetCardID() CardID
+	GetCost() int
 	DoAbility(p *Player)
 	DoSpecialAbility(p *Player, g *GameMan)
 	String() string
@@ -103,12 +104,12 @@ func (r CardID) String() string {
 
 func (r CardIDs) String() string {
 	s := ""
-	s = fmt.Sprintf(":%dn|", len(r))
+	s = fmt.Sprintf("(%d)|", len(r))
 	for i, v := range r {
 		s += fmt.Sprintf("#%d:%s|", i, v)
 		//s += fmt.Sprintf("%s(%d)|", v, v)
 	}
-	s += "\n"
+	//	s += "\n"
 
 	return s
 }
@@ -133,6 +134,10 @@ func (r *Card) GetCardID() CardID {
 	return r.CardID
 }
 
+func (r *Card) GetCost() int {
+	return r.cost
+}
+
 func (r *Card) GetAbilityCount(a AbilityType) (int, bool) {
 	for _, v := range r.Ability {
 		if v.abilityType == a {
@@ -144,8 +149,6 @@ func (r *Card) GetAbilityCount(a AbilityType) (int, bool) {
 }
 
 func (r *Card) DoAbility(p *Player) {
-	//sline + "\n" + s + "\n"
-
 	sbuy := r.AddBuy(p)
 	saction := r.AddAction(p)
 	scard := r.AddCard(p)
