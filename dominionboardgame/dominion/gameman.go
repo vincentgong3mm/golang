@@ -203,10 +203,10 @@ func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player, uptocost
 	if cardID, exist := r.supply.GetCard(index); exist == true {
 		card := r.cards[cardID]
 		if card.GetCost() > uptocost {
-			return errors.New(fmt.Sprintf("%s's cost is not up to %d.", cardID, uptocost))
+			return errors.New(fmt.Sprintf("NOTE:%s's cost is not up to %d.", cardID, uptocost))
 		}
 	} else {
-		return errors.New(fmt.Sprintf("Supply isn't %d index card.", index))
+		return errors.New(fmt.Sprintf("NOTE:Supply isn't %d index card.", index))
 	}
 
 	if cardID, exist := r.supply.PopByIndex(index); exist == true {
@@ -215,7 +215,7 @@ func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player, uptocost
 		return nil
 	}
 
-	return errors.New(fmt.Sprintf("Supply isn't %d index card.", index))
+	return errors.New(fmt.Sprintf("NOTE:Supply isn't %d index card.", index))
 }
 
 //func (r *GameMan)

@@ -35,7 +35,9 @@ func main() {
 
 	player := Player{tl.NewEntity(1, 1, 1, 1)}
 	// Set the character at position (0, 0) on the entity.
-	player.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '@'})
+	//player.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '@'})
+	player.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '0'})
+	player.SetPosition(10, 10)
 	level.AddEntity(&player)
 
 	game.Screen().SetLevel(level)

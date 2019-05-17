@@ -135,9 +135,9 @@ func (r *Player) PutOnToTopDeck(id CardID) {
 	r.deck = append(r.deck, tmpdeck...)
 }
 
-func (r *Player) PutCardFromHandToTopDeck(index int) bool {
+func (r *Player) PutCardFromHandToTopDeck(index int) error {
 	if index >= len(r.handCards) {
-		return false
+		return errors.New(fmt.Sprintf("NOTE:Hand isn't %d index card.", index))
 	}
 
 	cardID := r.handCards[index]
@@ -150,7 +150,7 @@ func (r *Player) PutCardFromHandToTopDeck(index int) bool {
 
 	r.PutOnToTopDeck(cardID)
 
-	return true
+	return nil
 }
 
 // DrawCard is draw cards from deck to hand
@@ -161,7 +161,7 @@ func (r *Player) DrawCard(cnt int) (CardIDs, error) {
 	}
 
 	if len(r.deck) < cnt {
-		return CardIDs{}, errors.New(fmt.Sprintf("not enough deck. deck is %d < %d", len(r.deck), cnt))
+		return CardIDs{}, errors.New(fmt.Sprintf("NOTE:not enough deck. deck is %d < %d", len(r.deck), cnt))
 	}
 
 	tmpCards := r.deck[0:cnt]
