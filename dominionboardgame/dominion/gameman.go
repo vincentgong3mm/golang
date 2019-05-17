@@ -146,10 +146,9 @@ func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
 		r.supply.RegistCard(Smithy, 10)
 		r.supply.RegistCard(Upgrade, 10)
 		r.supply.RegistCard(Laboratory, 10)
-
-		//r.supply.RegistCard(Artisan, 10)
+		r.supply.RegistCard(Artisan, 10)
+		r.supply.RegistCard(Chapel, 10)
 		//r.supply.RegistCard(Cellar, 10)
-		//r.supply.RegistCard(Chapel, 10)
 	case SetBigMoney:
 		r.supply.RegistCard(Copper, 50)
 	}
@@ -297,36 +296,37 @@ func (r *GameMan) CreateAllCard() error {
 	r.createCardEx(&CardOriBase{Card{CardID: Village}})
 	r.createCardEx(&CardOriBase{Card{CardID: Laboratory}})
 	r.createCardEx(&CardArtisan{})
+	r.createCardEx(&CardChapel{})
 
 	// Intregue
 	r.createCardEx(&CardUpgrade{})
 
 	//r.createCard(Festival, []CardType{CardTypeAction}, 5, []Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
 	/*
-		r.createCardByID(Bandit)
-		r.createCardByID(Smithy)
-		r.createCardByID(Upgrade)
+			r.createCardByID(Bandit)
+			r.createCardByID(Smithy)
+			r.createCardByID(Upgrade)
 
-		r.createCard(Festival, []CardType{CardTypeAction}, 5,
-			[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
-		r.createCard(Village, []CardType{CardTypeAction}, 3,
-			[]Ability{{AbilityAddAction, 2}, {AbilityAddCard, 1}})
-		r.createCard(Smithy, []CardType{CardTypeAction}, 4,
-			[]Ability{{AbilityAddCard, 3}})
-		r.createCard(Market, []CardType{CardTypeAction}, 5,
-			[]Ability{{AbilityAddAction, 1}, {AbilityAddBuy, 1}, {AbilityAddCard, 1}, {AbilityAddCoin, 1}})
-		r.createCard(Gold, []CardType{CardTypeTreasure}, 6,
-			[]Ability{{AbilityAddCoin, 3}})
-		r.createCard(Silver, []CardType{CardTypeTreasure}, 3,
-			[]Ability{{AbilityAddCoin, 2}})
-		r.createCard(Copper, []CardType{CardTypeTreasure}, 0,
-			[]Ability{{AbilityAddCoin, 1}})
-		r.createCard(Province, []CardType{CardTypeVictory}, 8,
-			[]Ability{{AbilityAddVictory, 6}})
-		r.createCard(Duchy, []CardType{CardTypeVictory}, 5,
-			[]Ability{{AbilityAddVictory, 3}})
-		r.createCard(Estate, []CardType{CardTypeVictory}, 2,
-			[]Ability{{AbilityAddVictory, 1}})
+		s	r.createCard(Festival, []CardType{CardTypeAction}, 5,
+				[]Ability{{AbilityAddAction, 2}, {AbilityAddBuy, 1}, {AbilityAddCoin, 2}})
+			r.createCard(Village, []CardType{CardTypeAction}, 3,
+				[]Ability{{AbilityAddAction, 2}, {AbilityAddCard, 1}})
+			r.createCard(Smithy, []CardType{CardTypeAction}, 4,
+				[]Ability{{AbilityAddCard, 3}})
+			r.createCard(Market, []CardType{CardTypeAction}, 5,
+				[]Ability{{AbilityAddAction, 1}, {AbilityAddBuy, 1}, {AbilityAddCard, 1}, {AbilityAddCoin, 1}})
+			r.createCard(Gold, []CardType{CardTypeTreasure}, 6,
+				[]Ability{{AbilityAddCoin, 3}})
+			r.createCard(Silver, []CardType{CardTypeTreasure}, 3,
+				[]Ability{{AbilityAddCoin, 2}})
+			r.createCard(Copper, []CardType{CardTypeTreasure}, 0,
+				[]Ability{{AbilityAddCoin, 1}})
+			r.createCard(Province, []CardType{CardTypeVictory}, 8,
+				[]Ability{{AbilityAddVictory, 6}})
+			r.createCard(Duchy, []CardType{CardTypeVictory}, 5,
+				[]Ability{{AbilityAddVictory, 3}})
+			r.createCard(Estate, []CardType{CardTypeVictory}, 2,
+				[]Ability{{AbilityAddVictory, 1}})
 	*/
 
 	return nil
@@ -343,8 +343,14 @@ func (r *GameMan) buyCard(p *Player, id CardID) error {
 	return errors.New(fmt.Sprintf("Not enough %s card in supply", id))
 }
 
-func (r *GameMan) TrashCardFromHand(p *Player, i int) {
+func (r *GameMan) TrashCardFromHand(p *Player, index int) error {
+	if cardID, err := p.handCards.RemoveCard(index); err != nil {
+		return err
+	} else {
+		r.trashPile.AddCard(cardID)
+	}
 
+	return nil
 }
 
 func (r *GameMan) TrashTopCardFromDeck(p *Player, cnt int) (CardIDs, error) {

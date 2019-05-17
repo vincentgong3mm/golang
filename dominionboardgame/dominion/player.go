@@ -204,10 +204,15 @@ func (r *Player) GainCardGM(card CardID) {
 	r.GainCard(card, ToHand)
 }
 
+/*
 // TranshCard is trash card to trash
-func (r *Player) TrashCardFromHand(index int) {
+func (r *Player) TrashCardFromHand(index int) error {
+	if cardID, err := r.handCards.RemoveCard(int); err != nil {
+		return err
+	}
 
 }
+*/
 
 func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	if index >= len(r.handCards) {
@@ -226,7 +231,11 @@ func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	r.handCards = append(r.handCards, end...)
 
 	r.actions--
-	card := gman.cards[cardID]
+	card, exist := gman.cards[cardID]
+	if exist == false {
+		return errors.New(fmt.Sprintf("%s is not registed.", cardID))
+	}
+
 	card.DoAbility(r)
 	card.DoSpecialAbility(r, gman)
 

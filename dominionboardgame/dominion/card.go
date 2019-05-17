@@ -1,6 +1,7 @@
 package dominion
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -29,10 +30,6 @@ const (
 )
 
 const (
-	InvaildCardID = -1
-)
-
-const (
 	CardWidth = 20
 )
 
@@ -52,7 +49,8 @@ type CardID int
 type CardIDs []CardID
 
 const (
-	Copper CardID = 0 + iota
+	InvalidCardID CardID = 0 + iota
+	Copper
 	Silver
 	Gold
 	Estate
@@ -74,6 +72,7 @@ const (
 )
 
 var CardIDString = [...]string{
+	"InvalidCardID",
 	// Original : Treasure Card
 	"Copper",
 	"Silver",
@@ -100,6 +99,22 @@ var CardIDString = [...]string{
 
 func (r CardID) String() string {
 	return CardIDString[r%MaxCardID]
+}
+
+func (r *CardIDs) RemoveCard(index int) (CardID, error) {
+	if index >= len(*r) {
+		return -1, errors.New("Invalid card Index")
+	}
+
+	cardID := (*r)[index]
+
+	front := (*r)[0:index]
+	end := (*r)[index+1 : len(*r)]
+
+	*r = front
+	*r = append(*r, end...)
+
+	return cardID, nil
 }
 
 func (r CardIDs) String() string {
