@@ -309,8 +309,34 @@ func TestArtisan(t *testing.T) {
 	fmt.Println(p1)
 
 	// for Artisan add buffer 1
-	gman.WriteInBuffer("7") // gain card 7(Festival), 7 is supply's index
-	//gman.WriteInBuffer("1")  // put Market onto player's deck
+	gman.WriteInBuffer("3\n") // gain card 7(Festival), 7 is supply's index
+	gman.WriteInBuffer("3\n") // put Market onto player's deck
 	p1.PlayCardFromHand(0, gman)
 	fmt.Println(p1)
+}
+
+func TestChapel(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	fmt.Println(gman)
+	p1 := gman.GetPlayer(1)
+
+	p1.GainCardGM(dom.Copper)
+	p1.GainCardGM(dom.Chapel)
+	p1.GainCardGM(dom.Estate)
+	p1.GainCardGM(dom.Market)
+	p1.GainCardGM(dom.Artisan)
+	fmt.Println(p1)
+
+	gman.SetInputFromBuffer()
+	gman.WriteInBuffer("2\n") // gain card 7(Festival), 7 is supply's index
+	gman.WriteInBuffer("1\n") // put Market onto player's deck
+	if err := p1.PlayCardFromHand(1, gman); err != nil {
+		fmt.Println(err)
+	}
+	/*
+		gman.WriteInBuffer("3\n") // put Market onto player's deck
+		p1.PlayCardFromHand(0, gman)
+		fmt.Println(p1)
+	*/
 }

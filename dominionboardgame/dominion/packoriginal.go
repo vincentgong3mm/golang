@@ -112,15 +112,52 @@ func (r *CardArtisan) DoSpecialAbility(p *Player, g *GameMan) {
 		}
 	}
 
-	fmt.Println(">>>>", p.StringHand())
-
-	// if error ....
-	cardIndexInHand, _ := g.ReadInput(r.CardID.String(), ": Put a card from your hand onto your deck, choose hand's index #")
-	p.PutCardFromHandToTopDeck(cardIndexInHand)
+	for {
+		fmt.Println(">>>>", p.StringHand())
+		cardIndexInHand, _ := g.ReadInput(r.CardID.String(), ": Put a card from your hand onto your deck, choose hand's index #")
+		if err := p.PutCardFromHandToTopDeck(cardIndexInHand); err != nil {
+			fmt.Println(err)
+		} else {
+			break
+		}
+	}
 
 }
 
 func (r *CardArtisan) String() string {
+	return r.Card.String()
+}
+
+type CardChapel struct {
+	Card
+}
+
+func (r *CardChapel) InitCard() {
+	r.CardID = Chapel
+	r.cardType = []CardType{CardTypeAction}
+	r.cost = 2
+	r.Ability = []Ability{}
+}
+
+func (r *CardChapel) DoSpecialAbility(p *Player, g *GameMan) {
+	for i := 0; i < 4; {
+		fmt.Println(">>>>", p.StringHand())
+		index, err := g.ReadInput(r.CardID.String(), ": Trash up to 4 cards from your hand, choose card's index #")
+
+		// input '' enter is that don't trash card
+		if err != nil {
+			break
+		}
+
+		if err := g.TrashCardFromHand(p, index); err != nil {
+			fmt.Println(err)
+		} else {
+			i++
+		}
+	}
+}
+
+func (r *CardChapel) String() string {
 	return r.Card.String()
 }
 
