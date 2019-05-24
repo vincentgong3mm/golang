@@ -193,6 +193,37 @@ func (r *CardCellar) String() string {
 	return r.Card.String()
 }
 
+type CardWorkshop struct {
+	Card
+}
+
+func (r *CardWorkshop) InitCard() {
+	r.CardID = Workshop
+	r.cardType = []CardType{CardTypeAction}
+	r.cost = 3
+	r.Ability = []Ability{}
+}
+
+func (r *CardWorkshop) DoSpecialAbility(p *Player, g *GameMan) {
+	for {
+		fmt.Println(">>>>", g.StringSupply())
+		index, err := g.ReadInput(r.CardID.String(), ": Gain a card costing up to 4. Choose card's index in supply#")
+		// input '' enter is that don't trash card
+		if err != nil {
+			break
+		}
+		if err := g.GainCardFromSupplyByIndex(index, p, 4); err != nil {
+			fmt.Println(err)
+		} else {
+			break
+		}
+	}
+}
+
+func (r *CardWorkshop) String() string {
+	return r.Card.String()
+}
+
 /*
 type CardBandit struct {
 	Card

@@ -351,24 +351,42 @@ func TestCellar(t *testing.T) {
 	p1.GainCardGM(dom.Chapel)
 	p1.GainCardGM(dom.Estate)
 	p1.GainCardGM(dom.Cellar)
-	p1.GainCardGM(dom.Artisan)
+	p1.GainCardGM(dom.Laboratory)
 	fmt.Println(p1)
-
 	gman.SetInputFromBuffer()
-	gman.WriteInBuffer("2\n")
-	gman.WriteInBuffer("2\n")
 	gman.WriteInBuffer("2\n")
 	gman.WriteInBuffer("\n")
 
 	if err := p1.PlayCardFromHand(3, gman); err != nil {
 		fmt.Println(err)
 	}
-	/*
-		gman.SetInputFromBuffer()
-		gman.WriteInBuffer("2\n") // gain card 7(Festival), 7 is supply's index
-		gman.WriteInBuffer("1\n") // put Market onto player's deck
-		if err := p1.PlayCardFromHand(1, gman); err != nil {
-			fmt.Println(err)
-		}
-	*/
+	if err := p1.PlayCardFromHand(2, gman); err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(p1)
+}
+
+func TestWorkshop(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	fmt.Println(gman)
+	p1 := gman.GetPlayer(1)
+
+	p1.GainCardGM(dom.Copper)
+	p1.GainCardGM(dom.Chapel)
+	p1.GainCardGM(dom.Estate)
+	p1.GainCardGM(dom.Cellar)
+	p1.GainCardGM(dom.Workshop)
+
+	fmt.Println(p1)
+	gman.SetInputFromBuffer()
+	gman.WriteInBuffer("12\n") // select supply index
+
+	if err := p1.PlayCardFromHand(4, gman); err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(p1)
+
 }

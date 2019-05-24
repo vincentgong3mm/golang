@@ -66,6 +66,7 @@ const (
 	Artisan
 	Cellar
 	Chapel
+	Workshop
 
 	Upgrade
 	MaxCardID
@@ -92,6 +93,7 @@ var CardIDString = [...]string{
 	"Artisan",
 	"Cellar",
 	"Chapel",
+	"WorkShop",
 
 	// Intrigue : Action Card
 	"Upgrade",
@@ -182,6 +184,7 @@ func (r *Card) DoAbility(p *Player) {
 	log += saction
 	log += scard
 	log += scoin
+	log += "\n"
 	log += sline
 
 	fmt.Println(log)
