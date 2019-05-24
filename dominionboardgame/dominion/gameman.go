@@ -297,6 +297,7 @@ func (r *GameMan) CreateAllCard() error {
 	r.createCardEx(&CardOriBase{Card{CardID: Laboratory}})
 	r.createCardEx(&CardArtisan{})
 	r.createCardEx(&CardChapel{})
+	r.createCardEx(&CardCellar{})
 
 	// Intregue
 	r.createCardEx(&CardUpgrade{})

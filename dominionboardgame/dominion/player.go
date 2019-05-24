@@ -135,6 +135,7 @@ func (r *Player) PutOnToTopDeck(id CardID) {
 	r.deck = append(r.deck, tmpdeck...)
 }
 
+// Artisan : SpecialAbility
 func (r *Player) PutCardFromHandToTopDeck(index int) error {
 	if index >= len(r.handCards) {
 		return errors.New(fmt.Sprintf("NOTE:Hand isn't %d index card.", index))
@@ -202,6 +203,24 @@ func (r *Player) BuyCardGM(card CardID) {
 }
 func (r *Player) GainCardGM(card CardID) {
 	r.GainCard(card, ToHand)
+}
+
+func (r *Player) DiscardFromHand(index int) error {
+	if index >= len(r.handCards) {
+		return errors.New("Invaild Hand Cards Index")
+	}
+
+	id := r.handCards[index]
+
+	front := r.handCards[0:index]
+	end := r.handCards[index+1 : len(r.handCards)]
+
+	r.handCards = front
+	r.handCards = append(r.handCards, end...)
+
+	r.GainCard(id, ToDiscardPile)
+
+	return nil
 }
 
 /*

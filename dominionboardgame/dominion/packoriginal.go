@@ -161,6 +161,38 @@ func (r *CardChapel) String() string {
 	return r.Card.String()
 }
 
+type CardCellar struct {
+	Card
+}
+
+func (r *CardCellar) InitCard() {
+	r.CardID = Cellar
+	r.cardType = []CardType{CardTypeAction}
+	r.cost = 2
+	r.Ability = []Ability{{AbilityAddAction, 1}}
+}
+
+func (r *CardCellar) DoSpecialAbility(p *Player, g *GameMan) {
+	for i := 0; i < 4; {
+		fmt.Println(">>>>", p.StringHand())
+		index, err := g.ReadInput(r.CardID.String(), ": Discard any number of cards.+1 Card per card discarded. Choose card's index to discard#")
+		// input '' enter is that don't trash card
+		if err != nil {
+			break
+		}
+
+		if err := p.DiscardFromHand(index); err != nil {
+			fmt.Println(err)
+		} else {
+			i++
+		}
+	}
+}
+
+func (r *CardCellar) String() string {
+	return r.Card.String()
+}
+
 /*
 type CardBandit struct {
 	Card
