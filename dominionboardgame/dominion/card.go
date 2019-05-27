@@ -7,16 +7,13 @@ import (
 )
 
 type Actioner interface {
-	//Draw(p *Player)
-	//AddBuy(p *Player)
-	//AddAction(p *Player)
 	InitCard()
 	GetCardID() CardID
 	GetCost() int
 	DoAbility(p *Player)
 	DoSpecialAbility(p *Player, g *GameMan)
 	String() string
-	//DoSpecailACtion()
+	DoOtherPlayer(p *Player, g *GameMan) // p is this turn player
 }
 
 // CardType is	Action, Treasure, Victory
@@ -192,6 +189,9 @@ func (r *Card) DoAbility(p *Player) {
 }
 
 func (r *Card) DoSpecialAbility(p *Player, g *GameMan) {
+}
+
+func (r *Card) DoOtherPlayer(p *Player, g *GameMan) {
 }
 
 func (r *Card) AddBuy(p *Player) string {
