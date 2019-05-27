@@ -29,11 +29,43 @@ type Player struct {
 	actions int
 	buys    int
 	coins   int
+
+	chanGameMan chan MessageGameMan
+	chanPlay    chan MessagePlay
 }
 
 func init() {
 	fmt.Println("import dominon/player")
 
+}
+
+func (p *Player) InitChan() {
+	p.chanGameMan = make(chan MessageGameMan)
+	p.chanPlay = make(chan MessagePlay)
+
+	go p.DoChanMessage()
+}
+
+func (p *Player) SendGameManMessage(msg *MessageGameMan) {
+	p.chanGameMan <- *msg
+}
+
+func (p *Player) SendPlayMessage(msg *MessagePlay) {
+	p.chanPlay <- *msg
+}
+
+func (p *Player) DoChanMessage() {
+	fmt.Println("Run DoChanMessage", p.name, p.ID)
+	for {
+		select {
+		case g := <-p.chanGameMan:
+			fmt.Println("Receive From chanGameMan", g)
+		case p := <-p.chanPlay:
+			fmt.Println("Receive From Play", p)
+		}
+	}
+
+	fmt.Println("exit DoChanMessage", p.name, p.ID)
 }
 
 type PlayerID int

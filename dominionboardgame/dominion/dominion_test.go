@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	dom "github.com/vincentgong3mm/golang/dominionboardgame/dominion"
 )
@@ -389,4 +390,25 @@ func TestWorkshop(t *testing.T) {
 
 	fmt.Println(p1)
 
+}
+
+func TestChan(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	fmt.Println(gman)
+	p1 := gman.GetPlayer(1)
+
+	p1.SendGameManMessage(&dom.MessageGameMan{Msg: dom.MsgFinishGame})
+	p1.SendGameManMessage(&dom.MessageGameMan{Msg: dom.MsgCloseGame})
+	p1.SendGameManMessage(&dom.MessageGameMan{Msg: dom.MsgFinishGame})
+	p1.SendGameManMessage(&dom.MessageGameMan{Msg: dom.MsgFinishGame})
+	//p1.SendPlayMessage(MessagePlay{})
+
+	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgPlayCard, Step: 7})
+	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgOtherPlayCard, Step: 2})
+	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgPlayCard, Step: 3})
+
+	fmt.Println(p1)
+
+	time.Sleep(500 * time.Millisecond)
 }

@@ -11,6 +11,52 @@ import (
 	"strings"
 )
 
+/*
+type MessageType int
+
+const (
+	MsgNone        MessageType = 0 + iota
+	MsgGameMan                 // Player <- GameMan
+	MsgPlayer                  // Player <- Player
+	MsgOtherPlayer             // Player <- OtherPlayer
+)
+*/
+
+type MessageTypeGameMan int
+
+const (
+	MsgPrepareGame MessageTypeGameMan = 0 + iota // 게임 시작
+	MsgFinishGame                                // 플레이 종료. Victory 점수 계산 단계
+	MsgCloseGame                                 // 모두 종료
+	MsgYourTurn                                  // player turn
+)
+
+type MessageGameMan struct {
+	Msg MessageTypeGameMan
+}
+
+type MessageTypePlay int
+
+const (
+	MsgPlayCard      MessageTypePlay = 0 + iota // 자신의 turn에 카드 플레이
+	MsgOtherPlayCard                            // 다른 플레이가 카드 플레이, 나에게 영향을 미치는 경우 받음.
+)
+
+type ActionState int
+
+const (
+	DoAction ActionState = 0 + iota
+	DoneAction
+)
+
+type MessagePlay struct {
+	Msg    MessageTypePlay
+	CardID CardID
+
+	Step   int
+	IsDone ActionState // DoAction : step의 action 해야함, DoneAction : step의 action 완료됨
+}
+
 type GameMan struct {
 	//cards map[CardID]Card
 
@@ -158,6 +204,8 @@ func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
 func (r *GameMan) CreateNewPlayer(name string) *Player {
 	playerID := r.genPlayerID()
 	player := Player{name: name, ID: playerID}
+
+	player.InitChan()
 
 	// inser Pplayer Point to map
 	r.players[playerID] = &player
