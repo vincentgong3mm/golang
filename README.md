@@ -1,6 +1,11 @@
 # golang
 vincent golang 
 
+## Dominion wiki
+[Dominion Rule](https://namu.wiki/w/%EB%8F%84%EB%AF%B8%EB%8B%88%EC%96%B8%28%EB%B3%B4%EB%93%9C%20%EA%B2%8C%EC%9E%84%29)
+
+[Dominion Card](https://namu.wiki/w/%EB%8F%84%EB%AF%B8%EB%8B%88%EC%96%B8%28%EB%B3%B4%EB%93%9C%20%EA%B2%8C%EC%9E%84%29/%EC%B9%B4%EB%93%9C%20%EB%AA%A9%EB%A1%9D/%EB%8F%84%EB%AF%B8%EB%8B%88%EC%96%B8)
+
 ## ToDo List
 - complete) Log Method
 - --)Play Card Action  Method
