@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/vincentgong3mm/golang/study2019/exch"
+	//"github.com/vincentgong3mm/golang/study2019/exch"
 	//"github.com/vincentgong3mm/golang/study2019/exregexp"
 	rt "github.com/vincentgong3mm/golang/study2019/routine"
 
@@ -13,7 +13,7 @@ import (
 func main() {
 	fmt.Println("hi..")
 
-	exch.TestChannel()
+	//exch.TestChannel()
 	//exregexp.TestRegexp()
 
 	var wait sync.WaitGroup

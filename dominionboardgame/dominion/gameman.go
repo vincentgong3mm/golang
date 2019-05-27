@@ -197,6 +197,7 @@ func (r *GameMan) GainCardFromSupplyToHand(id CardID, p *Player) bool {
 	return false
 }
 
+// GainCardFromSupplyToHandByIndex is Artisan's SpecialAbility
 func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player, uptocost int) error {
 	// choose card's cost is up to uptocst.
 	if cardID, exist := r.supply.GetCard(index); exist == true {
@@ -211,6 +212,26 @@ func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player, uptocost
 	if cardID, exist := r.supply.PopByIndex(index); exist == true {
 		p.GainCard(cardID, ToHand)
 
+		return nil
+	}
+
+	return errors.New(fmt.Sprintf("NOTE:Supply isn't %d index card.", index))
+}
+
+// GainCardFromSupplyByIndex is Workshop's SpecialAbility
+func (r *GameMan) GainCardFromSupplyByIndex(index int, p *Player, uptocost int) error {
+	// choose card's cost is up to uptocst.
+	if cardID, exist := r.supply.GetCard(index); exist == true {
+		card := r.cards[cardID]
+		if card.GetCost() > uptocost {
+			return errors.New(fmt.Sprintf("NOTE:%s's cost is not up to %d.", cardID, uptocost))
+		}
+	} else {
+		return errors.New(fmt.Sprintf("NOTE:Supply isn't %d index card.", index))
+	}
+
+	if cardID, exist := r.supply.PopByIndex(index); exist == true {
+		p.GainCard(cardID, ToDiscardPile)
 		return nil
 	}
 
@@ -297,6 +318,8 @@ func (r *GameMan) CreateAllCard() error {
 	r.createCardEx(&CardOriBase{Card{CardID: Laboratory}})
 	r.createCardEx(&CardArtisan{})
 	r.createCardEx(&CardChapel{})
+	r.createCardEx(&CardCellar{})
+	r.createCardEx(&CardWorkshop{})
 
 	// Intregue
 	r.createCardEx(&CardUpgrade{})
