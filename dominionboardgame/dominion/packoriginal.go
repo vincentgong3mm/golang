@@ -224,6 +224,39 @@ func (r *CardWorkshop) String() string {
 	return r.Card.String()
 }
 
+type CardWitch struct {
+	Card
+}
+
+func (r *CardWitch) String() string {
+	return r.Card.String()
+}
+
+func (r *CardWitch) InitCard() {
+	r.CardID = Witch
+	r.cardType = []CardType{CardTypeAction}
+	r.cost = 5
+	r.Ability = []Ability{{AbilityAddCard, 2}}
+}
+
+func (r *CardWitch) DoSpecialAbility(p *Player, g *GameMan) {
+	for {
+		fmt.Println(">>>>", g.StringSupply())
+		fmt.Println("Each other player gains a Curse card.")
+
+		
+	}
+}
+
+func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan) {
+	fmt.Println(">>>>", g.StringSupply())
+	fmt.Println("Gain a Curse card.")
+
+	g.GainCardFromSupplyToDiscardPile(Curse, p)
+
+	// send to player, witch is done.
+}
+
 /*
 type CardBandit struct {
 	Card

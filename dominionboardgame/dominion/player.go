@@ -39,11 +39,11 @@ func init() {
 
 }
 
-func (p *Player) InitChan() {
+func (p *Player) InitChan(g *GameMan) {
 	p.chanGameMan = make(chan MessageGameMan)
 	p.chanPlay = make(chan MessagePlay)
 
-	go p.DoChanMessage()
+	go p.DoChanMessage(g)
 }
 
 func (p *Player) SendGameManMessage(msg *MessageGameMan) {
@@ -54,18 +54,35 @@ func (p *Player) SendPlayMessage(msg *MessagePlay) {
 	p.chanPlay <- *msg
 }
 
-func (p *Player) DoChanMessage() {
+func (p *Player) DoChanMessage(g *GameMan) {
 	fmt.Println("Run DoChanMessage", p.name, p.ID)
 	for {
 		select {
-		case g := <-p.chanGameMan:
+		case msg := <-p.chanGameMan:
 			fmt.Println("Receive From chanGameMan", g)
-		case p := <-p.chanPlay:
+			p.DoGameManMessage(g, &msg)
+		case msg := <-p.chanPlay:
 			fmt.Println("Receive From Play", p)
+			p.DoPlayMessage(g, &msg)
 		}
 	}
 
 	fmt.Println("exit DoChanMessage", p.name, p.ID)
+}
+
+func (p *Player) DoGameManMessage(g *GameMan, msg *MessageGameMan) {
+
+}
+
+func (p *Player) DoPlayMessage(g *GameMan, msg *MessagePlay) {
+	fmt.Println("DoPlayMessage", msg)
+
+	switch msg.Msg {
+	case MsgPlayCard:
+	case MsgOtherPlayCard:
+		card := g.cards[msg.CardID]
+		card.DoOtherPlayer(p, g)
+	}
 }
 
 type PlayerID int
@@ -218,6 +235,7 @@ func (r *Player) CleanUp() {
 	r.handCards = r.handCards[:0]
 }
 
+/*
 func (r *Player) BuyCard(card CardID) error {
 	if r.buys <= 0 {
 		return errors.New(fmt.Sprintf("can't buy. buy count is %d", r.buys))
@@ -229,6 +247,7 @@ func (r *Player) BuyCard(card CardID) error {
 
 	return nil
 }
+*/
 
 func (r *Player) BuyCardGM(card CardID) {
 	r.GainCard(card, ToDiscardPile)

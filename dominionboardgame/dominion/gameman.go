@@ -205,7 +205,7 @@ func (r *GameMan) CreateNewPlayer(name string) *Player {
 	playerID := r.genPlayerID()
 	player := Player{name: name, ID: playerID}
 
-	player.InitChan()
+	player.InitChan(r)
 
 	// inser Pplayer Point to map
 	r.players[playerID] = &player
@@ -234,6 +234,32 @@ func (r *GameMan) gainFromSupplyToDeck(id CardID, player *Player) bool {
 	}
 
 	return false
+}
+
+// BuyCard is gain a card from supply to discard pile, -1 buys.
+func (r *GameMan) BuyCard(id CardID, p *Player) error {
+	if p.buys <= 0 {
+		return errors.New(fmt.Sprintf("can't buy. buy count is %d", p.buys))
+	}
+
+	if r.supply.Pop(id) == true {
+		p.buys--
+		p.GainCard(id, ToDiscardPile)
+		return nil
+	}
+
+	return errors.New(fmt.Sprintf("NOTE:%s isn't in Supply.", id))
+}
+
+//GainCardFromSupplyToDiscardPile is gain a card from supply to discard pile. ex) witch, gain a curse
+func (r *GameMan) GainCardFromSupplyToDiscardPile(id CardID, p *Player) error {
+	if r.supply.Pop(id) == true {
+		p.buys--
+		p.GainCard(id, ToDiscardPile)
+		return nil
+	}
+
+	return errors.New(fmt.Sprintf("NOTE:%s isn't in Supply.", id))
 }
 
 func (r *GameMan) GainCardFromSupplyToHand(id CardID, p *Player) bool {
@@ -368,6 +394,7 @@ func (r *GameMan) CreateAllCard() error {
 	r.createCardEx(&CardChapel{})
 	r.createCardEx(&CardCellar{})
 	r.createCardEx(&CardWorkshop{})
+	r.createCardEx(&CardWitch{})
 
 	// Intregue
 	r.createCardEx(&CardUpgrade{})
@@ -403,6 +430,7 @@ func (r *GameMan) CreateAllCard() error {
 	return nil
 }
 
+/*
 func (r *GameMan) buyCard(p *Player, id CardID) error {
 	// supply에서 하나 제거하고
 	if r.supply.Pop(id) == true {
@@ -413,6 +441,7 @@ func (r *GameMan) buyCard(p *Player, id CardID) error {
 
 	return errors.New(fmt.Sprintf("Not enough %s card in supply", id))
 }
+*/
 
 func (r *GameMan) TrashCardFromHand(p *Player, index int) error {
 	if cardID, err := p.handCards.RemoveCard(index); err != nil {
