@@ -205,6 +205,7 @@ func (r *GameMan) CreateNewPlayer(name string) *Player {
 	playerID := r.genPlayerID()
 	player := Player{name: name, ID: playerID}
 
+	// init channel and go routine
 	player.InitChan(r)
 
 	// inser Pplayer Point to map
@@ -215,6 +216,13 @@ func (r *GameMan) CreateNewPlayer(name string) *Player {
 	r.gainBeginHandCard(t)
 
 	return r.players[playerID]
+}
+
+func (r *GameMan) SendMessageToOtherPlayer(msg *MessagePlay) {
+	for _, v := range r.players {
+		v.SendPlayMessage(msg)
+	}
+
 }
 
 func (r *GameMan) GetPlayer(id PlayerID) *Player {

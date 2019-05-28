@@ -112,16 +112,18 @@ func TestCleanUp(t *testing.T) {
 }
 
 func TestBuyCard(t *testing.T) {
-	gman := dom.CreateNewGameMan()
-	gman.CreateAllCard()
+	/*
+		gman := dom.CreateNewGameMan()
+		gman.CreateAllCard()
 
-	p1 := gman.CreateNewPlayer("jong")
-	fmt.Println(p1)
-
-	for i := 0; i < 3; i++ {
-		p1.BuyCard(dom.Festival)
+		p1 := gman.CreateNewPlayer("jong")
 		fmt.Println(p1)
-	}
+
+		for i := 0; i < 3; i++ {
+			p1.BuyCard(dom.Festival)
+			fmt.Println(p1)
+		}
+	*/
 }
 
 func CreateGameMan() *dom.GameMan {
@@ -181,8 +183,8 @@ func TestDrawAndCleanUp(t *testing.T) {
 	p2.DrawCard(5)
 	fmt.Println(p1, p2)
 
-	p1.BuyCard(dom.Festival)
-	p2.BuyCard(dom.Market)
+	gman.BuyCard(dom.Festival, p1)
+	gman.BuyCard(dom.Market, p1)
 	fmt.Println(p1, p2)
 
 	logger.Println("TestDrawAndCleanUp")
@@ -411,4 +413,26 @@ func TestChan(t *testing.T) {
 	fmt.Println(p1)
 
 	time.Sleep(500 * time.Millisecond)
+}
+
+func TestWitch(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	fmt.Println(gman)
+	p1 := gman.GetPlayer(1)
+	p2 := gman.GetPlayer(2)
+
+	p1.DrawCard(4)
+	p2.DrawCard(5)
+
+	p1.GainCardGM(dom.Witch)
+
+	if err := p1.PlayCardFromHand(4, gman); err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(p1)
+	fmt.Println(p2)
+	time.Sleep(500 * time.Millisecond)
+
 }
