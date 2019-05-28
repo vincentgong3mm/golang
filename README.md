@@ -6,43 +6,27 @@ vincent golang
 
 [Dominion Card](https://namu.wiki/w/%EB%8F%84%EB%AF%B8%EB%8B%88%EC%96%B8%28%EB%B3%B4%EB%93%9C%20%EA%B2%8C%EC%9E%84%29/%EC%B9%B4%EB%93%9C%20%EB%AA%A9%EB%A1%9D/%EB%8F%84%EB%AF%B8%EB%8B%88%EC%96%B8)
 
-## ToDo List
-- complete) Log Method
-- --)Play Card Action  Method
-- --)Action Interface
-
-## Action Card Interface
-### Actioner interface 
-- Draw()
-- AddBuy()
-- AddAction()
-- DoSpecialAction()
-
-### test call
-- (r \*Player) PlayCard(c interface{})
-- r.hands += c.hands <- draw n card  ex) Smithy is draw 3 card from deck.
-- r.actions += c.actions
-- r.coins = += c.coins
-- c.DoSpecialAction()
-
-### Thief Card's SpecialAction Sample
-- gain Gold from Supply
-- Reveal the top card from theirs deck, if the card is silver or gold then trash it -> Other player 
-
-### Patrol Card's SpecialAction Sample
-- draw 3 card from deck
-- reveal 4 card from deck, if it is victory card then gain to hands, else put it onto deck.
-
-### Upgrade Card's SpecialAction Sample
-- trahs a card from hand, cost +1 it's cost gain a card 
+## Todo : Add Card List
+- Mine
+	- Trash a Treasure card from you hand. Gain a Treasure card costing up to 3 more; put it into your hand
+- Militia
+	- + 2 coin
+	- Eash other player discards down to 3 cards in his hand.
+- Throne Room
+	- Choose an Action card in your hand. Play it twice.
+- Council Room
+	- +4 Cards
+	- +1 Buy
+	- Eash other player draws a card.
 
 
-## SmartyPants
-
-SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
-
-|                |ASCII                          |HTML                         |
-|----------------|-------------------------------|-----------------------------|
-|Single backticks|`'Isn't this fun?'`            |'Isn't this fun?'            |
-|Quotes          |`"Isn't this fun?"`            |"Isn't this fun?"            |
-|Dashes          |`-- is en-dash, --- is em-dash`|-- is en-dash, --- is em-dash|
+## Todo : Game Logic
+- Attack
+	- A->B에세 공격 후 B가 처리 완료 후 B->A 처리 완료 메시지 보내기
+	- A는 다른 플레이어(ex:B, C, D)로 부터 모두 완료 메시지 받아야지 다음 진행
+- Play 순서에 따라 진행하게 처리
+	- [Dominion ABC(게임진행)](https://namu.wiki/w/%EB%8F%84%EB%AF%B8%EB%8B%88%EC%96%B8%28%EB%B3%B4%EB%93%9C%20%EA%B2%8C%EC%9E%84%29#s-4)
+	- Action
+	- Buy
+	- Clean-up
+- 
