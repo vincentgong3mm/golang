@@ -163,20 +163,24 @@ func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
 	estate := 8
 	duchy := 8
 	province := 8
+	curse := 8
 
 	switch players {
 	case 2:
 		estate = 8 + players*3 // 3 coper per player
 		duchy = 8
 		province = 8
+		curse = 8
 	case 3:
 		estate = 10 + players*3 // 3 coper per player
 		duchy = 10
 		province = 10
+		curse = 12
 	default:
 		estate = 12 + players*3 // 3 coper per player
 		duchy = 12
 		province = 12
+		curse = 18
 	}
 
 	switch t {
@@ -187,6 +191,8 @@ func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
 		r.supply.RegistCard(Estate, estate)
 		r.supply.RegistCard(Duchy, duchy)
 		r.supply.RegistCard(Province, province)
+		r.supply.RegistCard(Curse, curse)
+
 		r.supply.RegistCard(Market, 10)
 		r.supply.RegistCard(Festival, 10)
 		r.supply.RegistCard(Smithy, 10)
@@ -218,11 +224,12 @@ func (r *GameMan) CreateNewPlayer(name string) *Player {
 	return r.players[playerID]
 }
 
-func (r *GameMan) SendMessageToOtherPlayer(msg *MessagePlay) {
+func (r *GameMan) SendMessageToOtherPlayer(p *Player, msg *MessagePlay) {
 	for _, v := range r.players {
-		v.SendPlayMessage(msg)
+		if p.ID != v.ID {
+			v.SendPlayMessage(msg)
+		}
 	}
-
 }
 
 func (r *GameMan) GetPlayer(id PlayerID) *Player {

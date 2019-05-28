@@ -244,7 +244,7 @@ func (r *CardWitch) DoSpecialAbility(p *Player, g *GameMan) {
 	fmt.Println("Each other player gains a Curse card.")
 
 	msg := MessagePlay{Msg: MsgOtherPlayCard, CardID: r.CardID, Step: 0, IsDone: DoAction}
-	g.SendMessageToOtherPlayer(&msg)
+	g.SendMessageToOtherPlayer(p, &msg)
 	// wait for other player gains curse.
 }
 
@@ -252,7 +252,9 @@ func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan) {
 	fmt.Println(">>>>", g.StringSupply())
 	fmt.Println("Gain a Curse card.")
 
-	g.GainCardFromSupplyToDiscardPile(Curse, p)
+	if err := g.GainCardFromSupplyToDiscardPile(Curse, p); err != nil {
+		fmt.Println(err)
+	}
 
 	// send to player, witch is done.
 }

@@ -431,8 +431,13 @@ func TestWitch(t *testing.T) {
 		fmt.Println(err)
 	}
 
+	time.Sleep(100 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
+
 	fmt.Println(p1)
 	fmt.Println(p2)
-	time.Sleep(500 * time.Millisecond)
+
+	time.Sleep(100 * time.Millisecond)
 
 }
