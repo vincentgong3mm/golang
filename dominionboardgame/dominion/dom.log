@@ -477,3 +477,7 @@ INFO : 2019/05/28 16:27:44 gameman.go:80: import dominion/GameMan
 INFO : 2019/05/28 16:27:44 packintrigue.go:8: InitCard CardUpgrade
 INFO : 2019/05/28 16:29:13 gameman.go:80: import dominion/GameMan
 INFO : 2019/05/28 16:29:13 packintrigue.go:8: InitCard CardUpgrade
+INFO : 2019/05/28 19:00:31 gameman.go:80: import dominion/GameMan
+INFO : 2019/05/28 19:00:31 packintrigue.go:8: InitCard CardUpgrade
+INFO : 2019/05/28 19:01:59 gameman.go:80: import dominion/GameMan
+INFO : 2019/05/28 19:01:59 packintrigue.go:8: InitCard CardUpgrade

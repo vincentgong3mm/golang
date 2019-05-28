@@ -32,6 +32,7 @@ type Player struct {
 
 	chanGameMan chan MessageGameMan
 	chanPlay    chan MessagePlay
+	returnCnt   int // 다른 유저로 부터 받아야 할 메시지 수
 }
 
 func init() {
@@ -77,11 +78,20 @@ func (p *Player) DoGameManMessage(g *GameMan, msg *MessageGameMan) {
 func (p *Player) DoPlayMessage(g *GameMan, msg *MessagePlay) {
 	fmt.Println("DoPlayMessage", msg)
 
+	card := g.cards[msg.CardID]
+
 	switch msg.Msg {
 	case MsgPlayCard:
+		card.DoAbility(p)
+		card.DoSpecialAbility(p, g)
 	case MsgOtherPlayCard:
-		card := g.cards[msg.CardID]
-		card.DoOtherPlayer(p, g)
+		// A->B : 공격 메시지를 상대방에게 보낸 경우, 상대방 처리
+		if msg.IsDone == DoAction {
+			card.DoOtherPlayer(p, g)
+			// B->A : 공격 메시지 처리 후 공격을 보낸 플레이어에게 보낸 결과 처리
+		} else if msg.IsDone == DoneAction {
+			card.DoOtherPlayer(p, g)
+		}
 	}
 }
 
@@ -301,13 +311,17 @@ func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	r.handCards = append(r.handCards, end...)
 
 	r.actions--
-	card, exist := gman.cards[cardID]
+	_, exist := gman.cards[cardID]
 	if exist == false {
 		return errors.New(fmt.Sprintf("%s is not registed.", cardID))
 	}
 
-	card.DoAbility(r)
-	card.DoSpecialAbility(r, gman)
+	// go routine으로 이동
+	//card.DoAbility(r)
+	//card.DoSpecialAbility(r, gman)
+
+	msg := MessagePlay{Msg: MsgPlayCard, CardID: cardID, Step: 0, IsDone: DoAction}
+	r.SendPlayMessage(&msg)
 
 	return nil
 }

@@ -244,8 +244,19 @@ func (r *CardWitch) DoSpecialAbility(p *Player, g *GameMan) {
 	fmt.Println("Each other player gains a Curse card.")
 
 	msg := MessagePlay{Msg: MsgOtherPlayCard, CardID: r.CardID, Step: 0, IsDone: DoAction}
+
+	p.returnCnt = len(g.players) - 1
 	g.SendMessageToOtherPlayer(p, &msg)
+
 	// wait for other player gains curse.
+	r.AfterDoSpecialAbility(p, g)
+}
+
+func (r *CardWitch) AfterDoSpecialAbility(p *Player, g *GameMan) {
+	p.returnCnt--
+
+	// 현재 플레이 중인 카드 저장하고
+	// 현재 카드가 완료되면 자신에게 신호 보내서 다음 단계 진행하게 해야함.
 }
 
 func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan) {
