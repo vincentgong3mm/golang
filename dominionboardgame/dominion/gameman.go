@@ -51,6 +51,7 @@ const (
 
 type MessagePlay struct {
 	Msg    MessageTypePlay
+	ThisID PlayerID
 	CardID CardID
 
 	Step   int
@@ -221,6 +222,11 @@ func (r *GameMan) CreateNewPlayer(name string) *Player {
 
 	r.gainBeginHandCard(t)
 
+	// 처음 생성한 플레이어가 먼저 할 수 있도록 설정
+	if player.ID == 1 {
+		player.status = PlayerAction
+	}
+
 	return r.players[playerID]
 }
 
@@ -254,7 +260,7 @@ func (r *GameMan) gainFromSupplyToDeck(id CardID, player *Player) bool {
 // BuyCard is gain a card from supply to discard pile, -1 buys.
 func (r *GameMan) BuyCard(id CardID, p *Player) error {
 	if p.buys <= 0 {
-		return errors.New(fmt.Sprintf("can't buy. buy count is %d", p.buys))
+		return errors.New(fmt.Sprintf("NOTE:can't buy. buy count is %d", p.buys))
 	}
 
 	if r.supply.Pop(id) == true {
@@ -342,6 +348,9 @@ func (r *GameMan) gainBeginHandCard(player *Player) {
 
 	// for next turn init data and shuffle deck
 	player.InitForNextTurn()
+
+	// 처음 받음 deck을 섞어야함.
+	player.deck.Shuffle()
 }
 
 /*

@@ -10,10 +10,12 @@ type Actioner interface {
 	InitCard()
 	GetCardID() CardID
 	GetCost() int
-	DoAbility(p *Player)
-	DoSpecialAbility(p *Player, g *GameMan)
 	String() string
-	DoOtherPlayer(p *Player, g *GameMan) // p is this turn player
+
+	DoAbility(p *Player)
+	DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay)
+	DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay)
+	AfterDoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay)
 }
 
 // CardType is	Action, Treasure, Victory
@@ -24,6 +26,7 @@ const (
 	CardTypeTreasure
 	CardTypeVictory
 	CardTypeCurse
+	MaxCardTypeID
 )
 
 const (
@@ -38,7 +41,7 @@ var CardTypeString = [...]string{
 }
 
 func (r CardType) String() string {
-	return CardTypeString[r%3]
+	return CardTypeString[r%MaxCardTypeID]
 }
 
 type CardID int
@@ -190,10 +193,13 @@ func (r *Card) DoAbility(p *Player) {
 
 }
 
-func (r *Card) DoSpecialAbility(p *Player, g *GameMan) {
+func (r *Card) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 }
 
-func (r *Card) DoOtherPlayer(p *Player, g *GameMan) {
+func (r *Card) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
+}
+
+func (r *Card) AfterDoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 }
 
 func (r *Card) AddBuy(p *Player) string {

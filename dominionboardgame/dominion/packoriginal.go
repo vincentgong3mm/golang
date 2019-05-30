@@ -100,7 +100,7 @@ func (r *CardArtisan) InitCard() {
 	r.Ability = []Ability{}
 }
 
-func (r *CardArtisan) DoSpecialAbility(p *Player, g *GameMan) {
+func (r *CardArtisan) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 	for {
 		fmt.Println(">>>>", p.StringHand())
 		fmt.Println(">>>>", g.StringSupply())
@@ -139,7 +139,7 @@ func (r *CardChapel) InitCard() {
 	r.Ability = []Ability{}
 }
 
-func (r *CardChapel) DoSpecialAbility(p *Player, g *GameMan) {
+func (r *CardChapel) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 	for i := 0; i < 4; {
 		fmt.Println(">>>>", p.StringHand())
 		index, err := g.ReadInput(r.CardID.String(), ": Trash up to 4 cards from your hand, choose card's index #")
@@ -172,7 +172,7 @@ func (r *CardCellar) InitCard() {
 	r.Ability = []Ability{{AbilityAddAction, 1}}
 }
 
-func (r *CardCellar) DoSpecialAbility(p *Player, g *GameMan) {
+func (r *CardCellar) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 	for i := 0; i < 4; {
 		fmt.Println(">>>>", p.StringHand())
 		index, err := g.ReadInput(r.CardID.String(), ": Discard any number of cards.+1 Card per card discarded. Choose card's index to discard#")
@@ -204,7 +204,7 @@ func (r *CardWorkshop) InitCard() {
 	r.Ability = []Ability{}
 }
 
-func (r *CardWorkshop) DoSpecialAbility(p *Player, g *GameMan) {
+func (r *CardWorkshop) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 	for {
 		fmt.Println(">>>>", g.StringSupply())
 		index, err := g.ReadInput(r.CardID.String(), ": Gain a card costing up to 4. Choose card's index in supply#")
@@ -239,27 +239,37 @@ func (r *CardWitch) InitCard() {
 	r.Ability = []Ability{{AbilityAddCard, 2}}
 }
 
-func (r *CardWitch) DoSpecialAbility(p *Player, g *GameMan) {
+func (r *CardWitch) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 	fmt.Println(">>>>", g.StringSupply())
 	fmt.Println("Each other player gains a Curse card.")
 
-	msg := MessagePlay{Msg: MsgOtherPlayCard, CardID: r.CardID, Step: 0, IsDone: DoAction}
+	//otherMsg := MessagePlay{Msg: MsgOtherPlayCard, CardID: r.CardID, Step: 0, IsDone: DoAction}
+	otherMsg := *msg
+	otherMsg.Msg = MsgOtherPlayCard
 
 	p.returnCnt = len(g.players) - 1
-	g.SendMessageToOtherPlayer(p, &msg)
 
-	// wait for other player gains curse.
-	r.AfterDoSpecialAbility(p, g)
+	// 다른 플레이어로 부터 처리 결과 메시지 오기를 기다리는 상태로 변경
+	p.status = PlayerActionWaitOtherPlayer
+
+	g.SendMessageToOtherPlayer(p, &otherMsg)
 }
 
-func (r *CardWitch) AfterDoSpecialAbility(p *Player, g *GameMan) {
+func (r *CardWitch) AfterDoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 	p.returnCnt--
+
+	// 다른 플레이어로 부터 Curse 획득 모두 받았으면
+	if p.returnCnt == 0 {
+		p.status = PlayerAction
+	}
+
+	fmt.Println(p.returnCnt)
 
 	// 현재 플레이 중인 카드 저장하고
 	// 현재 카드가 완료되면 자신에게 신호 보내서 다음 단계 진행하게 해야함.
 }
 
-func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan) {
+func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
 	fmt.Println(">>>>", g.StringSupply())
 	fmt.Println("Gain a Curse card.")
 
@@ -267,7 +277,13 @@ func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan) {
 		fmt.Println(err)
 	}
 
-	// send to player, witch is done.
+	if thisPlayer := g.GetPlayer(msg.ThisID); thisPlayer != nil {
+		// 구조체 복사해서 후 데이터 변경 후
+		thisMsg := *msg
+		thisMsg.Msg = MsgOtherPlayCard
+		thisMsg.IsDone = DoneAction
+		thisPlayer.SendPlayMessage(&thisMsg)
+	}
 }
 
 /*

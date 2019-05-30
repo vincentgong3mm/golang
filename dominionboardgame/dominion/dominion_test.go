@@ -440,4 +440,6 @@ func TestWitch(t *testing.T) {
 
 	time.Sleep(100 * time.Millisecond)
 
+	time.Sleep(1000 * time.Millisecond)
+
 }

@@ -16,6 +16,33 @@ import (
 // 	draw() error
 // }
 
+type PlayerStatus int
+
+const (
+	PlayerNone                  PlayerStatus = 0 + iota
+	PlayerStandBy                            // 대기 중, 다른 플레이어가 진행 중
+	PlayerAction                             // 플레이, 액션카드 사용 가능
+	PlayerActionWaitOtherPlayer              // 플레이, 액션카드 사용 후 다른 플레이어 효과처리 기다리는 중
+	PlayerBuy                                // 두매단계
+	PlayerCleanUp                            // 마지막 단계, Hand와 PlayingArea에 있는 카드 모두 DiscardPile로 이동
+	PlayerDoAbilityOtherPlayer               // 플레이어로 인해서 대기 중인 플레이어의 효과 적용 중
+	MaxPlayerStatusID
+)
+
+var PlayerStatusString = [...]string{
+	"None",
+	"StandBy",
+	"Action",
+	"ActionWaitOtherPlayer",
+	"Buy",
+	"CleanUp",
+	"DoAbilityOtherPlayer",
+}
+
+func (r PlayerStatus) String() string {
+	return PlayerStatusString[r%MaxPlayerStatusID]
+}
+
 // add counter -> Player.index
 type Player struct {
 	name            string
@@ -30,6 +57,7 @@ type Player struct {
 	buys    int
 	coins   int
 
+	status      PlayerStatus
 	chanGameMan chan MessageGameMan
 	chanPlay    chan MessagePlay
 	returnCnt   int // 다른 유저로 부터 받아야 할 메시지 수
@@ -82,15 +110,16 @@ func (p *Player) DoPlayMessage(g *GameMan, msg *MessagePlay) {
 
 	switch msg.Msg {
 	case MsgPlayCard:
+		// 카드의 능력 실행
 		card.DoAbility(p)
-		card.DoSpecialAbility(p, g)
+		card.DoSpecialAbility(p, g, msg)
 	case MsgOtherPlayCard:
 		// A->B : 공격 메시지를 상대방에게 보낸 경우, 상대방 처리
 		if msg.IsDone == DoAction {
-			card.DoOtherPlayer(p, g)
+			card.DoOtherPlayer(p, g, msg)
 			// B->A : 공격 메시지 처리 후 공격을 보낸 플레이어에게 보낸 결과 처리
 		} else if msg.IsDone == DoneAction {
-			card.DoOtherPlayer(p, g)
+			card.AfterDoSpecialAbility(p, g, msg)
 		}
 	}
 }
@@ -109,6 +138,7 @@ func (r Player) String() string {
 	s := ""
 	s += fmt.Sprintf("@Player:%s(ID:%d)\n", r.name, r.ID)
 
+	s += fmt.Sprintf("+Status(%s)\n", r.status)
 	s += fmt.Sprintf("+Action(%d)\n", r.actions)
 	s += fmt.Sprintf("+Buy(%d)\n", r.buys)
 	s += fmt.Sprintf("+Coin(%d)\n", r.coins)
@@ -140,7 +170,10 @@ func (r *Player) InitForNextTurn() {
 	r.buys = 1
 	r.actions = 1
 
-	r.deck.Shuffle()
+	r.status = PlayerStandBy
+
+	// 처음 받을 때만 해야함.
+	//r.deck.Shuffle()
 }
 
 func (r *Player) AddDiscardPileToDeck() {
@@ -268,7 +301,7 @@ func (r *Player) GainCardGM(card CardID) {
 
 func (r *Player) DiscardFromHand(index int) error {
 	if index >= len(r.handCards) {
-		return errors.New("Invaild Hand Cards Index")
+		return errors.New("NOTE:Invaild Hand Cards Index")
 	}
 
 	id := r.handCards[index]
@@ -296,31 +329,43 @@ func (r *Player) TrashCardFromHand(index int) error {
 
 func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	if index >= len(r.handCards) {
-		return errors.New("Invaild Hand Cards Index")
+		return errors.New("NOTE:Invaild Hand Cards Index")
 	}
 	if r.actions < 1 {
-		return errors.New("Player's actions is 0")
+		return errors.New("NOTE:Player's actions is 0")
+	}
+	if r.status != PlayerAction {
+		return errors.New(fmt.Sprintf("NOTE:Player status is not Action, current Status is %s", r.status))
 	}
 
+	// 핸드에서 카드 찾고
 	cardID := r.handCards[index]
 
+	_, exist := gman.cards[cardID]
+	if exist == false {
+		return errors.New(fmt.Sprintf("NOTE : %s is not registed.", cardID))
+	}
+
+	r.status = PlayerAction
+
+	// 핸드에서 카드제거
 	front := r.handCards[0:index]
 	end := r.handCards[index+1 : len(r.handCards)]
-
 	r.handCards = front
 	r.handCards = append(r.handCards, end...)
 
+	// 카드를 PlayingArea에 마지막에 추가
+	r.cardPlayingArea = append(r.cardPlayingArea, cardID)
+
+	// 액션 카드 사용할 횟수 차감
 	r.actions--
-	_, exist := gman.cards[cardID]
-	if exist == false {
-		return errors.New(fmt.Sprintf("%s is not registed.", cardID))
-	}
 
-	// go routine으로 이동
-	//card.DoAbility(r)
-	//card.DoSpecialAbility(r, gman)
-
-	msg := MessagePlay{Msg: MsgPlayCard, CardID: cardID, Step: 0, IsDone: DoAction}
+	// 카드의 액션 실행하기 위해서 go routine으로 메시지 보냄
+	// go routine에서 하는 이유
+	//	- 다른 플레이어에게 영향을 주는 액션의 경우 나의 액션을 한 후 다른 플레이어 액션 완료를 기다린 후 진행해야함.
+	//  - 예) Witch를 사용 후 +2 Card 후 다른 플레이어에게 메시지 보내고, 다른 플레이어가 Curse를 모두 받은 후 내가 다음 진행
+	msg := MessagePlay{Msg: MsgPlayCard, ThisID: r.ID, CardID: cardID,
+		Step: 0, IsDone: DoAction}
 	r.SendPlayMessage(&msg)
 
 	return nil
@@ -333,7 +378,7 @@ func (r *Player) RevealTopCardFromDeck(cnt int) (CardIDs, error) {
 	}
 
 	if len(r.deck) < cnt {
-		return CardIDs{}, errors.New(fmt.Sprintf("not enough deck. deck is %d < %d", len(r.deck), cnt))
+		return CardIDs{}, errors.New(fmt.Sprintf("NOTE:not enough deck. deck is %d < %d", len(r.deck), cnt))
 	}
 
 	cards := r.deck[0:cnt]
@@ -348,7 +393,7 @@ func (r *Player) PopTopCardFromDeck(cnt int) (CardIDs, error) {
 	}
 
 	if len(r.deck) < cnt {
-		return CardIDs{}, errors.New(fmt.Sprintf("not enough deck. deck is %d < %d", len(r.deck), cnt))
+		return CardIDs{}, errors.New(fmt.Sprintf("NOTE:not enough deck. deck is %d < %d", len(r.deck), cnt))
 	}
 
 	cards := r.deck[0:cnt]
