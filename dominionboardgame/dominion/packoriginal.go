@@ -286,6 +286,74 @@ func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
 	}
 }
 
+type CardCouncilRoom struct {
+	Card
+}
+
+func (r *CardCouncilRoom) String() string {
+	return r.Card.String()
+}
+
+func (r *CardCouncilRoom) InitCard() {
+	r.CardID = CouncilRoom
+	r.cardType = []CardType{CardTypeAction}
+	r.cost = 5
+	r.Ability = []Ability{{AbilityAddCard, 4}, {AbilityAddBuy, 1}}
+}
+
+func (r *CardCouncilRoom) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	fmt.Println(">>>>", g.StringSupply())
+	fmt.Println("Each other player draw a card.")
+
+	//otherMsg := MessagePlay{Msg: MsgOtherPlayCard, CardID: r.CardID, Step: 0, IsDone: DoAction}
+	otherMsg := *msg
+	otherMsg.Msg = MsgOtherPlayCard
+
+	p.returnCnt = len(g.players) - 1
+
+	// 다른 플레이어로 부터 처리 결과 메시지 오기를 기다리는 상태로 변경
+	p.status = PlayerActionWaitOtherPlayer
+
+	g.SendMessageToOtherPlayer(p, &otherMsg)
+}
+
+func (r *CardCouncilRoom) AfterDoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	p.returnCnt--
+
+	// 다른 플레이어로 부터 Curse 획득 모두 받았으면
+	if p.returnCnt == 0 {
+		p.status = PlayerAction
+	}
+
+	fmt.Println(p.returnCnt)
+
+	// 현재 플레이 중인 카드 저장하고
+	// 현재 카드가 완료되면 자신에게 신호 보내서 다음 단계 진행하게 해야함.
+}
+
+func (r *CardCouncilRoom) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
+	fmt.Println(">>>>", g.StringSupply())
+	fmt.Println("Draw a card.")
+
+	if _, err := p.DrawCard(1); err != nil {
+		fmt.Println(err)
+	}
+
+	/*
+		if err := g.GainCardFromSupplyToDiscardPile(Curse, p); err != nil {
+			fmt.Println(err)
+		}
+	*/
+
+	if thisPlayer := g.GetPlayer(msg.ThisID); thisPlayer != nil {
+		// 구조체 복사해서 후 데이터 변경 후
+		thisMsg := *msg
+		thisMsg.Msg = MsgOtherPlayCard
+		thisMsg.IsDone = DoneAction
+		thisPlayer.SendPlayMessage(&thisMsg)
+	}
+}
+
 /*
 type CardBandit struct {
 	Card

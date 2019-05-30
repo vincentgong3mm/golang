@@ -68,6 +68,7 @@ const (
 	Chapel
 	Workshop
 	Witch
+	CouncilRoom
 
 	Upgrade
 	MaxCardID
@@ -96,6 +97,7 @@ var CardIDString = [...]string{
 	"Chapel",
 	"WorkShop",
 	"Witch",
+	"CouncilRoom",
 
 	// Intrigue : Action Card
 	"Upgrade",
