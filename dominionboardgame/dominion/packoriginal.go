@@ -262,11 +262,6 @@ func (r *CardWitch) AfterDoSpecialAbility(p *Player, g *GameMan, msg *MessagePla
 	if p.returnCnt == 0 {
 		p.status = PlayerAction
 	}
-
-	fmt.Println(p.returnCnt)
-
-	// 현재 플레이 중인 카드 저장하고
-	// 현재 카드가 완료되면 자신에게 신호 보내서 다음 단계 진행하게 해야함.
 }
 
 func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
@@ -324,11 +319,6 @@ func (r *CardCouncilRoom) AfterDoSpecialAbility(p *Player, g *GameMan, msg *Mess
 	if p.returnCnt == 0 {
 		p.status = PlayerAction
 	}
-
-	fmt.Println(p.returnCnt)
-
-	// 현재 플레이 중인 카드 저장하고
-	// 현재 카드가 완료되면 자신에게 신호 보내서 다음 단계 진행하게 해야함.
 }
 
 func (r *CardCouncilRoom) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
@@ -339,18 +329,68 @@ func (r *CardCouncilRoom) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay)
 		fmt.Println(err)
 	}
 
-	/*
-		if err := g.GainCardFromSupplyToDiscardPile(Curse, p); err != nil {
-			fmt.Println(err)
-		}
-	*/
-
 	if thisPlayer := g.GetPlayer(msg.ThisID); thisPlayer != nil {
 		// 구조체 복사해서 후 데이터 변경 후
 		thisMsg := *msg
 		thisMsg.Msg = MsgOtherPlayCard
 		thisMsg.IsDone = DoneAction
 		thisPlayer.SendPlayMessage(&thisMsg)
+	}
+}
+
+type CardMine struct {
+	Card
+}
+
+func (r *CardMine) String() string {
+	return r.Card.String()
+}
+
+func (r *CardMine) InitCard() {
+	r.CardID = Mine
+	r.cardType = []CardType{CardTypeAction}
+	r.cost = 5
+	r.Ability = []Ability{}
+}
+
+func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	fmt.Println(">>>>", g.StringSupply())
+
+	for {
+		fmt.Println(">>>>", p.StringHand())
+		fmt.Println("Trash a Treasure card from you hand. Gain a Treasure card costing up to 3 more; put it into your hand.")
+		index, err := g.ReadInput(r.CardID.String(), ": choose hand's index #")
+
+		if err != nil {
+			cardID, err := p.handCards.GetCardID(index)
+			if err != nil {
+				card := g.cards[cardID]
+				cardType := card.GetType()
+
+				isTreasure := false
+				for _, v := range cardType {
+					if v == CardTypeTreasure {
+						isTreasure = true
+						break
+					}
+				}
+
+				if isTreasure == true {
+					if err := g.TrashCardFromHand(p, index); err != nil {
+						fmt.Println(err)
+					} else {
+						trasnCardCost := card.GetCost()
+						trasnCardCost += 3
+						// trasnCardCost 이하의 treasure 카드 hand로 가져오기
+					}
+				} else {
+					fmt.Sprintf("%s is not treasure card.", card)
+				}
+			}
+		} else {
+			// 버릴 treasure 카드가 없어 enter입력하면 광산 액션 종료
+			break
+		}
 	}
 }
 

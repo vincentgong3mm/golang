@@ -203,6 +203,7 @@ func (r *GameMan) RegistCardToSuppy(t SupplySet, players int) {
 		r.supply.RegistCard(Chapel, 10)
 		r.supply.RegistCard(Witch, 10)
 		r.supply.RegistCard(CouncilRoom, 10)
+		r.supply.RegistCard(Mine, 10)
 		//r.supply.RegistCard(Cellar, 10)
 	case SetBigMoney:
 		r.supply.RegistCard(Copper, 50)
@@ -422,6 +423,7 @@ func (r *GameMan) CreateAllCard() error {
 	r.createCardEx(&CardWorkshop{})
 	r.createCardEx(&CardWitch{})
 	r.createCardEx(&CardCouncilRoom{})
+	r.createCardEx(&CardMine{})
 
 	// Intregue
 	r.createCardEx(&CardUpgrade{})

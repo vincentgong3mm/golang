@@ -9,6 +9,7 @@ import (
 type Actioner interface {
 	InitCard()
 	GetCardID() CardID
+	GetType() []CardType
 	GetCost() int
 	String() string
 
@@ -69,6 +70,7 @@ const (
 	Workshop
 	Witch
 	CouncilRoom
+	Mine
 
 	Upgrade
 	MaxCardID
@@ -98,6 +100,7 @@ var CardIDString = [...]string{
 	"WorkShop",
 	"Witch",
 	"CouncilRoom",
+	"Mine",
 
 	// Intrigue : Action Card
 	"Upgrade",
@@ -109,7 +112,7 @@ func (r CardID) String() string {
 
 func (r *CardIDs) RemoveCard(index int) (CardID, error) {
 	if index >= len(*r) {
-		return -1, errors.New("Invalid card Index")
+		return -1, errors.New("NOTE:Invalid card Index")
 	}
 
 	cardID := (*r)[index]
@@ -119,6 +122,16 @@ func (r *CardIDs) RemoveCard(index int) (CardID, error) {
 
 	*r = front
 	*r = append(*r, end...)
+
+	return cardID, nil
+}
+
+func (r *CardIDs) GetCardID(index int) (CardID, error) {
+	if index >= len(*r) {
+		return -1, errors.New("NOTE:Invalid card Index")
+	}
+
+	cardID := (*r)[index]
 
 	return cardID, nil
 }
@@ -153,6 +166,10 @@ func (r *Card) InitCard() {
 
 func (r *Card) GetCardID() CardID {
 	return r.CardID
+}
+
+func (r *Card) GetType() []CardType {
+	return r.cardType
 }
 
 func (r *Card) GetCost() int {
@@ -313,25 +330,4 @@ type Ability struct {
 
 func (r Ability) String() string {
 	return fmt.Sprintf("\n\t\t+%d %s", r.count, r.abilityType)
-}
-
-func (r Card) Play(palyer *Player) error {
-	fmt.Println(fmt.Sprintf("Play:%s", r))
-
-	for _, v := range r.Ability {
-		fmt.Println("\tAbility->", v)
-		/*
-			switch v.abilityType
-			{
-			case :
-			case :
-			}
-		*/
-	}
-
-	return nil
-}
-
-func CallPlayCard(p PlayCardAbilityer) {
-	p.Play()
 }

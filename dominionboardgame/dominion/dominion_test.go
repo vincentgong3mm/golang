@@ -456,6 +456,8 @@ func TestCouncilRoom(t *testing.T) {
 
 	p1.GainCardGM(dom.CouncilRoom)
 
+	time.Sleep(1000 * time.Millisecond)
+
 	if err := p1.PlayCardFromHand(4, gman); err != nil {
 		fmt.Println(err)
 	}
