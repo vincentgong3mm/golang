@@ -470,3 +470,37 @@ func TestCouncilRoom(t *testing.T) {
 	time.Sleep(1000 * time.Millisecond)
 
 }
+
+func TestMine(t *testing.T) {
+	gman := CreateGameManAndSetSuppy()
+	CreateTwoPlayer(gman)
+	fmt.Println(gman)
+	p1 := gman.GetPlayer(1)
+	p2 := gman.GetPlayer(2)
+
+	//p1.DrawCard(4)
+	p1.GainCardGM(dom.Estate)
+	p1.GainCardGM(dom.Copper)
+	p1.GainCardGM(dom.Estate)
+	p1.GainCardGM(dom.Silver)
+	p2.DrawCard(5)
+
+	p1.GainCardGM(dom.Mine)
+
+	gman.SetInputFromBuffer()
+	gman.WriteInBuffer("1\n") // select supply index
+	gman.SetInputFromBuffer()
+	gman.WriteInBuffer("2\n") // select supply index
+
+	if err := p1.PlayCardFromHand(4, gman); err != nil {
+		fmt.Println(err)
+	}
+
+	time.Sleep(100 * time.Millisecond)
+
+	fmt.Println(p1)
+	fmt.Println(p2)
+
+	time.Sleep(1000 * time.Millisecond)
+
+}

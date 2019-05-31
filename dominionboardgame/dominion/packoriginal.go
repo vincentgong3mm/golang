@@ -105,7 +105,7 @@ func (r *CardArtisan) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) 
 		fmt.Println(">>>>", p.StringHand())
 		fmt.Println(">>>>", g.StringSupply())
 		index, _ := g.ReadInput(r.CardID.String(), ": Gain a card to your hand consting up to 5, choose supply's index #")
-		if err := g.GainCardFromSupplyToHandByIndex(index, p, 5); err != nil {
+		if err := g.GainCardFromSupplyToHandByIndex(index, p, 5, CardTypeNone); err != nil {
 			fmt.Println(err)
 		} else {
 			break
@@ -361,30 +361,34 @@ func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 		fmt.Println("Trash a Treasure card from you hand. Gain a Treasure card costing up to 3 more; put it into your hand.")
 		index, err := g.ReadInput(r.CardID.String(), ": choose hand's index #")
 
-		if err != nil {
+		if err == nil {
 			cardID, err := p.handCards.GetCardID(index)
-			if err != nil {
+			if err == nil {
 				card := g.cards[cardID]
-				cardType := card.GetType()
 
-				isTreasure := false
-				for _, v := range cardType {
-					if v == CardTypeTreasure {
-						isTreasure = true
-						break
-					}
-				}
-
-				if isTreasure == true {
+				if card.IsType(CardTypeTreasure) == true {
 					if err := g.TrashCardFromHand(p, index); err != nil {
 						fmt.Println(err)
 					} else {
-						trasnCardCost := card.GetCost()
-						trasnCardCost += 3
+						upto := card.GetCost()
+						upto += 3
+
+						// supply index input 받기
+						supplyIndex, err := g.ReadInput(r.CardID.String(), fmt.Sprintf(": Gain a treasure card to your hand up to %d, choose supply's index #", upto))
+						// input '' enter is that don't trash card
+						if err != nil {
+							break
+						}
+
 						// trasnCardCost 이하의 treasure 카드 hand로 가져오기
+						if err := g.GainCardFromSupplyToHandByIndex(supplyIndex, p, upto, CardTypeTreasure); err != nil {
+							fmt.Println(err)
+						} else {
+							break
+						}
 					}
 				} else {
-					fmt.Sprintf("%s is not treasure card.", card)
+					fmt.Printf("NOTE:%s is not treasure card.", card)
 				}
 			}
 		} else {

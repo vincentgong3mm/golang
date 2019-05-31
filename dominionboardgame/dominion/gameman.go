@@ -296,13 +296,19 @@ func (r *GameMan) GainCardFromSupplyToHand(id CardID, p *Player) bool {
 }
 
 // GainCardFromSupplyToHandByIndex is Artisan's SpecialAbility
-func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player, uptocost int) error {
+// GainCardFromSupplyToHandByIndex is Mine's SpecialAbility, add param CardType
+func (r *GameMan) GainCardFromSupplyToHandByIndex(index int, p *Player, uptocost int, ctype CardType) error {
 	// choose card's cost is up to uptocst.
 	if cardID, exist := r.supply.GetCard(index); exist == true {
 		card := r.cards[cardID]
 		if card.GetCost() > uptocost {
 			return errors.New(fmt.Sprintf("NOTE:%s's cost is not up to %d.", cardID, uptocost))
 		}
+
+		if card.IsType(ctype) == false {
+			return errors.New(fmt.Sprintf("NOTE:%s's type is not match %s.", cardID, ctype))
+		}
+
 	} else {
 		return errors.New(fmt.Sprintf("NOTE:Supply isn't %d index card.", index))
 	}

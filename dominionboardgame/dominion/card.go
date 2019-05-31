@@ -9,7 +9,7 @@ import (
 type Actioner interface {
 	InitCard()
 	GetCardID() CardID
-	GetType() []CardType
+	IsType(ctype CardType) bool
 	GetCost() int
 	String() string
 
@@ -23,7 +23,8 @@ type Actioner interface {
 type CardType int
 
 const (
-	CardTypeAction CardType = 0 + iota
+	CardTypeNone CardType = 0 + iota
+	CardTypeAction
 	CardTypeTreasure
 	CardTypeVictory
 	CardTypeCurse
@@ -35,6 +36,7 @@ const (
 )
 
 var CardTypeString = [...]string{
+	"None",
 	"Action",
 	"Treasure",
 	"Victory",
@@ -168,8 +170,18 @@ func (r *Card) GetCardID() CardID {
 	return r.CardID
 }
 
-func (r *Card) GetType() []CardType {
-	return r.cardType
+func (r *Card) IsType(ctype CardType) bool {
+	if ctype == CardTypeNone {
+		return true
+	}
+
+	for _, v := range r.cardType {
+		if v == ctype {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (r *Card) GetCost() int {
