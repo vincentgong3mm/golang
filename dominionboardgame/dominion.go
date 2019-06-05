@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
 
 	dom "github.com/vincentgong3mm/golang/dominionboardgame/dominion"
 )
@@ -70,7 +71,7 @@ func main() {
 
 	// tet chapel
 	p1.GainCardGM(dom.Copper)
-	p1.GainCardGM(dom.Chapel)
+	p1.GainCardGM(dom.Mine)
 	p1.GainCardGM(dom.Estate)
 	p1.GainCardGM(dom.Market)
 	p1.GainCardGM(dom.Artisan)
@@ -80,5 +81,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	waitExit()
+	fmt.Println(p1)
+	time.Sleep(100000 * time.Millisecond)
+
 }

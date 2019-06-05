@@ -363,9 +363,11 @@ func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 
 		if err == nil {
 			cardID, err := p.handCards.GetCardID(index)
+
 			if err == nil {
 				card := g.cards[cardID]
 
+				// Treasure Card만 버릴 수 있음
 				if card.IsType(CardTypeTreasure) == true {
 					if err := g.TrashCardFromHand(p, index); err != nil {
 						fmt.Println(err)
@@ -375,6 +377,7 @@ func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 
 						// supply index input 받기
 						supplyIndex, err := g.ReadInput(r.CardID.String(), fmt.Sprintf(": Gain a treasure card to your hand up to %d, choose supply's index #", upto))
+
 						// input '' enter is that don't trash card
 						if err != nil {
 							break
@@ -384,6 +387,9 @@ func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 						if err := g.GainCardFromSupplyToHandByIndex(supplyIndex, p, upto, CardTypeTreasure); err != nil {
 							fmt.Println(err)
 						} else {
+							fmt.Println(">>>>", p)
+							fmt.Println(">>>>", r.GetCardID(), "Complete.")
+							//fmt.Printf(">>>> %s Complete.\n", r.GetCardID())
 							break
 						}
 					}
@@ -393,6 +399,7 @@ func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 			}
 		} else {
 			// 버릴 treasure 카드가 없어 enter입력하면 광산 액션 종료
+			fmt.Printf("NOTE:didn't choose card!")
 			break
 		}
 	}

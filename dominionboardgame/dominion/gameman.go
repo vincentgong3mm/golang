@@ -519,9 +519,11 @@ func (r *GameMan) GMPlayAllCard(player *Player) {
 func (r *GameMan) ReadInput(s ...string) (int, error) {
 	fmt.Print(s)
 	reader := bufio.NewReader(r.input)
+
 	str, err := reader.ReadString('\n')
 	str = strings.TrimRight(str, "\n")
-
+	str = strings.TrimRight(str, "\r")
 	n, err := strconv.Atoi(str)
+
 	return n, err
 }
