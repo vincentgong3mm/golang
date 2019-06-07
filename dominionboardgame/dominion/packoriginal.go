@@ -246,7 +246,7 @@ func (r *CardWitch) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 
 	//otherMsg := MessagePlay{Msg: MsgOtherPlayCard, CardID: r.CardID, Step: 0, IsDone: DoAction}
 	otherMsg := *msg
-	otherMsg.Msg = MsgOtherPlayCard
+	otherMsg.Msg = MsgOtherDoEffect
 
 	p.returnCnt = len(g.players) - 1
 
@@ -276,7 +276,7 @@ func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
 	if thisPlayer := g.GetPlayer(msg.ThisID); thisPlayer != nil {
 		// 구조체 복사해서 후 데이터 변경 후
 		thisMsg := *msg
-		thisMsg.Msg = MsgOtherPlayCard
+		thisMsg.Msg = MsgOtherDoneEffect
 		thisMsg.IsDone = DoneAction
 		thisPlayer.SendPlayMessage(&thisMsg)
 	}
@@ -303,7 +303,7 @@ func (r *CardCouncilRoom) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePl
 
 	//otherMsg := MessagePlay{Msg: MsgOtherPlayCard, CardID: r.CardID, Step: 0, IsDone: DoAction}
 	otherMsg := *msg
-	otherMsg.Msg = MsgOtherPlayCard
+	otherMsg.Msg = MsgOtherDoEffect
 
 	p.returnCnt = len(g.players) - 1
 
@@ -333,7 +333,7 @@ func (r *CardCouncilRoom) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay)
 	if thisPlayer := g.GetPlayer(msg.ThisID); thisPlayer != nil {
 		// 구조체 복사해서 후 데이터 변경 후
 		thisMsg := *msg
-		thisMsg.Msg = MsgOtherPlayCard
+		thisMsg.Msg = MsgOtherDoneEffect
 		thisMsg.IsDone = DoneAction
 		thisPlayer.SendPlayMessage(&thisMsg)
 	}
@@ -405,7 +405,7 @@ func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 		}
 	}
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 3; i++ {
 		time.Sleep(1000 * time.Millisecond)
 		fmt.Println("Mine Sleep")
 	}

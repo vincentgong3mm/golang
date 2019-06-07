@@ -406,9 +406,9 @@ func TestChan(t *testing.T) {
 	p1.SendGameManMessage(&dom.MessageGameMan{Msg: dom.MsgFinishGame})
 	//p1.SendPlayMessage(MessagePlay{})
 
-	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgPlayCard, Step: 7})
-	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgOtherPlayCard, Step: 2})
-	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgPlayCard, Step: 3})
+	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgThisPlayCard, Step: 7})
+	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgOtherDoEffect, Step: 2})
+	p1.SendPlayMessage(&dom.MessagePlay{Msg: dom.MsgThisPlayCard, Step: 3})
 
 	fmt.Println(p1)
 
@@ -502,6 +502,6 @@ func TestMine(t *testing.T) {
 	for i := 0; i < 20; i++ {
 		fmt.Println("-------------------============================================")
 	}
-	gman.Wait()
+	//gman.Wait()
 
 }

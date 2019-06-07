@@ -88,15 +88,13 @@ func (p *Player) DoChanMessage(g *GameMan) {
 	for {
 		select {
 		case msg := <-p.chanGameMan:
-			fmt.Println("Receive From chanGameMan", g)
 			p.DoGameManMessage(g, &msg)
 		case msg := <-p.chanPlay:
-			fmt.Println("Receive From Play", p)
 			p.DoPlayMessage(g, &msg)
 		}
 	}
 
-	fmt.Println("exit DoChanMessage", p.name, p.ID)
+	fmt.Println("NOTE:exit DoChanMessage", p.name, p.ID)
 }
 
 func (p *Player) DoGameManMessage(g *GameMan, msg *MessageGameMan) {
@@ -104,23 +102,28 @@ func (p *Player) DoGameManMessage(g *GameMan, msg *MessageGameMan) {
 }
 
 func (p *Player) DoPlayMessage(g *GameMan, msg *MessagePlay) {
-	fmt.Println("DoPlayMessage", msg)
-
 	card := g.cards[msg.CardID]
 
 	switch msg.Msg {
-	case MsgPlayCard:
-		// 카드의 능력 실행
+	case MsgThisPlayCard: // 카드의 능력 실행
 		card.DoAbility(p)
 		card.DoSpecialAbility(p, g, msg)
-	case MsgOtherPlayCard:
-		// A->B : 공격 메시지를 상대방에게 보낸 경우, 상대방 처리
-		if msg.IsDone == DoAction {
-			card.DoOtherPlayer(p, g, msg)
-			// B->A : 공격 메시지 처리 후 공격을 보낸 플레이어에게 보낸 결과 처리
-		} else if msg.IsDone == DoneAction {
-			card.AfterDoSpecialAbility(p, g, msg)
-		}
+	case MsgOtherDoEffect: // A->B : 공격 메시지를 상대방에게 보낸 경우, 상대방 처리
+		card.DoOtherPlayer(p, g, msg)
+	case MsgOtherDoneEffect: // B->A : 공격 메시지 처리 후 공격을 보낸 플레이어에게 보낸 결과 처리
+		card.AfterDoSpecialAbility(p, g, msg)
+
+		/*
+			case MsgOtherPlayCard:
+				// A->B : 공격 메시지를 상대방에게 보낸 경우, 상대방 처리
+				if msg.IsDone == DoAction {
+					card.DoOtherPlayer(p, g, msg)
+					// B->A : 공격 메시지 처리 후 공격을 보낸 플레이어에게 보낸 결과 처리
+				} else if msg.IsDone == DoneAction {
+					card.AfterDoSpecialAbility(p, g, msg)
+				}
+		*/
+
 	}
 }
 
@@ -364,7 +367,7 @@ func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	// go routine에서 하는 이유
 	//	- 다른 플레이어에게 영향을 주는 액션의 경우 나의 액션을 한 후 다른 플레이어 액션 완료를 기다린 후 진행해야함.
 	//  - 예) Witch를 사용 후 +2 Card 후 다른 플레이어에게 메시지 보내고, 다른 플레이어가 Curse를 모두 받은 후 내가 다음 진행
-	msg := MessagePlay{Msg: MsgPlayCard, ThisID: r.ID, CardID: cardID,
+	msg := MessagePlay{Msg: MsgThisPlayCard, ThisID: r.ID, CardID: cardID,
 		Step: 0, IsDone: DoAction}
 	r.SendPlayMessage(&msg)
 

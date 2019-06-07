@@ -26,10 +26,11 @@ const (
 type MessageTypeGameMan int
 
 const (
-	MsgPrepareGame MessageTypeGameMan = 0 + iota // 게임 시작
-	MsgFinishGame                                // 플레이 종료. Victory 점수 계산 단계
-	MsgCloseGame                                 // 모두 종료
-	MsgYourTurn                                  // player turn
+	MsgGameNone    MessageTypeGameMan = 0 + iota
+	MsgPrepareGame                    // 게임 시작
+	MsgFinishGame                     // 플레이 종료. Victory 점수 계산 단계
+	MsgCloseGame                      // 모두 종료
+	MsgYourTurn                       // player turn
 )
 
 type MessageGameMan struct {
@@ -39,8 +40,11 @@ type MessageGameMan struct {
 type MessageTypePlay int
 
 const (
-	MsgPlayCard      MessageTypePlay = 0 + iota // 자신의 turn에 카드 플레이
-	MsgOtherPlayCard                            // 다른 플레이가 카드 플레이, 나에게 영향을 미치는 경우 받음.
+	MsgNone            MessageTypePlay = 0 + iota
+	MsgThisPlayCard                    // 자신의 turn에 카드 플레이 진행
+	MsgThisDoneCard                    // 자신의 turn에 카드 플레이 완료
+	MsgOtherDoEffect                   // 다른 플레이에게 영향을 주는 작업 진행
+	MsgOtherDoneEffect                 // 다른 플레이에게 영향을 주는 작업 완료
 )
 
 type ActionState int
