@@ -20,6 +20,8 @@ type PlayerStatus int
 
 const (
 	PlayerNone                  PlayerStatus = 0 + iota
+	PlayerExit                               // 게임종료
+	PlayerLogin                              // 게임접속, Player 생성 후 Login 상태로 둠
 	PlayerStandBy                            // 대기 중, 다른 플레이어가 진행 중
 	PlayerAction                             // 플레이, 액션카드 사용 가능
 	PlayerActionWaitOtherPlayer              // 플레이, 액션카드 사용 후 다른 플레이어 효과처리 기다리는 중
@@ -101,10 +103,30 @@ func (p *Player) DoGameManMessage(g *GameMan, msg *MessageGameMan) {
 
 }
 
+func (p *Player) ExitGame() {
+	//msg := MessageGameMan{Msg: MsgExitPlayer, ThisID: p.ID}
+	//p.SendGameManMessage(&msg)
+
+	msg := MessagePlay{Msg: MsgThisExitGame, ThisID: p.ID}
+	p.SendPlayMessage(&msg)
+}
+
 func (p *Player) DoPlayMessage(g *GameMan, msg *MessagePlay) {
+	// player 상태가 게임 접속 종료면 처리 하지 않는다.
+	if p.status == PlayerExit {
+		return
+	}
+
 	card := g.cards[msg.CardID]
 
 	switch msg.Msg {
+	case MsgThisExitGame:
+		p.status = PlayerExit
+		gameMsg := MessageGameMan{Msg: MsgExitPlayer, ThisID: p.ID}
+		p.SendGameManMessage(&gameMsg)
+
+		// 여기서 p에게 보낼게 아니라 gameman에 보내야 할 듯
+		// gameman은 이 메시지 받아서 player의 channel모두 close하고 player 정보 삭제 해야함
 	case MsgThisPlayCard: // 카드의 능력 실행
 		card.DoAbility(p)
 		card.DoSpecialAbility(p, g, msg)

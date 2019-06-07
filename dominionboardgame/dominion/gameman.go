@@ -31,22 +31,24 @@ const (
 	MsgFinishGame                     // 플레이 종료. Victory 점수 계산 단계
 	MsgCloseGame                      // 모두 종료
 	MsgYourTurn                       // player turn
+	MsgExitPlayer                     // Player가 게임 종료함.
 )
 
 type MessageGameMan struct {
-	Msg MessageTypeGameMan
+	Msg    MessageTypeGameMan
+	ThisID PlayerID
 }
 
 type MessageTypePlay int
 
 const (
 	MsgNone            MessageTypePlay = 0 + iota
+	MsgThisExitGame                    // 게임종료
 	MsgThisPlayCard                    // 자신의 turn에 카드 플레이 진행
 	MsgThisDoneCard                    // 자신의 turn에 카드 플레이 완료
 	MsgOtherDoEffect                   // 다른 플레이에게 영향을 주는 작업 진행
 	MsgOtherDoneEffect                 // 다른 플레이에게 영향을 주는 작업 완료
 )
-
 
 // type ActionState int
 
@@ -60,7 +62,7 @@ type MessagePlay struct {
 	ThisID PlayerID
 	CardID CardID
 
-	Step   int
+	Step int
 	//IsDone ActionState // DoAction : step의 action 해야함, DoneAction : step의 action 완료됨
 }
 
@@ -246,6 +248,8 @@ func (r *GameMan) CreateNewPlayer(name string) *Player {
 	// 처음 생성한 플레이어가 먼저 할 수 있도록 설정
 	if player.ID == 1 {
 		player.status = PlayerAction
+	} else {
+		player.status = PlayerLogin
 	}
 
 	return r.players[playerID]
