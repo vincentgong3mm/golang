@@ -368,7 +368,7 @@ func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	//	- 다른 플레이어에게 영향을 주는 액션의 경우 나의 액션을 한 후 다른 플레이어 액션 완료를 기다린 후 진행해야함.
 	//  - 예) Witch를 사용 후 +2 Card 후 다른 플레이어에게 메시지 보내고, 다른 플레이어가 Curse를 모두 받은 후 내가 다음 진행
 	msg := MessagePlay{Msg: MsgThisPlayCard, ThisID: r.ID, CardID: cardID,
-		Step: 0, IsDone: DoAction}
+		Step: 0}
 	r.SendPlayMessage(&msg)
 
 	return nil

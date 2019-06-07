@@ -47,12 +47,13 @@ const (
 	MsgOtherDoneEffect                 // 다른 플레이에게 영향을 주는 작업 완료
 )
 
-type ActionState int
 
-const (
-	DoAction ActionState = 0 + iota
-	DoneAction
-)
+// type ActionState int
+
+// const (
+// 	DoAction ActionState = 0 + iota
+// 	DoneAction
+// )
 
 type MessagePlay struct {
 	Msg    MessageTypePlay
@@ -60,7 +61,7 @@ type MessagePlay struct {
 	CardID CardID
 
 	Step   int
-	IsDone ActionState // DoAction : step의 action 해야함, DoneAction : step의 action 완료됨
+	//IsDone ActionState // DoAction : step의 action 해야함, DoneAction : step의 action 완료됨
 }
 
 type GameMan struct {

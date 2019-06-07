@@ -476,32 +476,30 @@ func TestMine(t *testing.T) {
 	CreateTwoPlayer(gman)
 	fmt.Println(gman)
 	p1 := gman.GetPlayer(1)
-	p2 := gman.GetPlayer(2)
 
 	//p1.DrawCard(4)
 	p1.GainCardGM(dom.Estate)
 	p1.GainCardGM(dom.Copper)
 	p1.GainCardGM(dom.Estate)
 	p1.GainCardGM(dom.Silver)
-	p2.DrawCard(5)
-
 	p1.GainCardGM(dom.Mine)
+
+	fmt.Println(p1)
 
 	gman.SetInputFromBuffer()
 	gman.WriteInBuffer("1\n") // select supply index
 	gman.SetInputFromBuffer()
-	gman.WriteInBuffer("2\n") // select supply index
+	gman.WriteInBuffer("1\n") // select supply index
 
 	if err := p1.PlayCardFromHand(4, gman); err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Println(p1)
-	fmt.Println(p2)
 
 	for i := 0; i < 20; i++ {
 		fmt.Println("-------------------============================================")
 	}
-	//gman.Wait()
+	gman.Wait()
 
 }

@@ -277,7 +277,6 @@ func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
 		// 구조체 복사해서 후 데이터 변경 후
 		thisMsg := *msg
 		thisMsg.Msg = MsgOtherDoneEffect
-		thisMsg.IsDone = DoneAction
 		thisPlayer.SendPlayMessage(&thisMsg)
 	}
 }
@@ -334,7 +333,6 @@ func (r *CardCouncilRoom) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay)
 		// 구조체 복사해서 후 데이터 변경 후
 		thisMsg := *msg
 		thisMsg.Msg = MsgOtherDoneEffect
-		thisMsg.IsDone = DoneAction
 		thisPlayer.SendPlayMessage(&thisMsg)
 	}
 }
