@@ -14,7 +14,7 @@ vincent golang
 	- Eash other player discards down to 3 cards in his hand.
 - Throne Room
 	- Choose an Action card in your hand. Play it twice.
-- Council Room
+~~- Council Room~~
 	- +4 Cards
 	- +1 Buy
 	- Eash other player draws a card.

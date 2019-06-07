@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 /*
@@ -72,6 +73,8 @@ type GameMan struct {
 
 	input io.Reader
 	inbuf bytes.Buffer
+
+	waitGroup sync.WaitGroup
 }
 
 func init() {
@@ -95,7 +98,17 @@ func CreateNewGameMan() *GameMan {
 
 	n.input = bufio.NewReader(os.Stdin)
 
+	n.waitGroup.Add(1)
+
 	return &n
+}
+
+func (r *GameMan) Wait() {
+	r.waitGroup.Wait()
+}
+
+func (r *GameMan) Done() {
+	r.waitGroup.Done()
 }
 
 func (r *GameMan) SetInputFromBuffer() {

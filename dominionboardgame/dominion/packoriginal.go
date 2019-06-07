@@ -2,6 +2,7 @@ package dominion
 
 import (
 	"fmt"
+	"time"
 )
 
 type CardOriBase struct {
@@ -403,6 +404,13 @@ func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 			break
 		}
 	}
+
+	for i := 0; i < 10; i++ {
+		time.Sleep(1000 * time.Millisecond)
+		fmt.Println("Mine Sleep")
+	}
+
+	//g.Done()
 }
 
 /*

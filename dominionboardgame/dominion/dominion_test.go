@@ -496,11 +496,12 @@ func TestMine(t *testing.T) {
 		fmt.Println(err)
 	}
 
-	time.Sleep(100 * time.Millisecond)
-
 	fmt.Println(p1)
 	fmt.Println(p2)
 
-	time.Sleep(1000 * time.Millisecond)
+	for i := 0; i < 20; i++ {
+		fmt.Println("-------------------============================================")
+	}
+	gman.Wait()
 
 }
