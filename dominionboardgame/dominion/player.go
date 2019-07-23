@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 )
 
@@ -32,13 +33,15 @@ const (
 )
 
 var PlayerStatusString = [...]string{
-	"None",
-	"StandBy",
-	"Action",
-	"ActionWaitOtherPlayer",
-	"Buy",
-	"CleanUp",
-	"DoAbilityOtherPlayer",
+	"PlayerNone",
+	"PlayerExit",
+	"PlayerLogin",
+	"PlayerStandBy",
+	"PlayerAction",
+	"PlayerActionWaitOtherPlayer",
+	"PlayerBuy",
+	"PlayerCleanUp",
+	"PlayerDoAbilityOtherPlayer",
 }
 
 func (r PlayerStatus) String() string {
@@ -63,6 +66,8 @@ type Player struct {
 	chanGameMan chan MessageGameMan
 	chanPlay    chan MessagePlay
 	returnCnt   int // 다른 유저로 부터 받아야 할 메시지 수
+
+	waitGroup sync.WaitGroup
 }
 
 func init() {
@@ -385,6 +390,10 @@ func (r *Player) PlayCardFromHand(index int, gman *GameMan) error {
 	// 액션 카드 사용할 횟수 차감
 	r.actions--
 
+	// wait group +1 해서 다른 main go routine에서 action이 끝나기를 기다리게 한다.
+	// DoSpecialAbility 또는 AfterDoSpecialAbility에서 Done한다.
+	r.playing()
+
 	// 카드의 액션 실행하기 위해서 go routine으로 메시지 보냄
 	// go routine에서 하는 이유
 	//	- 다른 플레이어에게 영향을 주는 액션의 경우 나의 액션을 한 후 다른 플레이어 액션 완료를 기다린 후 진행해야함.
@@ -425,4 +434,71 @@ func (r *Player) PopTopCardFromDeck(cnt int) (CardIDs, error) {
 	r.deck = r.deck[cnt:len(r.deck)]
 
 	return cards, nil
+}
+
+func (r *Player) GetStatus() PlayerStatus {
+	return r.status
+}
+
+func (r *Player) playing() {
+	r.waitGroup.Add(1)
+}
+
+func (r *Player) Wait() {
+	r.waitGroup.Wait()
+}
+
+func (r *Player) Done() {
+	r.waitGroup.Done()
+}
+
+func (r *Player) Action(g *GameMan) {
+	fmt.Printf("Current your Status : %s\n", r.status)
+	fmt.Println(r)
+
+	// 잘못 호출 한 경우 처리
+	if r.actions <= 0 {
+		r.status = PlayerBuy
+		return
+	}
+
+	cardIndexInHand, s := g.ReadInput(">>>> choose Action Card's index in your hand. #")
+	switch s {
+	case "q":
+		return
+	case "b":
+		r.status = PlayerBuy
+		return
+	}
+
+	if err := r.PlayCardFromHand(cardIndexInHand, g); err != nil {
+		fmt.Println(err)
+	}
+
+	// action을 완료했고 남은 acitons가 <= 0 이면 이제 구입단계임.
+	if r.actions <= 0 {
+		r.status = PlayerBuy
+		return
+	}
+}
+
+func (r *Player) Buy(g *GameMan) {
+	fmt.Printf("Current your Status : %s\n", r.status)
+	fmt.Println(r)
+
+	if r.buys <= 0 {
+		r.status = PlayerCleanUp
+		return
+	}
+
+	index, s := g.ReadInput(">>>> choose Supply Card's index. #")
+	switch s {
+	case "q":
+		return
+	case "c":
+		r.status = PlayerCleanUp
+		return
+	}
+
+	fmt.Println(index)
 }

@@ -538,14 +538,23 @@ func (r *GameMan) GMPlayAllCard(player *Player) {
 	*/
 }
 
-func (r *GameMan) ReadInput(s ...string) (int, error) {
+func (r *GameMan) ReadInput(s ...string) (int, string) {
 	fmt.Print(s)
 	reader := bufio.NewReader(r.input)
 
 	str, err := reader.ReadString('\n')
 	str = strings.TrimRight(str, "\n")
 	str = strings.TrimRight(str, "\r")
-	n, err := strconv.Atoi(str)
 
-	return n, err
+	// 모든 입력 단계에서 q를 입력하면 게임종료
+	if str == "qq" {
+		os.Exit(0)
+	}
+
+	n, err := strconv.Atoi(str)
+	if err != nil {
+		n = -1
+	}
+
+	return n, str
 }

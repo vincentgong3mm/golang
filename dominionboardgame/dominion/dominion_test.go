@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -261,6 +262,7 @@ func TestInput2(t *testing.T) {
 }
 
 func TestPlayAction(t *testing.T) {
+	fmt.Println("TestPlayAction")
 	gman := CreateGameManAndSetSuppy()
 	CreateTwoPlayer(gman)
 	p1 := gman.GetPlayer(1)
@@ -472,6 +474,8 @@ func TestCouncilRoom(t *testing.T) {
 }
 
 func TestMine(t *testing.T) {
+	fmt.Println("TestMine")
+
 	gman := CreateGameManAndSetSuppy()
 	CreateTwoPlayer(gman)
 	fmt.Println(gman)
@@ -502,4 +506,39 @@ func TestMine(t *testing.T) {
 	}
 	gman.Wait()
 
+}
+
+func TestOnePlay(t *testing.T) {
+	fmt.Println("TestPlay")
+	g := dom.CreateNewGameMan()
+	g.CreateAllCard()
+	g.RegistCardToSuppy(dom.SetFirstGame, 1)
+
+	p := g.CreateNewPlayer("gong")
+
+	p.DrawCard(5)
+
+	g.SetInputFromBuffer()
+	g.WriteInBuffer("1\n") // select supply index
+	cardIndexInHand, s := g.ReadInput(">>>> choose index in your hand. #")
+
+	fmt.Println(cardIndexInHand, s)
+
+	if err := p.PlayCardFromHand(cardIndexInHand, g); err != nil {
+		fmt.Println(err)
+	}
+
+	// player 상태 메시지 보여주고 입력 받아서 진행
+	// 1. 액션상태 표시 : 액션 진행할 카드 선택
+	//		- 액션 없는 카드 사용 못하세 제한
+	// 2. buy 상태 표시, 현재 coin개수 + treature  카드 표시
+	// 3. clean up
+
+	g.Wait()
+}
+
+func TestAtoi(t *testing.T) {
+	n, err := strconv.Atoi("b")
+
+	fmt.Println(n, err)
 }

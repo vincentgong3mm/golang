@@ -225,6 +225,7 @@ func (r *Card) DoAbility(p *Player) {
 }
 
 func (r *Card) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	p.Done()
 }
 
 func (r *Card) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {

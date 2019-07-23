@@ -102,6 +102,8 @@ func (r *CardArtisan) InitCard() {
 }
 
 func (r *CardArtisan) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	defer p.Done()
+
 	for {
 		fmt.Println(">>>>", p.StringHand())
 		fmt.Println(">>>>", g.StringSupply())
@@ -141,12 +143,14 @@ func (r *CardChapel) InitCard() {
 }
 
 func (r *CardChapel) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	defer p.Done()
+
 	for i := 0; i < 4; {
 		fmt.Println(">>>>", p.StringHand())
-		index, err := g.ReadInput(r.CardID.String(), ": Trash up to 4 cards from your hand, choose card's index #")
+		index, _ := g.ReadInput(r.CardID.String(), ": Trash up to 4 cards from your hand, choose card's index #")
 
-		// input '' enter is that don't trash card
-		if err != nil {
+		// input -1 enter is that don't trash card
+		if index < 0 {
 			break
 		}
 
@@ -174,11 +178,13 @@ func (r *CardCellar) InitCard() {
 }
 
 func (r *CardCellar) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	defer p.Done()
+
 	for i := 0; i < 4; {
 		fmt.Println(">>>>", p.StringHand())
-		index, err := g.ReadInput(r.CardID.String(), ": Discard any number of cards.+1 Card per card discarded. Choose card's index to discard#")
+		index, _ := g.ReadInput(r.CardID.String(), ": Discard any number of cards.+1 Card per card discarded. Choose card's index to discard#")
 		// input '' enter is that don't trash card
-		if err != nil {
+		if index < 0 {
 			break
 		}
 
@@ -206,11 +212,13 @@ func (r *CardWorkshop) InitCard() {
 }
 
 func (r *CardWorkshop) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	defer p.Done()
+
 	for {
 		fmt.Println(">>>>", g.StringSupply())
-		index, err := g.ReadInput(r.CardID.String(), ": Gain a card costing up to 4. Choose card's index in supply#")
+		index, _ := g.ReadInput(r.CardID.String(), ": Gain a card costing up to 4. Choose card's index in supply#")
 		// input '' enter is that don't trash card
-		if err != nil {
+		if index < 0 {
 			break
 		}
 		if err := g.GainCardFromSupplyByIndex(index, p, 4); err != nil {
@@ -263,6 +271,8 @@ func (r *CardWitch) AfterDoSpecialAbility(p *Player, g *GameMan, msg *MessagePla
 	if p.returnCnt == 0 {
 		p.status = PlayerAction
 	}
+
+	p.Done()
 }
 
 func (r *CardWitch) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
@@ -313,12 +323,16 @@ func (r *CardCouncilRoom) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePl
 }
 
 func (r *CardCouncilRoom) AfterDoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	defer p.Done()
+
 	p.returnCnt--
 
 	// 다른 플레이어로 부터 Curse 획득 모두 받았으면
 	if p.returnCnt == 0 {
 		p.status = PlayerAction
 	}
+
+	p.Done()
 }
 
 func (r *CardCouncilRoom) DoOtherPlayer(p *Player, g *GameMan, msg *MessagePlay) {
@@ -353,14 +367,16 @@ func (r *CardMine) InitCard() {
 }
 
 func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
+	defer p.Done()
+
 	fmt.Println(">>>>", g.StringSupply())
 
 	for {
 		fmt.Println(">>>>", p.StringHand())
 		fmt.Println("Trash a Treasure card from you hand. Gain a Treasure card costing up to 3 more; put it into your hand.")
-		index, err := g.ReadInput(r.CardID.String(), ": choose hand's index #")
+		index, _ := g.ReadInput(r.CardID.String(), ": choose hand's index #")
 
-		if err == nil {
+		if index >= 0 {
 			cardID, err := p.handCards.GetCardID(index)
 
 			if err == nil {
@@ -375,10 +391,10 @@ func (r *CardMine) DoSpecialAbility(p *Player, g *GameMan, msg *MessagePlay) {
 						upto += 3
 
 						// supply index input 받기
-						supplyIndex, err := g.ReadInput(r.CardID.String(), fmt.Sprintf(": Gain a treasure card to your hand up to %d, choose supply's index #", upto))
+						supplyIndex, _ := g.ReadInput(r.CardID.String(), fmt.Sprintf(": Gain a treasure card to your hand up to %d, choose supply's index #", upto))
 
 						// input '' enter is that don't trash card
-						if err != nil {
+						if supplyIndex < 0 {
 							break
 						}
 

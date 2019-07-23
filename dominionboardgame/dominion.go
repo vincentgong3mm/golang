@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"time"
 
 	dom "github.com/vincentgong3mm/golang/dominionboardgame/dominion"
 )
@@ -32,56 +31,37 @@ func CreateTwoPlayer(g *dom.GameMan) {
 }
 
 func main() {
-	/*
-		fmt.Println("Let's start Dominion!")
+	fmt.Println("TestPlay")
+	g := dom.CreateNewGameMan()
+	g.CreateAllCard()
+	g.RegistCardToSuppy(dom.SetFirstGame, 1)
 
-		gman := dom.CreateNewGameMan()
-		fmt.Println(gman)
-		gman.SetInputFromBuffer()
-		gman.WriteInBuffer("10\n11\n")
+	p := g.CreateNewPlayer("gong")
+	p.DrawCard(5)
 
-		fmt.Println("Input String :")
-		str, _ := gman.ReadInput()
-		fmt.Println("str=", str)
-		str, _ = gman.ReadInput()
-		fmt.Println("str=", str)
-	*/
-	gman := CreateGameManAndSetSuppy()
-	CreateTwoPlayer(gman)
-	fmt.Println(gman)
-	p1 := gman.GetPlayer(1)
+	p.GainCardGM(dom.Artisan)
 
-	/*
+	for true {
+		switch p.GetStatus() {
+		case dom.PlayerAction:
+			p.Action(g)
+			// ??? action 처리를 메시지로 던져서 여기 지나가고 또 action 진행함.
+			// -> action 이 완료된 후에 다른 action 가능하게 해야함.
 
-		// test Artisan
-		p1.GainCardGM(dom.Market)
-		p1.GainCardGM(dom.Artisan)
-		fmt.Println(p1)
+			fmt.Println("test---------action 끝나기를 기다리는 중.....")
+			p.Wait()
+			fmt.Println("test---------action 완료 .....")
+		case dom.PlayerBuy:
+			p.Buy(g)
+		case dom.PlayerCleanUp:
+			//p.CleanUp()
+		}
 
-		//gman.SetInputFromBuffer()
-		p1.PlayCardFromHand(0, gman)
-		fmt.Println(p1)
-
-		// for Artisan add buffer 1
-		//gman.WriteInBuffer("7") // gain card 7(Festival), 7 is supply's index
-		//gman.WriteInBuffer("1")  // put Market onto player's deck
-		p1.PlayCardFromHand(0, gman)
-		fmt.Println(p1)
-	*/
-
-	// tet chapel
-	p1.GainCardGM(dom.Copper)
-	p1.GainCardGM(dom.Mine)
-	p1.GainCardGM(dom.Estate)
-	p1.GainCardGM(dom.Market)
-	p1.GainCardGM(dom.Artisan)
-	fmt.Println(p1)
-
-	if err := p1.PlayCardFromHand(1, gman); err != nil {
-		fmt.Println(err)
+		// player 상태 메시지 보여주고 입력 받아서 진행
+		// 1. 액션상태 표시 : 액션 진행할 카드 선택
+		//		- 액션 없는 카드 사용 못하세 제한
+		// 2. buy 상태 표시, 현재 coin개수 + treature  카드 표시
+		// 3. clean up
 	}
-
-	fmt.Println(p1)
-	time.Sleep(100000 * time.Millisecond)
-
+	//g.Wait()
 }
